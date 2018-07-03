@@ -46,8 +46,10 @@ contract Election is Ownable {
 
     struct Voter {
         bool hasVoted;
-        uint votedForFederal;
-        uint votedForState;
+        bool validFederalVote;
+        bool validStateVote;
+        uint federalCandidateVote;
+        uint stateCandidateVote;
     }
 
     Candidate[] candidates;
@@ -83,7 +85,9 @@ contract Election is Ownable {
         constituencies[_constituencyCode].candidates.push(candidate);
     }
 
-    function initiateConstituency(uint _constituencyType, string _constituencyCode) isValidConstituencyType(_constituencyType) {
+    function initiateConstituency(
+        uint _constituencyType,
+        string _constituencyCode) isValidConstituencyType(_constituencyType) {
         constituencies[_constituencyCode].numVotes = 0;
         constituencies[_constituencyCode].constituencyType = ConstituencyType(_constituencyType);
     }
@@ -92,13 +96,33 @@ contract Election is Ownable {
         candidates[_candidateId].validCandidate = false;
     }
 
-    function vote(string _nonce, uint _votedForFederal, uint _votedForState) onlyOwner() hasNotVoted(_nonce) {
+    function vote(
+        string _nonce,
+        uint[] _federalCandidateVote,
+        uint[] _stateCandidateVote) onlyOwner() hasNotVoted(_nonce) {
         totalVotes++;
         votes[_nonce].hasVoted = true;
-        votes[_nonce].votedForFederal = _votedForFederal;
-        votes[_nonce].votedForState = _votedForState;
+
+        if (isValidVote(_federalCandidateVote)) {
+            votes[_nonce].validFederalVote = true;
+            votes[_nonce].federalCandidateVote = _federalCandidateVote[0];
+        }
+
+        if (isValidVote(_federalCandidateVote)) {
+            votes[_nonce].validStateVote = true;
+            votes[_nonce].stateCandidateVote = _stateCandidateVote[0];
+        }
     }
 
+    function isValidVote(uint[] votes) pure returns (bool){
+        bool valid = false;
+
+        if (votes.length == 1) {
+            valid = true;
+        }
+
+        return valid;
+    }
     /*function getTest() view returns(){
 
     }*/
