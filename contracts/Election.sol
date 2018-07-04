@@ -103,6 +103,7 @@ contract Election is Ownable {
         totalVotes++;
         votes[_nonce].hasVoted = true;
 
+        //Increment vote counter for candidates
         if (isValidVote(_federalCandidateVote)) {
             votes[_nonce].validFederalVote = true;
             votes[_nonce].federalCandidateVote = _federalCandidateVote[0];
