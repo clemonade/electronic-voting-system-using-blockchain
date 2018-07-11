@@ -198,7 +198,6 @@ contract Election is Ownable {
             votes[_voterNonce].stateCandidateVote = stateCandidateId;
             candidates[stateCandidateId].numVotesState++;
         }
-
     }
 
     /**
