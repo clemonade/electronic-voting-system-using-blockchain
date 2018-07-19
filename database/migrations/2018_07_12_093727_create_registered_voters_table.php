@@ -13,18 +13,18 @@ class CreateRegisteredVotersTable extends Migration
      */
     public function up()
     {
-        Schema::create('registeredVoters', function (Blueprint $table) {
+        Schema::create('registeredvoters', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name', 100)->index();
             $table->char('nric', 12)->unique();
             $table->char('gender', 1)->index();
-            $table->char('locality', 5)->index();
-            $table->char('votingDistrict', 5)->index();
-            $table->char('federalConstituency', 5)->index();
-            $table->char('stateConstituency', 5)->index();
+            /*$table->char('locality', 5)->index();
+            $table->char('votingDistrict', 5)->index();*/
+            $table->char('federalconstituency', 5)->index();
+            $table->char('stateconstituency', 5)->index();
             $table->char('state', 2)->index();
-            $table->boolean('valid');
+            $table->boolean('valid')->default(true);
             $table->timestamps();
         });
     }

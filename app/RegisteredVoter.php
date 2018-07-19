@@ -6,14 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class RegisteredVoter extends Model
 {
+    public $table = "registeredvoters";
+
     protected $fillable = [
         'name',
         'nric',
         'gender',
-        'locality',
-        'votingDistrict',
-        'federalConstituency',
-        'stateConstituency',
+//        'locality',
+//        'votingDistrict',
+        'federalconstituency',
+        'stateconstituency',
         'state',
         'valid',
     ];

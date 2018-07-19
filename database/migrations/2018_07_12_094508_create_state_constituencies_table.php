@@ -13,7 +13,7 @@ class CreateStateConstituenciesTable extends Migration
      */
     public function up()
     {
-        Schema::create('stateConstituencies', function (Blueprint $table) {
+        Schema::create('stateconstituencies', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->char('code', 10)->unique();

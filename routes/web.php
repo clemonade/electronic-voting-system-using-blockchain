@@ -11,6 +11,19 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/registervoter', 'RegisteredVoterController@index')
+    ->name('registervoter.index');
+Route::post('/registervoter/store', 'RegisteredVoterController@store')
+    ->name('registervoter.store');
+
+//Route::resource('/registervoter', 'RegisteredVoterController', ['except' => [
+//    'edit',
+//    'update',
+//    'destroy'
+//]]);

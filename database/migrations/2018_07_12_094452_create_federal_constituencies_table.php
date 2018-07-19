@@ -13,7 +13,7 @@ class CreateFederalConstituenciesTable extends Migration
      */
     public function up()
     {
-        Schema::create('federalConstituencies', function (Blueprint $table) {
+        Schema::create('federalconstituencies', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->char('code', 5)->unique();

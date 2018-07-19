@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\RegisteredVoter;
 use Illuminate\Http\Request;
 
 class RegisteredVoterController extends Controller
@@ -13,7 +14,9 @@ class RegisteredVoterController extends Controller
      */
     public function index()
     {
-        //
+        $voter = new RegisteredVoter();
+
+        return view('registervoter.index', ['voter' => $voter]);
     }
 
     /**
@@ -29,18 +32,22 @@ class RegisteredVoterController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $voter = new RegisteredVoter();
+        $voter->fill($request->all());
+        $voter->save();
+
+        return redirect()->route('registervoter.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -51,7 +58,7 @@ class RegisteredVoterController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -62,8 +69,8 @@ class RegisteredVoterController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -74,7 +81,7 @@ class RegisteredVoterController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
