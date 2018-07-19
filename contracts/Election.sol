@@ -7,6 +7,8 @@ import "./Ownable.sol";
 @author Clement Tong
 */
 contract Election is Ownable {
+    event NewParty(uint partyId, string name, string abbreviation);
+
     enum ConstituencyType {FEDERAL, STATE}
     uint totalVotes;
 
@@ -78,7 +80,6 @@ contract Election is Ownable {
         uint[] candidates;
         string constituencyName;
         ConstituencyType constituencyType;
-
     }
 
     struct Party {
@@ -125,6 +126,8 @@ contract Election is Ownable {
         uint partyId = parties.length;
         Party memory party = Party(partyId, _partyName, _partyAbbreviation);
         parties.push(party);
+
+        emit NewParty(partyId, _partyName, _partyAbbreviation);
     }
 
     /**
@@ -198,6 +201,7 @@ contract Election is Ownable {
             votes[_voterNonce].stateCandidateVote = stateCandidateId;
             candidates[stateCandidateId].numVotesState++;
         }
+
     }
 
     /**
@@ -278,5 +282,9 @@ contract Election is Ownable {
         ConstituencyType constituencyType = constituencies[_constituencyCode].constituencyType;
 
         return (initiated, numVotes, constituencyCandidates, constituencyName, constituencyType);
+    }
+
+    function getPartiesLength() public view returns (uint){
+        return parties.length;
     }
 }
