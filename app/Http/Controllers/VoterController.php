@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\RegisteredVoter;
 use Illuminate\Http\Request;
 
-class RegisteredVoterController extends Controller
+class VoterController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +14,7 @@ class RegisteredVoterController extends Controller
      */
     public function index()
     {
-        $voter = new RegisteredVoter();
-
-        return view('registervoter.index', ['voter' => $voter]);
+        //
     }
 
     /**
@@ -26,7 +24,9 @@ class RegisteredVoterController extends Controller
      */
     public function create()
     {
-        //
+        $voter = new RegisteredVoter();
+
+        return view('admin.registervoter', ['voter' => $voter]);
     }
 
     /**
@@ -41,7 +41,7 @@ class RegisteredVoterController extends Controller
         $voter->fill($request->all());
         $voter->save();
 
-        return redirect()->route('registervoter.index');
+        return redirect()->route('registervoter.create');
     }
 
     /**

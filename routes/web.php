@@ -17,13 +17,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/registervoter', 'RegisteredVoterController@index')
-    ->name('registervoter.index');
-Route::post('/registervoter/store', 'RegisteredVoterController@store')
+Route::get('/admin/registervoter', 'VoterController@create')
+    ->name('registervoter.create');
+Route::post('/admin/registervoter/store', 'VoterController@store')
     ->name('registervoter.store');
 
-//Route::resource('/registervoter', 'RegisteredVoterController', ['except' => [
-//    'edit',
-//    'update',
-//    'destroy'
-//]]);
+Route::get('/admin/registerparty', 'PartyController@create')
+    ->name('registerparty.create');
+
+
