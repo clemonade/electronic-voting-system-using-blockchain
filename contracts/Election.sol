@@ -7,7 +7,10 @@ import "./Ownable.sol";
 @author Clement Tong
 */
 contract Election is Ownable {
+    event NewConstituency(string constituencyCode, string constituencyName, uint constituencyType);
     event NewParty(uint partyId, string name, string abbreviation);
+    event NewCandidate(uint candidateId, string name, uint partyId, string constituencyCode);
+    event NewVote(bool validFederalVote, bool validStateVote, uint federalCandidateId, uint stateCandidateIds);
 
     enum ConstituencyType {FEDERAL, STATE}
     uint totalVotes;
@@ -38,7 +41,7 @@ contract Election is Ownable {
     @param _constituencyCode Code of constituency
     */
     modifier isExistingConstituency(string _constituencyCode){
-        require(constituencies[_constituencyCode].initiated);
+        require(constituencies[_constituencyCode].initialised);
         _;
     }
 
@@ -75,7 +78,7 @@ contract Election is Ownable {
     }
 
     struct Constituency {
-        bool initiated;
+        bool initialised;
         uint numVotes;
         uint[] candidates;
         string constituencyName;
@@ -90,8 +93,7 @@ contract Election is Ownable {
 
     struct Candidate {
         uint candidateId;
-        uint numVotesFederal;
-        uint numVotesState;
+        uint numVotes;
         string name;
         bool validCandidate;
     }
@@ -114,6 +116,26 @@ contract Election is Ownable {
 
     constructor() public {
         totalVotes = 0;
+    }
+
+    /**
+    @notice Initialises a new constituency
+    @dev -
+    @param _constituencyType Type of constituency
+    @param _constituencyCode Code of constituency
+    @param _constituencyName Name of constituency
+    */
+    function initialiseConstituency(
+        uint _constituencyType,
+        string _constituencyCode,
+        string _constituencyName) public isValidConstituencyType(_constituencyType) {
+
+        constituencies[_constituencyCode].initialised = true;
+        constituencies[_constituencyCode].numVotes = 0;
+        constituencies[_constituencyCode].constituencyName = _constituencyName;
+        constituencies[_constituencyCode].constituencyType = ConstituencyType(_constituencyType);
+
+        emit NewConstituency(_constituencyCode, _constituencyName, _constituencyType);
     }
 
     /**
@@ -146,33 +168,15 @@ contract Election is Ownable {
         candidateToParty[candidateId] = _partyId;
         candidateToConstituency[candidateId] = _constituencyCode;
         constituencies[_constituencyCode].candidates.push(candidateId);
-        Candidate memory candidate = Candidate(candidateId, 0, 0, _candidateName, true);
+        Candidate memory candidate = Candidate(candidateId, 0, _candidateName, true);
         candidates.push(candidate);
 
+        emit NewCandidate(candidateId, _candidateName, _partyId, _constituencyCode);
     }
 
-    /**
-    @notice Initialises a new constituency
-    @dev -
-    @param _constituencyType Type of constituency
-    @param _constituencyCode Code of constituency
-    @param _constituencyName Name of constituency
-    */
-    function initiateConstituency(
-        uint _constituencyType,
-        string _constituencyCode,
-        string _constituencyName) public isValidConstituencyType(_constituencyType) {
-
-        constituencies[_constituencyCode].initiated = true;
-        constituencies[_constituencyCode].numVotes = 0;
-        constituencies[_constituencyCode].constituencyName = _constituencyName;
-        constituencies[_constituencyCode].constituencyType = ConstituencyType(_constituencyType);
-    }
-
-    //TODO Cannot pass empty array as argument
     /**
     @notice Votes for federal constituency and state constituency candidates
-    @dev -
+    @dev Pass in dummy array if no candidate(s) is/are selected; function does not accept empty arrays
     @param _voterNonce Nonce of voter
     @param _federalCandidateVote Array of voted federal constituency candidates
     @param _stateCandidateVote Array of voted state constituency candidates
@@ -190,18 +194,22 @@ contract Election is Ownable {
         constituencies[candidateToConstituency[stateCandidateId]].numVotes++;
         votes[_voterNonce].hasVoted = true;
 
-        if (isValidVote(_federalCandidateVote)) {
+        bool validFederalVote = isValidVote(_federalCandidateVote);
+        bool validStateVote = isValidVote(_stateCandidateVote);
+
+        if (validFederalVote) {
             votes[_voterNonce].validFederalVote = true;
             votes[_voterNonce].federalCandidateVote = federalCandidateId;
-            candidates[federalCandidateId].numVotesFederal++;
+            candidates[federalCandidateId].numVotes++;
         }
 
-        if (isValidVote(_stateCandidateVote)) {
+        if (validStateVote) {
             votes[_voterNonce].validStateVote = true;
             votes[_voterNonce].stateCandidateVote = stateCandidateId;
-            candidates[stateCandidateId].numVotesState++;
+            candidates[stateCandidateId].numVotes++;
         }
 
+        emit NewVote(validFederalVote, validStateVote, federalCandidateId, stateCandidateId);
     }
 
     /**
@@ -246,6 +254,16 @@ contract Election is Ownable {
     /**
     @dev Getters
     */
+    function getConstituency(string _constituencyCode) public view returns (bool, uint, uint[], string, ConstituencyType){
+        bool initialised = constituencies[_constituencyCode].initialised;
+        uint numVotes = constituencies[_constituencyCode].numVotes;
+        uint[] memory constituencyCandidates = constituencies[_constituencyCode].candidates;
+        string memory constituencyName = constituencies[_constituencyCode].constituencyName;
+        ConstituencyType constituencyType = constituencies[_constituencyCode].constituencyType;
+
+        return (initialised, numVotes, constituencyCandidates, constituencyName, constituencyType);
+    }
+
     function getParty(uint _partyId) public view returns (string, string){
         string memory name = parties[_partyId].name;
         string memory abbreviation = parties[_partyId].abbreviation;
@@ -253,35 +271,24 @@ contract Election is Ownable {
         return (name, abbreviation);
     }
 
-    function getCandidate(uint _candidateId) public view returns (uint, uint, string, bool, uint, string){
-        uint numVotesFederal = candidates[_candidateId].numVotesFederal;
-        uint numVotesState = candidates[_candidateId].numVotesState;
+    function getCandidate(uint _candidateId) public view returns (uint, string, bool, uint, string){
+        uint numVotes = candidates[_candidateId].numVotes;
         string memory name = candidates[_candidateId].name;
         bool validCandidate = candidates[_candidateId].validCandidate;
         uint party = candidateToParty[_candidateId];
         string memory constituency = candidateToConstituency[_candidateId];
 
-        return (numVotesFederal, numVotesState, name, validCandidate, party, constituency);
+        return (numVotes, name, validCandidate, party, constituency);
     }
 
-    function getVoter(string _nonce) public view returns (bool, bool, bool, uint, uint){
-        bool hasVoted = votes[_nonce].hasVoted;
-        bool validFederalVote = votes[_nonce].validFederalVote;
-        bool validStateVote = votes[_nonce].validStateVote;
-        uint federalCandidateVote = votes[_nonce].federalCandidateVote;
-        uint stateCandidateVote = votes[_nonce].stateCandidateVote;
+    function getVoter(string _hash) public view returns (bool, bool, bool, uint, uint){
+        bool hasVoted = votes[_hash].hasVoted;
+        bool validFederalVote = votes[_hash].validFederalVote;
+        bool validStateVote = votes[_hash].validStateVote;
+        uint federalCandidateVote = votes[_hash].federalCandidateVote;
+        uint stateCandidateVote = votes[_hash].stateCandidateVote;
 
         return (hasVoted, validFederalVote, validStateVote, federalCandidateVote, stateCandidateVote);
-    }
-
-    function getConstituency(string _constituencyCode) public view returns (bool, uint, uint[], string, ConstituencyType){
-        bool initiated = constituencies[_constituencyCode].initiated;
-        uint numVotes = constituencies[_constituencyCode].numVotes;
-        uint[] memory constituencyCandidates = constituencies[_constituencyCode].candidates;
-        string memory constituencyName = constituencies[_constituencyCode].constituencyName;
-        ConstituencyType constituencyType = constituencies[_constituencyCode].constituencyType;
-
-        return (initiated, numVotes, constituencyCandidates, constituencyName, constituencyType);
     }
 
     function getPartiesLength() public view returns (uint){

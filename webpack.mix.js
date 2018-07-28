@@ -12,4 +12,9 @@ let mix = require('laravel-mix');
  */
 
 mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+    .js('resources/assets/js/party.js', 'public/js')
+    .js('resources/assets/js/constituency.js', 'public/js')
+    .js('resources/assets/js/constituencies.js', 'public/js')
+    .js('resources/assets/js/candidate.js', 'public/js')
+    .js('resources/assets/js/vote.js', 'public/js')
+    .sass('resources/assets/sass/app.scss', 'public/css');

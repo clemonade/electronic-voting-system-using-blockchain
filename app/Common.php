@@ -27,4 +27,9 @@ class Common
         'M' => 'Male',
         'F' => 'Female',
     ];
+
+    public static $types = [
+        '0' => 'Federal',
+        '1' => 'State'
+    ];
 }

@@ -6,31 +6,16 @@ use App\FederalConstituency;
 use App\StateConstituency;
 use Illuminate\Http\Request;
 
-class ConstituencyController extends Controller
+class CandidateController extends Controller
 {
-    public function index()
+    public function create()
     {
         $federals = FederalConstituency::orderBy('code', 'asc')->get();
         $states = StateConstituency::orderBy('code', 'asc')->get();
 
-        return view('admin.index', [
+        return view('admin.registercandidate', [
             'federals' => $federals,
             'states' => $states,
         ]);
-    }
-
-    public function voterindex()
-    {
-        //
-    }
-
-    public function show($code)
-    {
-        return view('voter.constituency', ['code' => $code]);
-    }
-
-    public function login()
-    {
-        //
     }
 }

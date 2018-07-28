@@ -28,31 +28,15 @@ window.App = {
             account = accounts[0];
         });
 
-        self.showParties();
+        self.populateParties();
+        self.populateConstituencies($('#level').val());
     },
 
     setStatus: function (message) {
         $('#status').html(message);
     },
 
-    registerParty: function () {
-        let self = this;
-        let election;
-        Election.deployed().then((instance) => {
-            election = instance;
-            let name = $('#name').val();
-            let abbreviation = $('#abbreviation').val();
-            return election.registerParty(name, abbreviation, {from: account});
-        }).then(() => {
-            self.setStatus('Party registered');
-            self.showParties();
-        }).catch((e) => {
-            console.log(e);
-            self.setStatus('Error registering party; see log.');
-        });
-    },
-
-    showParties: function () {
+    populateParties: function () {
         let self = this;
         let election;
         Election.deployed().then((instance) => {
@@ -61,23 +45,58 @@ window.App = {
         }).then((value) => {
             let promises = [];
             let partiesLength = value.toNumber();
-            console.log(partiesLength);
             for (let x = 0; x < partiesLength; x++) {
                 promises.push(election.getParty.call(x, {from: account}));
             }
             Promise.all(promises).then(() => {
-                $('#list').html('');
                 for (let x = 0; x < partiesLength; x++) {
                     promises[x].then((value) => {
-                        console.log(value[0] + value[1]);
-                        let entry = $('<li/>').text(value[0] + ' ' + value[1]);
-                        entry.appendTo($('#list'));
+                        $('<option/>')
+                            .text(value[0] + ' (' + value[1] + ')')
+                            .val(x)
+                            .appendTo($('#party'));
                     });
                 }
             });
         }).catch((e) => {
             console.log(e);
             self.setStatus('Error showing parties; see log.');
+        });
+    },
+
+    populateConstituencies: function (value) {
+        let self = this;
+        if (value === '0') {
+            self.populateDropdown(federals);
+        } else {
+            self.populateDropdown(states);
+        }
+    },
+
+    populateDropdown: function (constituencies) {
+        $('#constiteuncy').empty();
+        for (let constituency of constituencies) {
+            $('<option/>')
+                .val(constituency.code)
+                .text(constituency.code + ' ' + constituency.name)
+                .appendTo($('#constiteuncy'));
+        }
+    },
+
+    registerCandidate: function () {
+        let self = this;
+        let election;
+        Election.deployed().then((instance) => {
+            election = instance;
+            let constituencyCode = $('#constiteuncy').val();
+            let candidateName = $('#name').val();
+            let partyId = $('#party').val();
+            return election.registerCandidate(constituencyCode, candidateName, partyId, {from: account});
+        }).then(() => {
+            self.setStatus('Candidate registered.');
+        }).catch((e) => {
+            console.log(e);
+            self.setStatus('Error showing constituencies; see log.');
         });
     }
 };
