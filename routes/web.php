@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 //    return view('welcome');
 //});
 
-Route::get('/', 'ConstituencyController@voterindex')
+Route::get('/', 'ConstituencyController@voter')
     ->name('constituencies');
 Route::get('/constituency/{id}', 'ConstituencyController@show')
     ->name('constituency.show');

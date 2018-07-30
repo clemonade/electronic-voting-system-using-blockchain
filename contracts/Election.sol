@@ -18,10 +18,10 @@ contract Election is Ownable {
     /**
     @notice Checks if the voter has already voted
     @dev -
-    @param _voterNonce Nonce of voter
+    @param _voterHash Hash of voter
     */
-    modifier hasNotVoted(string _voterNonce){
-        require(votes[_voterNonce].hasVoted != true);
+    modifier hasNotVoted(string _voterHash){
+        require(votes[_voterHash].hasVoted != true);
         _;
     }
 
@@ -176,15 +176,16 @@ contract Election is Ownable {
 
     /**
     @notice Votes for federal constituency and state constituency candidates
+    @dev _voterHash is calculated as: SHA-256(voterName + voterNRIC + SHA-256(voterNonce))
     @dev Pass in dummy array if no candidate(s) is/are selected; function does not accept empty arrays
-    @param _voterNonce Nonce of voter
+    @param _voterHash Hash of voter
     @param _federalCandidateVote Array of voted federal constituency candidates
     @param _stateCandidateVote Array of voted state constituency candidates
     */
     function vote(
-        string _voterNonce,
+        string _voterHash,
         uint[] _federalCandidateVote,
-        uint[] _stateCandidateVote) public onlyOwner() hasNotVoted(_voterNonce) {
+        uint[] _stateCandidateVote) public onlyOwner() hasNotVoted(_voterHash) {
 
         uint federalCandidateId = _federalCandidateVote[0];
         uint stateCandidateId = _stateCandidateVote[0];
@@ -192,20 +193,20 @@ contract Election is Ownable {
         totalVotes++;
         constituencies[candidateToConstituency[federalCandidateId]].numVotes++;
         constituencies[candidateToConstituency[stateCandidateId]].numVotes++;
-        votes[_voterNonce].hasVoted = true;
+        votes[_voterHash].hasVoted = true;
 
         bool validFederalVote = isValidVote(_federalCandidateVote);
         bool validStateVote = isValidVote(_stateCandidateVote);
 
         if (validFederalVote) {
-            votes[_voterNonce].validFederalVote = true;
-            votes[_voterNonce].federalCandidateVote = federalCandidateId;
+            votes[_voterHash].validFederalVote = true;
+            votes[_voterHash].federalCandidateVote = federalCandidateId;
             candidates[federalCandidateId].numVotes++;
         }
 
         if (validStateVote) {
-            votes[_voterNonce].validStateVote = true;
-            votes[_voterNonce].stateCandidateVote = stateCandidateId;
+            votes[_voterHash].validStateVote = true;
+            votes[_voterHash].stateCandidateVote = stateCandidateId;
             candidates[stateCandidateId].numVotes++;
         }
 

@@ -42,7 +42,16 @@ use App\Common;
         </tr>
         <tr>
             <td>Candidates</td>
-            <td id="candidates"></td>
+            <td>
+                <table id="candidates">
+                    <thead>
+                    <td>Name</td>
+                    <td>Party</td>
+                    <td>Votes</td>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </td>
         </tr>
         <tr>
             <td>Status</td>

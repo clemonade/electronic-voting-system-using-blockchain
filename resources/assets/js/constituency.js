@@ -29,26 +29,20 @@ window.App = {
             account = accounts[0];
         });
 
-        self.getConstituency(code);
+        self.populateConstituency();
     },
 
     setStatus: function (message) {
         $('#status').html(message);
     },
 
-    getConstituency: function (code) {
+    populateConstituency: function () {
         let self = this;
         let election;
         Election.deployed().then((instance) => {
             election = instance;
             return election.getConstituency.call(code, {from: account})
         }).then((value) => {
-            console.log(value[0]);
-            console.log(value[1].toNumber());
-            console.log(value[2].map(x => x.toNumber()));
-            console.log(value[3]);
-            console.log(value[4].toNumber());
-
             $('#code').html(code);
             if ('#' + value[0]) {
                 $('#init').html('INITIALISED');
@@ -56,7 +50,7 @@ window.App = {
                 $('#init').html('UNINITIALISED');
             }
             $('#total').html(value[1].toNumber());
-            $('#candidates').html(value[2].map(x => x.toNumber()));
+            self.populateCandidates(value[2].map(x => x.toNumber()));
             $('#name').html(value[3]);
             $('#type').html(types[value[4].toNumber()]);
 
@@ -65,6 +59,45 @@ window.App = {
             console.log(e);
             self.setStatus('Error retrieving initialisation status.');
         });
+    },
+
+    populateCandidates: function (candidates) {
+        console.log(candidates);
+        let self = this;
+        let election;
+        let promises = [];
+        Election.deployed().then((instance) => {
+            election = instance;
+            for (let candidate of candidates) {
+                promises.push(election.getCandidate.call(candidate, {from: account}))
+            }
+
+            Promise.all(promises).then(() => {
+                let parties = [];
+                for (let x = 0; x < promises.length; x++) {
+                    promises[x].then((value) => {
+                        parties.push((election.getParty.call(value[3].toNumber(), {from: account})))
+                    })
+                }
+
+                Promise.all(parties).then(() => {
+                    for (let x = 0; x < promises.length; x++) {
+                        promises[x].then((value) => {
+                            parties[x].then((party) => {
+                                $('<tr/>')
+                                    .appendTo($('#candidates tbody'))
+                                    .append($('<td>')
+                                        .text(value[1]))
+                                    .append($('<td>')
+                                        .text(party[1]))
+                                    .append($('<td>')
+                                        .text(value[0].toNumber()));
+                            });
+                        });
+                    }
+                });
+            });
+        })
     }
 };
 

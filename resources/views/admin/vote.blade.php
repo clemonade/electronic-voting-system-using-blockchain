@@ -91,15 +91,6 @@
         </div>
     </div>
 
-    <div class="form-group row">
-        <div>
-            {!! Form::button('Test', [
-            'class' => 'btn btn-primary',
-            'onclick' => 'App.test()',
-            ]) !!}
-        </div>
-    </div>
-
     {!! Form::close() !!}
 </div>
 

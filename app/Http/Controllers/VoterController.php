@@ -13,7 +13,7 @@ class VoterController extends Controller
 {
     public function index()
     {
-        //
+        return view('voter.voter');
     }
 
     public function create()

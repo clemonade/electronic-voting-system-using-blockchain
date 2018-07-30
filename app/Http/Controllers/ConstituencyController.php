@@ -19,7 +19,7 @@ class ConstituencyController extends Controller
         ]);
     }
 
-    public function voterindex()
+    public function voter()
     {
         //
     }

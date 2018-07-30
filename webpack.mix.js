@@ -17,4 +17,5 @@ mix.js('resources/assets/js/app.js', 'public/js')
     .js('resources/assets/js/constituencies.js', 'public/js')
     .js('resources/assets/js/candidate.js', 'public/js')
     .js('resources/assets/js/vote.js', 'public/js')
+    .js('resources/assets/js/voter.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css');

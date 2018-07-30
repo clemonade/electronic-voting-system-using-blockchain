@@ -48,13 +48,7 @@ window.App = {
         Election.deployed().then((instance) => {
             election = instance;
             return election.getConstituency.call(constituency['code'], {from: account})
-            //return election.parties.call(1);
         }).then((value) => {
-            // console.log(value[0]);
-            // console.log(value[1].toNumber());
-            // console.log(value[2].map(x => x.toNumber()));
-            // console.log(value[3]);
-            // console.log(value[4].toNumber());
             let promises = [];
             let candidates = value[2].map(x => x.toNumber());
             for (let candidate of candidates) {
@@ -148,7 +142,7 @@ window.App = {
             console.log(value[4].toNumber());
         }).catch(function (e) {
             console.log(e);
-            self.setStatus('');
+            self.setStatus('Error retrieving voter info.');
         });
     }
 };
