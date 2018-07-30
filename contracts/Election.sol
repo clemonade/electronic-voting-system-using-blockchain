@@ -13,7 +13,7 @@ contract Election is Ownable {
     event NewVote(bool validFederalVote, bool validStateVote, uint federalCandidateId, uint stateCandidateIds);
 
     enum ConstituencyType {FEDERAL, STATE}
-    uint totalVotes;
+    uint public totalVotes;
 
     /**
     @notice Checks if the voter has already voted
@@ -106,8 +106,8 @@ contract Election is Ownable {
         uint stateCandidateVote;
     }
 
-    Party[] parties;
-    Candidate[] candidates;
+    Party[] public parties;
+    Candidate[] public candidates;
 
     mapping(string => Voter) votes;
     mapping(string => Constituency) constituencies;

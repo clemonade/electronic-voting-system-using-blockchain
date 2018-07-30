@@ -27,6 +27,7 @@ class VoterController extends Controller
     {
         $voter = new RegisteredVoter();
         $voter->fill($request->all());
+        $voter['name'] = strtoupper($request->input('name'));
         $voter->save();
 
         return redirect()->route('registervoter.create');
@@ -46,7 +47,7 @@ class VoterController extends Controller
 
     public function check(Request $request)
     {
-        $name = $request->input('name');
+        $name = strtoupper($request->input('name'));
         $nric = $request->input('nric');
         $currentFederal = $request->input('federal');
         $currentState = $request->input('state');

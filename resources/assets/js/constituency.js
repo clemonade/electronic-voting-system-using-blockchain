@@ -49,13 +49,16 @@ window.App = {
             console.log(value[3]);
             console.log(value[4].toNumber());
 
-            //$('#name').innerText = value[3];
-            document.getElementById('code').innerText = code;
-            document.getElementById('init').innerText = value[0];
-            document.getElementById('total').innerText = value[1].toNumber();
-            //document.getElementById('name').innerText = value[2].map(x => x.toNumber());
-            document.getElementById('name').innerText = value[3];
-            document.getElementById('type').innerText = types[value[4].toNumber()];
+            $('#code').html(code);
+            if ('#' + value[0]) {
+                $('#init').html('INITIALISED');
+            } else {
+                $('#init').html('UNINITIALISED');
+            }
+            $('#total').html(value[1].toNumber());
+            $('#candidates').html(value[2].map(x => x.toNumber()));
+            $('#name').html(value[3]);
+            $('#type').html(types[value[4].toNumber()]);
 
 
         }).catch(function (e) {

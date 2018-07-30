@@ -13,6 +13,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             FederalConstituenciesTableSeeder::class,
-            StateConstituenciesTableSeeder::class]);
+            StateConstituenciesTableSeeder::class,
+            RegisteredVotersTableSeeder::class,
+        ]);
     }
 }

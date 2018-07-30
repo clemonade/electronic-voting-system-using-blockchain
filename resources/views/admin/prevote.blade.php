@@ -47,7 +47,7 @@
         <div>
             {!! Form::text('federal', $federal-> code . ' ' . $federal->name, [
             'id' => 'federal',
-            'class' =>a 'form-control',
+            'class' => 'form-control',
             'maxlength' => 100,
             'disabled',
             ]) !!}

@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('script')
 <script type="text/javascript">
-    let federals = <?php echo $federal ?>;
-    let states = <?php echo $state ?>;
-    let hash = <?php echo $hash ?>;
+    let federal = <?php echo $federal ?>;
+    let state = <?php echo $state ?>;
+    let hash = '<?php echo $hash ?>';
 </script>
 <script src="{{asset('js/vote.js')}}"></script>
 @stop
@@ -12,35 +12,25 @@
 <h1>Vote Casting</h1>
 <div class="panel-body">
     {!! Form::open([
-    'route' => ['admin.vote'],
-    'class' => 'form-horizontal'
+    'route' => [
+    'admin.verify',
+    json_decode($federal, true)['code'],
+    explode("_", json_decode($state, true)['code'])[1]
+    ],
+    'class' => 'form-horizontal',
+    'method' => 'get',
     ]) !!}
 
-    <!-- Name -->
+    <!-- Hash -->
     <div class="form-group row">
-        {!! Form::label('name', 'Name', [
+        {!! Form::label('hash', 'Voter Hash', [
         'class' => 'control-label col-sm-3',
         ]) !!}
         <div>
-            {!! Form::text('name', $voter->name , [
-            'id' => 'name',
+            {!! Form::text('hash', $hash , [
+            'id' => 'hash',
             'class' => 'form-control',
             'maxlength' => 100,
-            'disabled',
-            ]) !!}
-        </div>
-    </div>
-
-    <!-- NRIC -->
-    <div class="form-group row">
-        {!! Form::label('nric', 'NRIC', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
-        <div>
-            {!! Form::text('nric', $voter->nric, [
-            'id' => 'nric',
-            'class' => 'form-control',
-            'maxlength' => 12,
             'disabled',
             ]) !!}
         </div>
@@ -52,9 +42,9 @@
         'class' => 'control-label col-sm-3',
         ]) !!}
         <div>
-            {!! Form::text('federal', $federal-> code . ' ' . $federal->name, [
+            {!! Form::text('federal', null , [
             'id' => 'federal',
-            'class' =>a 'form-control',
+            'class' => 'form-control',
             'maxlength' => 100,
             'disabled',
             ]) !!}
@@ -67,7 +57,7 @@
         'class' => 'control-label col-sm-3',
         ]) !!}
         <div>
-            {!! Form::text('state', $state-> code . ' ' . $state->name, [
+            {!! Form::text('state', null , [
             'id' => 'state',
             'class' => 'form-control',
             'maxlength' => 100,
@@ -76,48 +66,39 @@
         </div>
     </div>
 
-    <!-- Eligibility -->
+    <!-- Federal Candidates -->
     <div class="form-group row">
-        {!! Form::label('eligible', 'Eligibility', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
-        <div>
-            {!! Form::text('eligible', $voter->valid ? 'ELIGIBLE' : 'INELIGIBLE', [
-            'id' => 'eligible',
-            'class' => 'form-control',
-            'maxlength' => 100,
-            'disabled',
-            ]) !!}
-        </div>
+        <fieldset id="federalcandidates">
+            <legend>Federal Constituency</legend>
+        </fieldset>
     </div>
 
-    <!-- Nonce -->
+    <!-- State Candidates -->
     <div class="form-group row">
-        {!! Form::label('nonce', 'Nonce', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
-        <div>
-            {!! Form::text('nonce', null, [
-            'id' => 'nonce',
-            'class' => 'form-control',
-            'maxlength' => 100,
-            ]) !!}
-        </div>
+        <fieldset id="statecandidates">
+            <legend>State Constituency</legend>
+        </fieldset>
     </div>
 
     <!-- Submit Button -->
     <div class="form-group row">
         <div>
-            {!! Form::button('Proceed', [
+            {!! Form::button('Cast Vote', [
             'type' => 'submit',
             'class' => 'btn btn-primary',
+            'onclick' => 'App.vote()',
             ]) !!}
         </div>
     </div>
 
-    {{ Form::hidden('federal', $federal) }}
-    {{ Form::hidden('state', $state) }}
-    {{ Form::hidden('voter', $voter) }}
+    <div class="form-group row">
+        <div>
+            {!! Form::button('Test', [
+            'class' => 'btn btn-primary',
+            'onclick' => 'App.test()',
+            ]) !!}
+        </div>
+    </div>
 
     {!! Form::close() !!}
 </div>
