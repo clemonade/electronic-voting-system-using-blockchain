@@ -67,16 +67,18 @@
 
     <!-- Federal Candidates -->
     <div class="form-group row">
-        <fieldset id="federalcandidates">
-            <legend>Federal Constituency</legend>
-        </fieldset>
+        <table id="federalcandidates">
+            <caption>Federal Constituency</caption>
+            <tbody></tbody>
+        </table>
     </div>
 
     <!-- State Candidates -->
     <div class="form-group row">
-        <fieldset id="statecandidates">
-            <legend>State Constituency</legend>
-        </fieldset>
+        <table id="statecandidates">
+            <caption>State Constituency</caption>
+            <tbody></tbody>
+        </table>
     </div>
     <!--TODO Change onclick-->
     <!-- Submit Button -->

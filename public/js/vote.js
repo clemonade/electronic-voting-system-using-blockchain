@@ -37556,7 +37556,7 @@ window.App = {
                     var _loop = function _loop(_x) {
                         promises[_x].then(function (value) {
                             parties[_x].then(function (party) {
-                                $('<label/>').appendTo($('#' + id)).prop('for', id + _x).text(value[1] + ' ' + party[1]).append($('<input/>').prop('type', 'checkbox').prop('class', 'checkbox').prop('name', id + '[]').prop('id', id + _x).val(candidates[_x]));
+                                $('<tr/>').appendTo($('#' + id + ' tbody')).append($('<label/>').prop('for', id + _x).append($('<td/>').text(value[1])).append($('<td/>').append($('<img>').prop('src', '/storage/parties/' + party[0] + party[1] + '.jpg').prop('width', '100'))).append($('<td/>').append($('<input/>').prop('type', 'checkbox').prop('class', 'checkbox').prop('name', id + '[]').prop('id', id + _x).val(candidates[_x]))));
                             });
                         });
                     };

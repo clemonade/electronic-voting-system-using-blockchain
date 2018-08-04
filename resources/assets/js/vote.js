@@ -64,16 +64,23 @@ window.App = {
                     for (let x = 0; x < promises.length; x++) {
                         promises[x].then((value) => {
                             parties[x].then((party) => {
-                                $('<label/>')
-                                    .appendTo($('#' + id))
-                                    .prop('for', id + x)
-                                    .text(value[1] + ' ' + party[1])
-                                    .append($('<input/>')
-                                        .prop('type', 'checkbox')
-                                        .prop('class', 'checkbox')
-                                        .prop('name', id + '[]')
-                                        .prop('id', id + x)
-                                        .val(candidates[x]));
+                                $('<tr/>')
+                                    .appendTo($('#' + id + ' tbody'))
+                                    .append($('<label/>')
+                                        .prop('for', id + x)
+                                        .append($('<td/>')
+                                            .text(value[1]))
+                                        .append($('<td/>')
+                                            .append($('<img>')
+                                                .prop('src', '/storage/parties/' + party[0] + party[1] + '.jpg')
+                                                .prop('width', '100')))
+                                        .append($('<td/>')
+                                            .append($('<input/>')
+                                                .prop('type', 'checkbox')
+                                                .prop('class', 'checkbox')
+                                                .prop('name', id + '[]')
+                                                .prop('id', id + x)
+                                                .val(candidates[x]))));
                             });
                         });
                     }
