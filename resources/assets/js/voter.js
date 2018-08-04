@@ -28,22 +28,59 @@ window.App = {
             accounts = accs;
             account = accounts[0];
         });
-
-        // Election.deployed().then((instance) => {
-        //     return instance.getCandidate.call(4);
-        // }).then((value) => {
-        //     console.log(value[0].toNumber());
-        //     console.log(value[1]);
-        //     console.log(value[2]);
-        //     console.log(value[3].toNumber());
-        //     console.log(value[4]);
-        // }).catch()
     },
 
     setStatus: function (message) {
         $('#status').html(message);
     },
 
+    populateFederalDropdown: function (state_id) {
+        let self = this;
+        let element = $('#federalconstituency');
+        let div = $('.stateconstituency');
+
+        element.empty();
+        div.show();
+
+        for (let constituency of federals) {
+            if (constituency.state === state_id) {
+                $('<option/>')
+                    .val(constituency.id)
+                    .text(constituency.code + ' ' + constituency.name)
+                    .appendTo(element);
+            }
+        }
+
+        if (state_id === '14') {
+            div.hide()
+        } else {
+            self.populateStateDropdown(element.val())
+        }
+    },
+
+    populateStateDropdown: function (federal_id) {
+        let element = $('#stateconstituency');
+
+        element.empty();
+
+        let federal;
+        for (let constituency of federals) {
+            if (constituency.id === parseInt(federal_id)) {
+                federal = constituency;
+            }
+        }
+
+        for (let constituency of states) {
+            if (constituency.code.includes(federal.code)) {
+                $('<option/>')
+                    .val(constituency.id)
+                    .text(constituency.code + ' ' + constituency.name)
+                    .appendTo(element);
+            }
+        }
+    },
+
+    //TODO Reassess error handling
     verify: function () {
         let self = this;
         let election;

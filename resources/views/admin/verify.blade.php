@@ -6,10 +6,11 @@
 
 <h1>Verify Voter</h1>
 <h3><?php echo $federal['code'] . ' ' . $federal['name'] ?></h3>
-<h3><?php echo $state['code'] . ' ' . $state['name'] ?></h3>
+<h3><?php echo (isset($state)) ? $state['code'] . ' ' . $state['name'] : '' ?></h3>
+
 <div class="panel-body">
     {!! Form::open([
-    'route' => ['admin.check'],
+    'route' => ['admin.prevote'],
     'class' => 'form-horizontal'
     ]) !!}
 
@@ -52,7 +53,7 @@
     </div>
 
     {{ Form::hidden('federal', $federal) }}
-    {{ Form::hidden('state', $state) }}
+    {{ Form::hidden('state', (isset($state)) ? $state : null) }}
 
     {!! Form::close() !!}
 </div>

@@ -19,7 +19,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'ConstituencyController@voter')
     ->name('constituencies');
-Route::get('/constituency/{id}', 'ConstituencyController@show')
+//Route::get('/constituency/{id}', 'ConstituencyController@show')
+//    ->name('constituency.show');
+Route::get('/constituency/{federal}/{state?}', 'ConstituencyController@show')
     ->name('constituency.show');
 
 Route::get('/voter', 'VoterController@index')
@@ -41,11 +43,13 @@ Route::get('/admin/registerparty', 'PartyController@create')
 Route::get('/admin/registercandidate', 'CandidateController@create')
     ->name('registercandidate.create');
 
-Route::get('/admin/verify/{federal}/{state}', 'VoterController@verify')
+//Route::get('/admin/verify/{federal}', 'VoterController@verify_federal')
+//    ->name('admin.verify_federal');
+Route::get('/admin/verify/{federal}/{state?}', 'VoterController@verify')
     ->name('admin.verify');
-Route::post('/admin/verify/check', 'VoterController@check')
-    ->name('admin.check');
-Route::get('/admin/prevote', 'VoterController@prevote')
+Route::post('/admin/prevote', 'VoterController@prevote')
     ->name('admin.prevote');
 Route::post('/admin/vote', 'VoterController@vote')
     ->name('admin.vote');
+Route::post('/admin/postvote', 'VoterController@postvote')
+    ->name('admin.postvote');

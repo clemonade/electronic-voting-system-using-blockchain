@@ -44,17 +44,17 @@ window.App = {
             return election.getConstituency.call(code, {from: account})
         }).then((value) => {
             $('#code').html(code);
-            if ('#' + value[0]) {
+            if (value[0]) {
                 $('#init').html('INITIALISED');
             } else {
                 $('#init').html('UNINITIALISED');
             }
+            $('#state').html(states[state]);
             $('#total').html(value[1].toNumber());
-            self.populateCandidates(value[2].map(x => x.toNumber()));
             $('#name').html(value[3]);
             $('#type').html(types[value[4].toNumber()]);
 
-
+            self.populateCandidates(value[2].map(x => x.toNumber()));
         }).catch(function (e) {
             console.log(e);
             self.setStatus('Error retrieving initialisation status.');
@@ -62,7 +62,6 @@ window.App = {
     },
 
     populateCandidates: function (candidates) {
-        console.log(candidates);
         let self = this;
         let election;
         let promises = [];

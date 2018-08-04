@@ -28,18 +28,16 @@ window.App = {
             account = accounts[0];
         });
 
-        self.populateConstituencies();
         self.populateCandidates('federalcandidates', federal);
-        self.populateCandidates('statecandidates', state);
+        if (state == null) {
+            $('#statecandidates').hide();
+        } else {
+            self.populateCandidates('statecandidates', state);
+        }
     },
 
     setStatus: function (message) {
         $('#status').html(message);
-    },
-
-    populateConstituencies: function () {
-        $('#federal').val(federal['code'] + ' ' + federal['name']);
-        $('#state').val(state['code'] + ' ' + state['name']);
     },
 
     populateCandidates: function (id, constituency) {

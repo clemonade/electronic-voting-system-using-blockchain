@@ -8,11 +8,11 @@
 @stop
 @section('content')
 
-<div class="panel-body">
+<div>
     <h1>Admin Dashboard</h1>
     <h2>Federal Constituencies</h2>
     @if (count($federals) > 0)
-    <table class="table table-striped task-table">
+    <table>
         <thead>
         <tr>
             <th>No.</th>
@@ -25,24 +25,29 @@
         <tbody>
         @foreach ($federals as $i => $federal)
         <tr>
-            <td class="table-text">
+            <td>
                 <div>{{ $i+1 }}</div>
             </td>
-            <td class="table-text">
+            <td>
                 <div>
                     {{ link_to_route(
                     'constituency.show',
                     $title = $federal->code,
-                    $parameters = [ 'id' => $federal->code ]
+                    $parameters = [ '$federal_code' => $federal->code ]
                     ) }}
                 </div>
             </td>
-            <td class="table-text">
+            <td>
                 <div>{{ $federal->name }}</div>
             </td>
-            <td class="table-text">
+            <td>
                 <div>
                     <button id="<?php echo $federal->code ?>">Initialise</button>
+                    @if ($federal->nostate)
+                    <a href="<?php echo route('admin.verify', [$federal->code]) ?>">
+                        <button id="<?php echo $federal->code ?>V" disabled='disabled'>Verify</button>
+                    </a>
+                    @endif
                 </div>
             </td>
         </tr>
@@ -57,7 +62,7 @@
 
     <h2>State Constituencies</h2>
     @if (count($states) > 0)
-    <table class="table table-striped task-table">
+    <table>
         <thead>
         <tr>
             <th>No.</th>
@@ -70,10 +75,10 @@
         <tbody>
         @foreach ($states as $i => $state)
         <tr>
-            <td class="table-text">
+            <td>
                 <div>{{ $i+1 }}</div>
             </td>
-            <td class="table-text">
+            <td>
                 <div>
                     {{ link_to_route(
                     'constituency.show',
@@ -82,13 +87,15 @@
                     ) }}
                 </div>
             </td>
-            <td class="table-text">
+            <td>
                 <div>{{ $state->name }}</div>
             </td>
-            <td class="table-text">
+            <td>
                 <div>
                     <button id="<?php echo $state->code ?>">Initialise</button>
-                    <button id="<?php echo $state->code ?>V" disabled='disabled'>Verify</button>
+                    <a href="<?php echo route('admin.verify', [$state->code]) ?>">
+                        <button id="<?php echo $state->code ?>V" disabled='disabled'>Verify</button>
+                    </a>
                 </div>
             </td>
         </tr>

@@ -22,9 +22,9 @@ class CreateRegisteredVotersTable extends Migration
             /*$table->char('locality', 5)->index();
             $table->char('votingDistrict', 5)->index();*/
             $table->char('federalconstituency', 5)->index();
-            $table->char('stateconstituency', 5)->index();
+            $table->char('stateconstituency', 5)->default('0')->index();
             $table->char('state', 2)->index();
-            $table->boolean('valid')->default(true);
+            $table->boolean('voted')->default(false);
             $table->timestamps();
         });
     }

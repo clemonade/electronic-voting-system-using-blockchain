@@ -253,7 +253,7 @@ contract Election is Ownable {
     }
 
     /**
-    @dev Getters
+    @dev GETTERS
     */
     function getConstituency(string _constituencyCode) public view returns (bool, uint, uint[], string, ConstituencyType){
         bool initialised = constituencies[_constituencyCode].initialised;

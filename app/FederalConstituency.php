@@ -12,5 +12,6 @@ class FederalConstituency extends Model
         'code',
         'name',
         'state',
+        'nostate',
     ];
 }

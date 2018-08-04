@@ -48,11 +48,10 @@ window.App = {
                 promises.push(election.getConstituency.call(code, {from: account}));
             }
             Promise.all(promises).then(() => {
-                //console.log(promises);
                 for (let x = 0; x < promises.length; x++) {
                     let code = constituencies[x].code;
                     let name = constituencies[x].name;
-                    let jcode = constituencies[x].code.replace(/\./g, '\\.');
+                    let jcode = constituencies[x].code.replace(/\./g, '\\.').replace(/\//g, '\\/');
                     promises[x].then((value) => {
                         if (value[0] === false) {
                             $('#' + jcode)
@@ -64,10 +63,7 @@ window.App = {
                                 .text('Initialised')
                                 .attr('disabled', 'disabled');
                             $('#' + jcode + 'V')
-                                .removeAttr('disabled')
-                                .click(() => {
-                                    self.redirectVerify(code);
-                                });
+                                .removeAttr('disabled');
                         }
                     });
                 }
@@ -99,12 +95,6 @@ window.App = {
             self.setStatus('Error initialising constituency; see log.');
         });
     },
-
-    redirectVerify: function (code) {
-        let self = this;
-        let address = code.split('_');
-        window.location.href = '/admin/verify/' + address[0] + '/' + address[1];
-    }
 };
 
 $(document).ready(() => {

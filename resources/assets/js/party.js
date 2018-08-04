@@ -44,7 +44,7 @@ window.App = {
             let abbreviation = $('#abbreviation').val();
             return election.registerParty(name, abbreviation, {from: account});
         }).then(() => {
-            self.setStatus('Party registered');
+            self.setStatus('Party registered.');
             self.showParties();
         }).catch((e) => {
             console.log(e);

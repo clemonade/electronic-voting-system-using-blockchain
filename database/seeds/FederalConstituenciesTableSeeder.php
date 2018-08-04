@@ -15,29 +15,39 @@ class FederalConstituenciesTableSeeder extends Seeder
         DB::table('federalconstituencies')->insert([
             [
                 'code' => 'P.001',
-                'name' => 'Permatang Pauh',
-                'state' => '14',
+                'name' => 'Bukit Mertajam',
+                'state' => '07',
             ],
             [
                 'code' => 'P.002',
-                'name' => 'Bukit Mertajam',
-                'state' => '14',
+                'name' => 'Batu Kawan',
+                'state' => '07',
             ],
             [
                 'code' => 'P.003',
-                'name' => 'Batu Kawan',
-                'state' => '14',
+                'name' => 'Petaling Jaya',
+                'state' => '10',
             ],
             [
                 'code' => 'P.004',
-                'name' => 'Bukit Bendera',
-                'state' => '07',
+                'name' => 'Damansara',
+                'state' => '10',
             ],
+        ]);
+
+        DB::table('federalconstituencies')->insert([
             [
                 'code' => 'P.005',
-                'name' => 'Jelutong',
-                'state' => '07',
-            ]
+                'name' => 'Bukit Bintang',
+                'state' => '14',
+                'nostate' => '1',
+            ],
+            [
+                'code' => 'P.006',
+                'name' => 'Cheras',
+                'state' => '14',
+                'nostate' => '1',
+            ],
         ]);
     }
 }

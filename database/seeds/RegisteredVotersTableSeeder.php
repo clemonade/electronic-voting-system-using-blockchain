@@ -20,7 +20,7 @@ class RegisteredVotersTableSeeder extends Seeder
                 'federalconstituency' => '1',
                 'stateconstituency' => '1',
                 'state' => '07',
-                'valid' => '1',
+                'voted' => '0',
             ],
             [
                 'name' => 'BBB',
@@ -29,7 +29,7 @@ class RegisteredVotersTableSeeder extends Seeder
                 'federalconstituency' => '1',
                 'stateconstituency' => '1',
                 'state' => '07',
-                'valid' => '1',
+                'voted' => '0',
             ],
             [
                 'name' => 'CCC',
@@ -38,7 +38,7 @@ class RegisteredVotersTableSeeder extends Seeder
                 'federalconstituency' => '1',
                 'stateconstituency' => '1',
                 'state' => '07',
-                'valid' => '1',
+                'voted' => '0',
             ],
             [
                 'name' => 'DDD',
@@ -47,7 +47,7 @@ class RegisteredVotersTableSeeder extends Seeder
                 'federalconstituency' => '1',
                 'stateconstituency' => '1',
                 'state' => '07',
-                'valid' => '1',
+                'voted' => '0',
             ],
             [
                 'name' => 'EEE',
@@ -56,43 +56,42 @@ class RegisteredVotersTableSeeder extends Seeder
                 'federalconstituency' => '1',
                 'stateconstituency' => '1',
                 'state' => '07',
-                'valid' => '1',
+                'voted' => '0',
             ],
+        ]);
+
+        DB::table('registeredvoters')->insert([
             [
                 'name' => 'FFF',
                 'nric' => '666666666666',
                 'gender' => 'F',
-                'federalconstituency' => '5',
-                'stateconstituency' => '12',
+                'federalconstituency' => '6',
                 'state' => '14',
-                'valid' => '1',
+                'voted' => '0',
             ],
             [
                 'name' => 'GGG',
                 'nric' => '777777777777',
                 'gender' => 'M',
-                'federalconstituency' => '5',
-                'stateconstituency' => '12',
+                'federalconstituency' => '6',
                 'state' => '14',
-                'valid' => '1',
+                'voted' => '0',
             ],
             [
                 'name' => 'HHH',
                 'nric' => '888888888888',
                 'gender' => 'F',
-                'federalconstituency' => '5',
-                'stateconstituency' => '12',
+                'federalconstituency' => '6',
                 'state' => '14',
-                'valid' => '1',
+                'voted' => '0',
             ],
             [
                 'name' => 'III',
                 'nric' => '999999999999',
                 'gender' => 'M',
-                'federalconstituency' => '5',
-                'stateconstituency' => '12',
+                'federalconstituency' => '6',
                 'state' => '14',
-                'valid' => '1',
+                'voted' => '0',
             ],
         ]);
     }

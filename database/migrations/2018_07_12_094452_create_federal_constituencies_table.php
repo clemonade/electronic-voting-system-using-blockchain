@@ -19,6 +19,7 @@ class CreateFederalConstituenciesTable extends Migration
             $table->char('code', 5)->unique();
             $table->string('name', 100)->index();
             $table->char('state', 2)->index();
+            $table->boolean('nostate')->default(false);
             $table->timestamps();
         });
     }

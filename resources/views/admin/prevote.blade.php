@@ -60,7 +60,7 @@
         'class' => 'control-label col-sm-3',
         ]) !!}
         <div>
-            {!! Form::text('state', $state-> code . ' ' . $state->name, [
+            {!! Form::text('state', (isset($state)) ? $state-> code . ' ' . $state->name : 'INAPPLICABLE', [
             'id' => 'state',
             'class' => 'form-control',
             'maxlength' => 100,
@@ -75,7 +75,7 @@
         'class' => 'control-label col-sm-3',
         ]) !!}
         <div>
-            {!! Form::text('eligible', $voter->valid ? 'ELIGIBLE' : 'INELIGIBLE', [
+            {!! Form::text('eligible', $voter->voted ? 'INELIGIBLE' : 'ELIGIBLE', [
             'id' => 'eligible',
             'class' => 'form-control',
             'maxlength' => 100,
@@ -109,7 +109,7 @@
     </div>
 
     {{ Form::hidden('federal', $federal) }}
-    {{ Form::hidden('state', $state) }}
+    {{ Form::hidden('state', (isset($state)) ? $state : null) }}
     {{ Form::hidden('voter', $voter) }}
 
     {!! Form::close() !!}

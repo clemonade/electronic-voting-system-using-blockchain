@@ -19,8 +19,14 @@ class VoterController extends Controller
     public function create()
     {
         $voter = new RegisteredVoter();
+        $federals = FederalConstituency::orderBy('code', 'asc')->get();
+        $states = StateConstituency::orderBy('code', 'asc')->get();
 
-        return view('admin.registervoter', ['voter' => $voter]);
+        return view('admin.registervoter', [
+            'voter' => $voter,
+            'federals' => $federals,
+            'states' => $states,
+        ]);
     }
 
     public function store(Request $request)
@@ -33,11 +39,17 @@ class VoterController extends Controller
         return redirect()->route('registervoter.create');
     }
 
-    public function verify($federalCode, $stateCode)
+    public function verify($federal_code, $state_code = null)
     {
         $column = 'code';
-        $federal = FederalConstituency::where($column, '=', $federalCode)->first();
-        $state = StateConstituency::where($column, '=', $federalCode . '_' . $stateCode)->first();
+        $delimiter = '/';
+
+        $federal = FederalConstituency::where($column, '=', $federal_code)->first();
+        if (isset($state_code)) {
+            $state = StateConstituency::where($column, '=', $federal_code . $delimiter . $state_code)->first();
+        } else {
+            $state = $state_code;
+        }
 
         return view('admin.verify', [
             'federal' => $federal,
@@ -45,39 +57,43 @@ class VoterController extends Controller
         ]);
     }
 
-    public function check(Request $request)
+    public function prevote(Request $request)
     {
         $name = strtoupper($request->input('name'));
         $nric = $request->input('nric');
-        $currentFederal = $request->input('federal');
-        $currentState = $request->input('state');
+        $current_federal = $request->input('federal');
+        $current_state = $request->input('state');
 
-        $registeredVoter = RegisteredVoter::where([
+        $registered_voter = RegisteredVoter::where([
             ['name', '=', $name],
             ['nric', '=', $nric]
         ])->get();
 
-        if (sizeof($registeredVoter) == 1) {
-            $voterFederalConstituency = FederalConstituency::find($registeredVoter[0]['federalconstituency']);
-            $voterStateConstituency = StateConstituency::find($registeredVoter[0]['stateconstituency']);
+        if (sizeof($registered_voter) == 1) {
+            $voter_federal = FederalConstituency::find($registered_voter[0]['federalconstituency']);
 
-            if ($voterFederalConstituency == $currentFederal && $voterStateConstituency == $currentState) {
+            if (isset($current_state)) {
+                $voter_state = StateConstituency::find($registered_voter[0]['stateconstituency']);
+            } else {
+                $voter_state = null;
+            }
+
+            if ($registered_voter[0]['voted']) {
+                return Redirect::back()->with('status', 'Already voted.');
+            }
+
+            if ($voter_federal == $current_federal && $voter_state == $current_state) {
                 return view('admin.prevote', [
-                    'federal' => $voterFederalConstituency,
-                    'state' => $voterStateConstituency,
-                    'voter' => $registeredVoter[0],
+                    'federal' => $voter_federal,
+                    'state' => $voter_state,
+                    'voter' => $registered_voter[0],
                 ]);
             }
 
-            return Redirect::back()->with('status', 'Invalid constituency.');
+            return Redirect::back()->with('status', 'Wrong constituency.');
         }
 
         return Redirect::back()->with('status', 'Invalid credentials.');
-    }
-
-    public function prevote()
-    {
-        return view('admin.prevote');
     }
 
     public function vote(Request $request)
@@ -86,6 +102,7 @@ class VoterController extends Controller
         $state = $request->input('state');
 
         $voter = json_decode($request->input('voter'), true);
+        $id = $voter['id'];
         $name = strtoupper($voter['name']);
         $nric = $voter['nric'];
         $nonce = $request->input('nonce');
@@ -93,9 +110,33 @@ class VoterController extends Controller
         $hash = hash('sha256', $name . $nric . hash('sha256', $nonce));
 
         return view('admin.vote', [
+            'id' => $id,
+            'hash' => $hash,
             'federal' => $federal,
             'state' => $state,
-            'hash' => $hash,
+        ]);
+    }
+
+    //TODO Unclutter code concatenation
+    public function postvote(Request $request)
+    {
+        $delimiter = '/';
+        $id = $request->input('id');
+        $state = $request->input('state');
+
+        DB::table('registeredvoters')
+            ->where('id', $id)
+            ->update(['voted' => true]);
+
+        $federal = json_decode($request->input('federal'), true)['code'];
+
+        if (isset($state)) {
+            $state = explode($delimiter, json_decode($request->input('state'), true)['code'])[1];
+        }
+
+        return redirect()->route('admin.verify', [
+            'federal' => $federal,
+            'state' => $state,
         ]);
     }
 }

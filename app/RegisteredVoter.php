@@ -17,6 +17,6 @@ class RegisteredVoter extends Model
         'federalconstituency',
         'stateconstituency',
         'state',
-        'valid',
+        'voted',
     ];
 }

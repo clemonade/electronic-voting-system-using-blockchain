@@ -8,6 +8,8 @@ use App\Common;
 @section('script')
 <script type="text/javascript">
     let code = "<?php echo $code ?>";
+    let state = "<?php echo $state ?>";
+    let states = <?php echo json_encode(Common::$states)?>;
     let types = <?php echo json_encode(Common::$types)?>;
 </script>
 <script src="{{ asset('js/constituency.js') }}"></script>
@@ -31,6 +33,10 @@ use App\Common;
         <tr>
             <td>Name</td>
             <td id="name"></td>
+        </tr>
+        <tr>
+            <td>State</td>
+            <td id="state"></td>
         </tr>
         <tr>
             <td>Type</td>

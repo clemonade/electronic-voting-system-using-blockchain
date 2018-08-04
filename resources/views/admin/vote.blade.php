@@ -2,7 +2,7 @@
 @section('script')
 <script type="text/javascript">
     let federal = <?php echo $federal ?>;
-    let state = <?php echo $state ?>;
+    let state = <?php echo(isset($state) ? $state : json_encode(null))?>;
     let hash = '<?php echo $hash ?>';
 </script>
 <script src="{{asset('js/vote.js')}}"></script>
@@ -12,13 +12,8 @@
 <h1>Vote Casting</h1>
 <div class="panel-body">
     {!! Form::open([
-    'route' => [
-    'admin.verify',
-    json_decode($federal, true)['code'],
-    explode("_", json_decode($state, true)['code'])[1]
-    ],
+    'route' => ['admin.postvote'],
     'class' => 'form-horizontal',
-    'method' => 'get',
     ]) !!}
 
     <!-- Hash -->
@@ -42,7 +37,9 @@
         'class' => 'control-label col-sm-3',
         ]) !!}
         <div>
-            {!! Form::text('federal', null , [
+            {!! Form::text('federal',
+            json_decode($federal, true)['code'] . ' ' . json_decode($federal, true)['name'] ,
+            [
             'id' => 'federal',
             'class' => 'form-control',
             'maxlength' => 100,
@@ -57,7 +54,9 @@
         'class' => 'control-label col-sm-3',
         ]) !!}
         <div>
-            {!! Form::text('state', null , [
+            {!! Form::text('state',
+            isset($state) ? json_decode($state, true)['code'] . ' ' . json_decode($state, true)['name'] :
+            'INAPPLICABLE', [
             'id' => 'state',
             'class' => 'form-control',
             'maxlength' => 100,
@@ -79,7 +78,7 @@
             <legend>State Constituency</legend>
         </fieldset>
     </div>
-
+    <!--TODO Change onclick-->
     <!-- Submit Button -->
     <div class="form-group row">
         <div>
@@ -90,6 +89,10 @@
             ]) !!}
         </div>
     </div>
+
+    {{ Form::hidden('id', $id) }}
+    {{ Form::hidden('federal', $federal) }}
+    {{ Form::hidden('state', (isset($state)) ? $state : null) }}
 
     {!! Form::close() !!}
 </div>

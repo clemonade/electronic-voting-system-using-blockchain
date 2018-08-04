@@ -4,9 +4,17 @@ use App\Common;
 
 ?>
 @extends('layouts.app')
+@section('script')
+<script type="text/javascript">
+    let federals = <?php echo $federals ?>;
+    let states = <?php echo $states ?>;
+</script>
+<script src="{{asset('js/voter.js')}}"></script>
+@stop
 @section('content')
 
-<div class="panel-body">
+<h1>Register Voter</h1>
+<div>
     @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -16,21 +24,17 @@ use App\Common;
         </ul>
     </div>
     @endif
-
+    <!--    TODO Replace all laravelcollective/html forms-->
     {!! Form::model($voter, [
     'route' => ['registervoter.store'],
-    'class' => 'form-horizontal'
     ]) !!}
 
     <!-- Name -->
-    <div class="form-group row">
-        {!! Form::label('voter-name', 'Name', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
+    <div>
+        {!! Form::label('voter-name', 'Name') !!}
         <div>
             {!! Form::text('name', null, [
             'id' => 'voter-name',
-            'class' => 'form-control',
             'maxlength' => 100,
             ]) !!}
 
@@ -38,14 +42,11 @@ use App\Common;
     </div>
 
     <!-- NRIC -->
-    <div class="form-group row">
-        {!! Form::label('voter-nric', 'NRIC', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
+    <div>
+        {!! Form::label('voter-nric', 'NRIC') !!}
         <div>
             {!! Form::text('nric', null, [
             'id' => 'voter-nric',
-            'class' => 'form-control',
             'maxlength' => 12,
             ]) !!}
         </div>
@@ -53,10 +54,8 @@ use App\Common;
 
 
     <!-- Gender -->
-    <div class="form-group row">
-        {!! Form::label('voter-gender', 'Gender', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
+    <div>
+        {!! Form::label('voter-gender', 'Gender') !!}
 
         <div>
             @foreach(Common::$genders as $key => $val)
@@ -66,59 +65,56 @@ use App\Common;
     </div>
 
     <!-- State -->
-    <div class="form-group row">
-        {!! Form::label('voter-state', 'State', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
+    <div>
+        {!! Form::label('voter-state', 'State') !!}
         <div>
-
             {!! Form::select('state', Common::$states, null, [
-            'class' => 'form-control',
+            'id' => 'state',
+            'onchange'=>"App.populateFederalDropdown(this.value)",
             'placeholder' => '- Select State -',
             ]) !!}
         </div>
     </div>
 
     <!-- Federal Constituency -->
-    <div class="form-group row">
-        {!! Form::label('federalconstituency', 'Federal Constituency', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
+    <div>
+        {!! Form::label('federalconstituency', 'Federal Constituency') !!}
         <div>
             {!! Form::select('federalconstituency',
-            \App\FederalConstituency::pluck('name', 'id'),
+            [],
             null, [
-            'class' => 'form-control',
+            'id' => 'federalconstituency',
+            'onchange'=>"App.populateStateDropdown(this.value)",
             'placeholder' => '- Select Federal Constituency -',
             ]) !!}
         </div>
     </div>
 
     <!-- State Constituency -->
-    <div class="form-group row">
-        {!! Form::label('stateconstituency', 'State Constituency', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
+    <div class="stateconstituency">
+        {!! Form::label('stateconstituency', 'State Constituency') !!}
         <div>
             {!! Form::select('stateconstituency',
-            \App\StateConstituency::pluck('name', 'id'),
+            [],
             null, [
-            'class' => 'form-control',
+            'id' => 'stateconstituency',
             'placeholder' => '- Select State Constituency -',
             ]) !!}
         </div>
     </div>
 
     <!-- Submit Button -->
-    <div class="form-group row">
+    <div>
         <div>
-            {!! Form::button('Save', [
+            {!! Form::button('Register', [
             'type' => 'submit',
-            'class' => 'btn btn-primary',
             ]) !!}
         </div>
     </div>
     {!! Form::close() !!}
 </div>
+
+<span id="status"></span>
+<span id="list"></span>
 
 @endsection
