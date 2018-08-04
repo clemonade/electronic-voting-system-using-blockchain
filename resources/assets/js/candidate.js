@@ -89,7 +89,7 @@ window.App = {
         Election.deployed().then((instance) => {
             election = instance;
             let constituencyCode = $('#constiteuncy').val();
-            let candidateName = $('#name').val();
+            let candidateName = $('#name').val().toUpperCase();
             let partyId = $('#party').val();
             return election.registerCandidate(constituencyCode, candidateName, partyId, {from: account});
         }).then(() => {

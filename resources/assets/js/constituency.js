@@ -85,10 +85,11 @@ window.App = {
                             parties[x].then((party) => {
                                 $('<tr/>')
                                     .appendTo($('#candidates tbody'))
+                                    .append($('<img>')
+                                        .prop('src', '/storage/parties/' + party[0] + party[1] + '.jpg')
+                                        .prop('width', '100'))
                                     .append($('<td>')
                                         .text(value[1]))
-                                    .append($('<td>')
-                                        .text(party[1]))
                                     .append($('<td>')
                                         .text(value[0].toNumber()));
                             });

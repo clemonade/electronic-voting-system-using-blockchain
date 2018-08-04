@@ -51,8 +51,8 @@ use App\Common;
             <td>
                 <table id="candidates">
                     <thead>
-                    <td>Name</td>
                     <td>Party</td>
+                    <td>Name</td>
                     <td>Votes</td>
                     </thead>
                     <tbody></tbody>

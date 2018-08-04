@@ -28,7 +28,7 @@ window.App = {
             account = accounts[0];
         });
 
-        self.showParties();
+        self.populateParties('parties');
     },
 
     setStatus: function (message) {
@@ -45,14 +45,13 @@ window.App = {
             return election.registerParty(name, abbreviation, {from: account});
         }).then(() => {
             self.setStatus('Party registered.');
-            self.showParties();
         }).catch((e) => {
             console.log(e);
             self.setStatus('Error registering party; see log.');
         });
     },
 
-    showParties: function () {
+    populateParties: function (id) {
         let self = this;
         let election;
         Election.deployed().then((instance) => {
@@ -66,12 +65,22 @@ window.App = {
                 promises.push(election.getParty.call(x, {from: account}));
             }
             Promise.all(promises).then(() => {
-                $('#list').html('');
+                $('#' + id + ' tbody').html('');
                 for (let x = 0; x < partiesLength; x++) {
                     promises[x].then((value) => {
-                        console.log(value[0] + value[1]);
-                        let entry = $('<li/>').text(value[0] + ' ' + value[1]);
-                        entry.appendTo($('#list'));
+                        $('<tr/>')
+                            .appendTo($('#' + id + ' tbody'))
+                            .append($('<td>')
+                                .text(x + 1 + '.'))
+                            .append($('<td>')
+                                .text(value[0]))
+                            .append($('<td>')
+                                .text(value[1]))
+                            .append($('<td>')
+                                .append($('<img>')
+                                    .prop('src', '/storage/parties/' + value[0] + value[1] + '.jpg')
+                                    .prop('width', '100'))
+                            );
                     });
                 }
             });

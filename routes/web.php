@@ -37,14 +37,16 @@ Route::get('/admin/registervoter', 'VoterController@create')
 Route::post('/admin/registervoter/store', 'VoterController@store')
     ->name('registervoter.store');
 
-Route::get('/admin/registerparty', 'PartyController@create')
-    ->name('registerparty.create');
+Route::get('/admin/party', 'PartyController@index')
+    ->name('party.index');
+Route::get('/admin/party/register', 'PartyController@create')
+    ->name('party.create');
+Route::post('/admin/party/store', 'PartyController@store')
+    ->name('party.store');
 
 Route::get('/admin/registercandidate', 'CandidateController@create')
     ->name('registercandidate.create');
 
-//Route::get('/admin/verify/{federal}', 'VoterController@verify_federal')
-//    ->name('admin.verify_federal');
 Route::get('/admin/verify/{federal}/{state?}', 'VoterController@verify')
     ->name('admin.verify');
 Route::post('/admin/prevote', 'VoterController@prevote')

@@ -1,3 +1,9 @@
+<?php
+
+use App\Common;
+
+?>
+
 @extends('layouts.app')
 @section('script')
 <script type="text/javascript">
@@ -11,6 +17,8 @@
     <h1>Voter Dashboard</h1>
     <h2>Federal Constituencies</h2>
     @if (count($federals) > 0)
+    @foreach (Common::$states as $x => $state)
+    <h3>{{ $state }}</h3>
     <table>
         <thead>
         <tr>
@@ -22,16 +30,17 @@
 
         <tbody>
         @foreach ($federals as $i => $federal)
+        @if ($federal->state == $x)
         <tr>
             <td>
-                <div>{{ $i+1 }}</div>
+                <div>{{ $i+1 . '.' }}</div>
             </td>
             <td>
                 <div>
                     {{ link_to_route(
                     'constituency.show',
                     $title = $federal->code,
-                    $parameters = [ 'id' => $federal->code ]
+                    $parameters = [ '$federal_code' => $federal->code ]
                     ) }}
                 </div>
             </td>
@@ -39,9 +48,11 @@
                 <div>{{ $federal->name }}</div>
             </td>
         </tr>
+        @endif
         @endforeach
         </tbody>
     </table>
+    @endforeach
     @else
     <div>
         No records found
@@ -50,6 +61,8 @@
 
     <h2>State Constituencies</h2>
     @if (count($states) > 0)
+    @foreach (Common::$states as $x => $state)
+    <h3>{{ $state }}</h3>
     <table>
         <thead>
         <tr>
@@ -60,27 +73,30 @@
         </thead>
 
         <tbody>
-        @foreach ($states as $i => $state)
+        @foreach ($states as $i => $stateconstituency)
+        @if ($stateconstituency->state == $x)
         <tr>
             <td>
-                <div>{{ $i+1 }}</div>
+                <div>{{ $i+1 . '.' }}</div>
             </td>
             <td>
                 <div>
                     {{ link_to_route(
                     'constituency.show',
-                    $title = $state->code,
-                    $parameters = [ 'id' => $state->code ]
+                    $title = $stateconstituency->code,
+                    $parameters = [ 'id' => $stateconstituency->code ]
                     ) }}
                 </div>
             </td>
             <td>
-                <div>{{ $state->name }}</div>
+                <div>{{ $stateconstituency->name }}</div>
             </td>
         </tr>
+        @endif
         @endforeach
         </tbody>
     </table>
+    @endforeach
     @else
     <div>
         No records found
