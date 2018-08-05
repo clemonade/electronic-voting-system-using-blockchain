@@ -86,6 +86,7 @@ window.App = {
                                 $('<tr/>')
                                     .appendTo($('#candidates tbody'))
                                     .append($('<img>')
+                                        .prop('title', party[0])
                                         .prop('src', '/storage/parties/' + party[0] + party[1] + '.jpg')
                                         .prop('width', '100'))
                                     .append($('<td>')

@@ -37568,7 +37568,7 @@ window.App = {
                     var _loop = function _loop(_x) {
                         promises[_x].then(function (value) {
                             parties[_x].then(function (party) {
-                                $('<tr/>').appendTo($('#candidates tbody')).append($('<img>').prop('src', '/storage/parties/' + party[0] + party[1] + '.jpg').prop('width', '100')).append($('<td>').text(value[1])).append($('<td>').text(value[0].toNumber()));
+                                $('<tr/>').appendTo($('#candidates tbody')).append($('<img>').prop('title', party[0]).prop('src', '/storage/parties/' + party[0] + party[1] + '.jpg').prop('width', '100')).append($('<td>').text(value[1])).append($('<td>').text(value[0].toNumber()));
                             });
                         });
                     };

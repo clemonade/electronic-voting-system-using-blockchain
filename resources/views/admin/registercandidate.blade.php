@@ -8,26 +8,45 @@
 @stop
 @section('content')
 
-<h1>Register Candidate</h1>
-<div class="form">
-    <label for="name">Candidate Name:</label>
-    <br><input type="text" id="name" name="name"/>
-    <br><label for="party">Party:</label>
-    <br><select id="party" name="party"> </select>
-    <br><label for="level">Level:</label>
-    <br>
-    <select id="level" name="level" onchange="App.populateConstituencies(this.value)">
-        <option value="0">Federal</option>
-        <option value="1">State</option>
-    </select>
-    <br><label for="constiteuncy">Constituency:</label>
-    <br><select id="constiteuncy" name="constiteuncy"></select>
-    <br>
-    <button id="register" onclick="App.registerCandidate()">Register</button>
+<h1 class="display-4">Register Candidate</h1>
+<div class="row">
+    <div class="col-3">
+        <label for="name">Name:</label>
+    </div>
+    <div class="col-9">
+        <input type="text" id="name" name="name"/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-3">
+        <label for="party">Party:</label>
+    </div>
+    <div class="col-9">
+        <select id="party" name="party"> </select>
+    </div>
+</div>
+<div class="row">
+    <div class="col-3">
+        <label for="level">Level:</label>
+    </div>
+    <div class="col-9">
+        <select id="level" name="level" onchange="App.populateConstituencies(this.value)">
+            <option value="0">Federal</option>
+            <option value="1">State</option>
+        </select>
+    </div>
+</div>
+<div class="row">
+    <div class="col-3">
+        <label for="constiteuncy">Constituency:</label>
+    </div>
+    <div class="col-9">
+        <select id="constiteuncy" name="constiteuncy"></select>
+    </div>
 </div>
 
-<br>
+<button class="btn btn-primary btn-block" id="register" onclick="App.registerCandidate()">Register</button>
+
 <span id="status"></span>
-<span id="list"></span>
 
 @endsection

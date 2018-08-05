@@ -1,8 +1,4 @@
-<?php
-
-use App\Common;
-
-?>
+<?php use App\Common; ?>
 @extends('layouts.app')
 @section('script')
 <script type="text/javascript">
@@ -14,107 +10,71 @@ use App\Common;
 @section('content')
 
 <h1>Register Voter</h1>
-<div>
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
-    <!--    TODO Replace all laravelcollective/html forms-->
-    {!! Form::model($voter, [
-    'route' => ['registervoter.store'],
-    ]) !!}
+<!--    @if ($errors->any())-->
+<!--    <div class="alert alert-danger">-->
+<!--        <ul>-->
+<!--            @foreach ($errors->all() as $error)-->
+<!--            <li>{{ $error }}</li>-->
+<!--            @endforeach-->
+<!--        </ul>-->
+<!--    </div>-->
+<!--    @endif-->
 
-    <!-- Name -->
-    <div>
-        {!! Form::label('voter-name', 'Name') !!}
-        <div>
-            {!! Form::text('name', null, [
-            'id' => 'voter-name',
-            'maxlength' => 100,
-            ]) !!}
+{!! Form::model($voter, [
+'route' => ['registervoter.store']
+]) !!}
 
-        </div>
-    </div>
-
-    <!-- NRIC -->
-    <div>
-        {!! Form::label('voter-nric', 'NRIC') !!}
-        <div>
-            {!! Form::text('nric', null, [
-            'id' => 'voter-nric',
-            'maxlength' => 12,
-            ]) !!}
-        </div>
-    </div>
-
-
-    <!-- Gender -->
-    <div>
-        {!! Form::label('voter-gender', 'Gender') !!}
-
-        <div>
-            @foreach(Common::$genders as $key => $val)
-            {!! Form::radio('gender', $key) !!} {{$val}}
-            @endforeach
-        </div>
-    </div>
-
-    <!-- State -->
-    <div>
-        {!! Form::label('voter-state', 'State') !!}
-        <div>
-            {!! Form::select('state', Common::$states, null, [
-            'id' => 'state',
-            'onchange'=>"App.populateFederalDropdown(this.value)",
-            'placeholder' => '- Select State -',
-            ]) !!}
-        </div>
-    </div>
-
-    <!-- Federal Constituency -->
-    <div>
-        {!! Form::label('federalconstituency', 'Federal Constituency') !!}
-        <div>
-            {!! Form::select('federalconstituency',
-            [],
-            null, [
-            'id' => 'federalconstituency',
-            'onchange'=>"App.populateStateDropdown(this.value)",
-            'placeholder' => '- Select Federal Constituency -',
-            ]) !!}
-        </div>
-    </div>
-
-    <!-- State Constituency -->
-    <div class="stateconstituency">
-        {!! Form::label('stateconstituency', 'State Constituency') !!}
-        <div>
-            {!! Form::select('stateconstituency',
-            [],
-            null, [
-            'id' => 'stateconstituency',
-            'placeholder' => '- Select State Constituency -',
-            ]) !!}
-        </div>
-    </div>
-
-    <!-- Submit Button -->
-    <div>
-        <div>
-            {!! Form::button('Register', [
-            'type' => 'submit',
-            ]) !!}
-        </div>
-    </div>
-    {!! Form::close() !!}
+<div class="form-group">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" class="form-control" maxlength="100">
 </div>
 
+<div class="form-group">
+    <label for="nric">NRIC:</label>
+    <input type="text" id="nric" name="nric" class="form-control" maxlength="12">
+</div>
+
+<div class="form-group">
+    <label for="gender">Gender:</label><br>
+    @foreach(Common::$genders as $key => $val)
+    <div class="form-check-inline">
+        <label class="form-check-label">
+            <input type="radio" name="gender" value="<?php echo $key ?>" class="form-check-input">
+            {{$val}}
+        </label>
+    </div>
+    @endforeach
+</div>
+
+<div class="form-group">
+    <label for="state">State:</label>
+    <select id="state" name="state" onchange="App.populateFederalDropdown(this.value)" class="form-control">
+        <option disabled selected hidden>- Select State -</option>
+        @foreach(Common::$states as $key => $val)
+        <option value="<?php echo $key ?>">{{$val}}</option>
+        @endforeach
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="federalconstituency">Federal Constituency:</label>
+    <select id="federalconstituency" name="federalconstituency" onchange="App.populateStateDropdown(this.value)"
+            class="form-control">
+        <option disabled selected hidden>- Select Federal Constituency -</option>
+    </select>
+</div>
+
+<div class="stateconstituency form-group">
+    <label for="stateconstituency">State Constituency:</label>
+    <select id="stateconstituency" name="stateconstituency" onchange="App.populateStateDropdown(this.value)"
+            class="form-control">
+        <option disabled selected hidden>- Select State Constituency -</option>
+    </select>
+</div>
+
+<button type="submit" class="btn btn-primary">Register</button>
+{!! Form::close() !!}
+
 <span id="status"></span>
-<span id="list"></span>
 
 @endsection

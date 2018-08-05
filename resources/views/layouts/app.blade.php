@@ -2,18 +2,21 @@
 <html lang="en">
 <head>
     <title>Election</title>
+
     <script src="{{asset('js/app.js')}}"></script>
-<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"-->
-<!--                  integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
     @yield('script')
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
 <div class="container">
-    <header class="row">
-        @include('layouts.header')
-    </header>
+    @include('layouts.header')
+    @yield('content')
 </div>
-<div class="wrapper">@yield('content')</div>
 </body>
 </html>

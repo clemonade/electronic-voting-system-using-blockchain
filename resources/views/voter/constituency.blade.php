@@ -47,9 +47,9 @@ use App\Common;
             <td id="total"></td>
         </tr>
         <tr>
-            <td>Candidates</td>
+            <td>Tally</td>
             <td>
-                <table id="candidates">
+                <table class="table-hover" id="candidates">
                     <thead>
                     <td>Party</td>
                     <td>Name</td>
