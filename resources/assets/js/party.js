@@ -75,11 +75,13 @@ window.App = {
                             .append($('<td>')
                                 .text(value[0]))
                             .append($('<td>')
+                                .addClass('text-center')
                                 .text(value[1]))
                             .append($('<td>')
+                                .prop('align', 'center')
                                 .append($('<img>')
                                     .prop('src', '/storage/parties/' + value[0] + value[1] + '.jpg')
-                                    .prop('width', '100'))
+                                    .prop('height', '50'))
                             );
                     });
                 }

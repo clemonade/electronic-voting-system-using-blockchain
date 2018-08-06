@@ -29,7 +29,6 @@ window.App = {
         });
 
         self.populateParties();
-        self.populateConstituencies($('#level').val());
     },
 
     setStatus: function (message) {

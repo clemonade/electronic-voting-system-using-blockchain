@@ -1,8 +1,4 @@
-<?php
-
-use App\Common;
-
-?>
+<?php use App\Common; ?>
 
 @extends('layouts.app')
 @section('script')
@@ -14,53 +10,49 @@ use App\Common;
 @stop
 @section('content')
 
-<h1>Admin Dashboard</h1>
-<h2>Federal Constituencies</h2>
+<h1>Constituencies</h1>
+
+<h2>Federal</h2>
 @if (count($federals) > 0)
 @foreach (Common::$states as $x => $state)
 <div class="card">
     <div class="card-header">
-        <h3 href="#f<?php echo $x ?>" data-toggle="collapse">{{ $state }}</h3>
+        <h3 href="#f{{ $x }}" data-toggle="collapse">{{ $state }}</h3>
     </div>
     <div id="f<?php echo $x ?>" class="collapse">
-        <table>
+        <table class="table table-hover">
             <thead>
             <tr>
                 <th>No.</th>
-                <th>Code</th>
+                <th class="text-center">Code</th>
                 <th>Name</th>
-                <th>Actions</th>
+                <th class="text-center">Actions</th>
             </tr>
             </thead>
-
             <tbody>
             @foreach ($federals as $i => $federal)
             @if ($federal->state == $x)
             <tr>
                 <td>
-                    <div>{{ $i+1 . '.' }}</div>
+                    {{ $i+1 . '.' }}
+                </td>
+                <td class="text-center">
+                    {{ link_to_route(
+                    'constituency.show',
+                    $title = $federal->code,
+                    $parameters = [ '$federal_code' => $federal->code ]
+                    ) }}
                 </td>
                 <td>
-                    <div>
-                        {{ link_to_route(
-                        'constituency.show',
-                        $title = $federal->code,
-                        $parameters = [ '$federal_code' => $federal->code ]
-                        ) }}
-                    </div>
+                    {{ $federal->name }}
                 </td>
-                <td>
-                    <div>{{ $federal->name }}</div>
-                </td>
-                <td>
-                    <div>
-                        <button id="<?php echo $federal->code ?>">Initialise</button>
-                        @if ($federal->nostate)
-                        <a href="<?php echo route('admin.verify', [$federal->code]) ?>">
-                            <button id="<?php echo $federal->code ?>V" disabled='disabled'>Verify</button>
-                        </a>
-                        @endif
-                    </div>
+                <td align="center">
+                    <button id="<?php echo $federal->code ?>" class="btn btn-primary">Initialise</button>
+                    @if ($federal->nostate)
+                    <a href="<?php echo route('admin.verify', [$federal->code]) ?>">
+                        <button id="<?php echo $federal->code ?>V" class="btn btn-primary" disabled>Verify</button>
+                    </a>
+                    @endif
                 </td>
             </tr>
             @endif
@@ -72,11 +64,11 @@ use App\Common;
 @endforeach
 @else
 <div>
-    No records found
+    No records found.
 </div>
 @endif
 
-<h2>State Constituencies</h2>
+<h2>State</h2>
 @if (count($states) > 0)
 @foreach (Common::$states as $x => $state)
 <div class="card">
@@ -84,13 +76,13 @@ use App\Common;
         <h3 href="#s<?php echo $x ?>" data-toggle="collapse">{{ $state }}</h3>
     </div>
     <div id="s<?php echo $x ?>" class="collapse">
-        <table>
+        <table class="table table-hover">
             <thead>
             <tr>
                 <th>No.</th>
-                <th>Code</th>
+                <th class="text-center">Code</th>
                 <th>Name</th>
-                <th>Actions</th>
+                <th class="text-center">Actions</th>
             </tr>
             </thead>
 
@@ -99,27 +91,25 @@ use App\Common;
             @if ($stateconstituency->state == $x)
             <tr>
                 <td>
-                    <div>{{ $i+1 . '.' }}</div>
+                    {{ $i+1 . '.' }}
+                </td>
+                <td class="text-center">
+                    {{ link_to_route(
+                    'constituency.show',
+                    $title = $stateconstituency->code,
+                    $parameters = [ 'id' => $stateconstituency->code ]
+                    ) }}
                 </td>
                 <td>
-                    <div>
-                        {{ link_to_route(
-                        'constituency.show',
-                        $title = $stateconstituency->code,
-                        $parameters = [ 'id' => $stateconstituency->code ]
-                        ) }}
-                    </div>
+                    {{ $stateconstituency->name }}
                 </td>
-                <td>
-                    <div>{{ $stateconstituency->name }}</div>
-                </td>
-                <td>
-                    <div>
-                        <button id="<?php echo $stateconstituency->code ?>">Initialise</button>
-                        <a href="<?php echo route('admin.verify', [$stateconstituency->code]) ?>">
-                            <button id="<?php echo $stateconstituency->code ?>V" disabled='disabled'>Verify</button>
-                        </a>
-                    </div>
+                <td align="center">
+                    <button id="<?php echo $stateconstituency->code ?>" class="btn btn-primary">Initialise</button>
+                    <a href="<?php echo route('admin.verify', [$stateconstituency->code]) ?>">
+                        <button id="<?php echo $stateconstituency->code ?>V" class="btn btn-primary" disabled>
+                            Verify
+                        </button>
+                    </a>
                 </td>
             </tr>
             @endif
@@ -131,9 +121,8 @@ use App\Common;
 @endforeach
 @else
 <div>
-    No records found
+    No records found.
 </div>
 @endif
-<span id="status"></span>
 
 @endsection

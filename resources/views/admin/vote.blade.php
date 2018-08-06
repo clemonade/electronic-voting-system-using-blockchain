@@ -10,98 +10,59 @@
 @section('content')
 
 <h1>Vote Casting</h1>
-<div class="panel-body">
-    {!! Form::open([
-    'route' => ['admin.postvote'],
-    'class' => 'form-horizontal',
-    ]) !!}
 
-    <!-- Hash -->
-    <div class="form-group row">
-        {!! Form::label('hash', 'Voter Hash', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
-        <div>
-            {!! Form::text('hash', $hash , [
-            'id' => 'hash',
-            'class' => 'form-control',
-            'maxlength' => 100,
-            'disabled',
-            ]) !!}
-        </div>
-    </div>
+{!! Form::open([
+'route' => ['admin.postvote'],
+'class' => 'form-horizontal',
+]) !!}
 
-    <!-- Federal -->
-    <div class="form-group row">
-        {!! Form::label('federal', 'Federal Constituency', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
-        <div>
-            {!! Form::text('federal',
-            json_decode($federal, true)['code'] . ' ' . json_decode($federal, true)['name'] ,
-            [
-            'id' => 'federal',
-            'class' => 'form-control',
-            'maxlength' => 100,
-            'disabled',
-            ]) !!}
-        </div>
-    </div>
-
-    <!-- State -->
-    <div class="form-group row">
-        {!! Form::label('state', 'State Constituency', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
-        <div>
-            {!! Form::text('state',
-            isset($state) ? json_decode($state, true)['code'] . ' ' . json_decode($state, true)['name'] :
-            'INAPPLICABLE', [
-            'id' => 'state',
-            'class' => 'form-control',
-            'maxlength' => 100,
-            'disabled',
-            ]) !!}
-        </div>
-    </div>
-
-    <!-- Federal Candidates -->
-    <div class="form-group row">
-        <table id="federalcandidates">
-            <caption>Federal Constituency</caption>
-            <tbody></tbody>
-        </table>
-    </div>
-
-    <!-- State Candidates -->
-    <div class="form-group row">
-        <table id="statecandidates">
-            <caption>State Constituency</caption>
-            <tbody></tbody>
-        </table>
-    </div>
-    <!--TODO Change onclick-->
-    <!-- Submit Button -->
-    <div class="form-group row">
-        <div>
-            {!! Form::button('Cast Vote', [
-            'type' => 'submit',
-            'class' => 'btn btn-primary',
-            'onclick' => 'App.vote()',
-            ]) !!}
-        </div>
-    </div>
-
-    {{ Form::hidden('id', $id) }}
-    {{ Form::hidden('federal', $federal) }}
-    {{ Form::hidden('state', (isset($state)) ? $state : null) }}
-
-    {!! Form::close() !!}
+<div class="form-group">
+    <label for="hash">Voter Hash:</label>
+    <input type="text" id="hash" name="hash" value="<?php echo $hash ?>" class="form-control" maxlength="64" disabled>
 </div>
 
-<br>
-<span id="status"></span>
-<span id="list"></span>
+<div class="form-group">
+    <label for="federal">Federal Constituency:</label>
+    <input type="text" id="federal" name="federal"
+           value="<?php echo json_decode($federal, true)['code'] . ' ' . json_decode($federal, true)['name'] ?>"
+           class="form-control"
+           disabled>
+</div>
+
+<div class="form-group">
+    <label for="state">State Constituency:</label>
+    <input type="text" id="state" name="state"
+           value="<?php echo isset($state) ? json_decode($state, true)['code'] . ' ' . json_decode($state, true)['name'] : 'INAPPLICABLE' ?>"
+           class="form-control"
+           disabled>
+</div>
+
+<div class="card form-group">
+    <div class="card-header">Federal Candidates</div>
+    <div class="card-body">
+        <table id="federalcandidates" class="table table-bordered table-hover" style="width:100%;height:100%;">
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<div id="statecandidatediv" class="card form-group">
+    <div class="card-header">State Candidates</div>
+    <div class="card-body">
+        <table id="statecandidates" class="table table-bordered table-hover" style="width:100%;height:100%;">
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<button type="submit" class="btn btn-primary btn-lg btn-block" onclick="App.vote()">Cast Vote</button>
+
+{{ Form::hidden('id', $id) }}
+{{ Form::hidden('federal', $federal) }}
+{{ Form::hidden('state', (isset($state)) ? $state : null) }}
+
+{!! Form::close() !!}
+
 @endsection
 
 

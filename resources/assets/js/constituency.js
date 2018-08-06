@@ -43,7 +43,7 @@ window.App = {
             election = instance;
             return election.getConstituency.call(code, {from: account})
         }).then((value) => {
-            $('#code').html(code);
+            $('#code').text(code);
             if (value[0]) {
                 $('#init').html('INITIALISED');
             } else {
@@ -51,8 +51,8 @@ window.App = {
             }
             $('#state').html(states[state]);
             $('#total').html(value[1].toNumber());
-            $('#name').html(value[3]);
-            $('#type').html(types[value[4].toNumber()]);
+            $('#name').text(value[3]);
+            $('#level').html(types[value[4].toNumber()].toUpperCase());
 
             self.populateCandidates(value[2].map(x => x.toNumber()));
         }).catch(function (e) {
@@ -85,13 +85,16 @@ window.App = {
                             parties[x].then((party) => {
                                 $('<tr/>')
                                     .appendTo($('#candidates tbody'))
-                                    .append($('<img>')
-                                        .prop('title', party[0])
-                                        .prop('src', '/storage/parties/' + party[0] + party[1] + '.jpg')
-                                        .prop('width', '100'))
+                                    .append($('<td>')
+                                        .prop('align', 'center')
+                                        .append($('<img>')
+                                            .prop('title', party[0])
+                                            .prop('src', '/storage/parties/' + party[0] + party[1] + '.jpg')
+                                            .prop('height', '50')))
                                     .append($('<td>')
                                         .text(value[1]))
                                     .append($('<td>')
+                                        .addClass('text-right')
                                         .text(value[0].toNumber()));
                             });
                         });

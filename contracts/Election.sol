@@ -177,7 +177,8 @@ contract Election is Ownable {
     /**
     @notice Votes for federal constituency and state constituency candidates
     @dev _voterHash is calculated as: SHA-256(voterName + voterNRIC + SHA-256(voterNonce))
-    @dev Pass in dummy array if no candidate(s) is/are selected; function does not accept empty arrays
+    @dev Array must contain candidateId(s) belonging to their originating constituency
+    @dev Pass in dummy array if no candidate(s) is/are selected, [0,0,0] if the constituency is not applicable
     @param _voterHash Hash of voter
     @param _federalCandidateVote Array of voted federal constituency candidates
     @param _stateCandidateVote Array of voted state constituency candidates
@@ -192,7 +193,9 @@ contract Election is Ownable {
 
         totalVotes++;
         constituencies[candidateToConstituency[federalCandidateId]].numVotes++;
-        constituencies[candidateToConstituency[stateCandidateId]].numVotes++;
+        if (isExistingStateConstituency(_stateCandidateVote)) {
+            constituencies[candidateToConstituency[stateCandidateId]].numVotes++;
+        }
         votes[_voterHash].hasVoted = true;
 
         bool validFederalVote = isValidVote(_federalCandidateVote);
@@ -227,6 +230,25 @@ contract Election is Ownable {
         }
 
         return validity;
+    }
+
+    /**
+    @notice Checks if the vote is [0,0,0]
+    @dev -
+    @param _vote Array of state constituency candidates
+    @return Existence of state constituency
+    */
+    function isExistingStateConstituency(uint[] _vote) public pure returns (bool){
+        bool exists = true;
+
+        for (uint x = 0; x < 3; x++) {
+            if (_vote[x] != 0) {
+                return exists;
+            }
+        }
+
+        exists = false;
+        return exists;
     }
 
     /**

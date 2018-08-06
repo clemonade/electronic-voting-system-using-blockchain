@@ -2,121 +2,63 @@
 @section('script')
 @stop
 @section('content')
+
 <h1>Voter Verification</h1>
-<div class="panel-body">
-    {!! Form::open([
-    'route' => ['admin.vote'],
-    'class' => 'form-horizontal'
-    ]) !!}
 
-    <!-- Name -->
-    <div class="form-group row">
-        {!! Form::label('name', 'Name', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
-        <div>
-            {!! Form::text('name', $voter->name , [
-            'id' => 'name',
-            'class' => 'form-control',
-            'maxlength' => 100,
-            'disabled',
-            ]) !!}
-        </div>
-    </div>
+{!! Form::open([
+'route' => ['admin.vote'],
+'class' => 'form-horizontal'
+]) !!}
 
-    <!-- NRIC -->
-    <div class="form-group row">
-        {!! Form::label('nric', 'NRIC', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
-        <div>
-            {!! Form::text('nric', $voter->nric, [
-            'id' => 'nric',
-            'class' => 'form-control',
-            'maxlength' => 12,
-            'disabled',
-            ]) !!}
-        </div>
-    </div>
-
-    <!-- Federal -->
-    <div class="form-group row">
-        {!! Form::label('federal', 'Federal Constituency', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
-        <div>
-            {!! Form::text('federal', $federal-> code . ' ' . $federal->name, [
-            'id' => 'federal',
-            'class' => 'form-control',
-            'maxlength' => 100,
-            'disabled',
-            ]) !!}
-        </div>
-    </div>
-
-    <!-- State -->
-    <div class="form-group row">
-        {!! Form::label('state', 'State Constituency', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
-        <div>
-            {!! Form::text('state', (isset($state)) ? $state-> code . ' ' . $state->name : 'INAPPLICABLE', [
-            'id' => 'state',
-            'class' => 'form-control',
-            'maxlength' => 100,
-            'disabled',
-            ]) !!}
-        </div>
-    </div>
-
-    <!-- Eligibility -->
-    <div class="form-group row">
-        {!! Form::label('eligible', 'Eligibility', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
-        <div>
-            {!! Form::text('eligible', $voter->voted ? 'INELIGIBLE' : 'ELIGIBLE', [
-            'id' => 'eligible',
-            'class' => 'form-control',
-            'maxlength' => 100,
-            'disabled',
-            ]) !!}
-        </div>
-    </div>
-
-    <!-- Nonce -->
-    <div class="form-group row">
-        {!! Form::label('nonce', 'Nonce', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
-        <div>
-            {!! Form::text('nonce', null, [
-            'id' => 'nonce',
-            'class' => 'form-control',
-            'maxlength' => 100,
-            ]) !!}
-        </div>
-    </div>
-
-    <!-- Submit Button -->
-    <div class="form-group row">
-        <div>
-            {!! Form::button('Proceed', [
-            'type' => 'submit',
-            'class' => 'btn btn-primary',
-            ]) !!}
-        </div>
-    </div>
-
-    {{ Form::hidden('federal', $federal) }}
-    {{ Form::hidden('state', (isset($state)) ? $state : null) }}
-    {{ Form::hidden('voter', $voter) }}
-
-    {!! Form::close() !!}
+<div class="form-group">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" value="<?php echo $voter->name ?>" class="form-control" maxlength="100"
+           disabled>
 </div>
 
-<br>
-<span id="status"></span>
-<span id="list"></span>
-@endsection
+<div class="form-group">
+    <label for="nric">NRIC:</label>
+    <input type="text" id="nric" name="nric" value="<?php echo $voter->nric ?>" class="form-control" maxlength="12"
+           disabled>
+</div>
 
+<div class="form-group">
+    <label for="federal">Federal Constituency:</label>
+    <input type="text" id="federal" name="federal" value="<?php echo $federal->code . ' ' . $federal->name ?>"
+           class="form-control"
+           disabled>
+</div>
+
+<div class="form-group">
+    <label for="state">State Constituency:</label>
+    <input type="text" id="state" name="state"
+           value="<?php echo (isset($state)) ? $state->code . ' ' . $state->name : 'INAPPLICABLE' ?>"
+           class="form-control"
+           disabled>
+</div>
+
+<div class="form-group">
+    <label for="eligible">Eligibility:</label>
+    <input type="text" id="eligible" name="eligible"
+           value="<?php echo $voter->voted ? 'INELIGIBLE' : 'ELIGIBLE' ?>"
+           class="form-control"
+           disabled>
+</div>
+
+<!--TODO Toggle visibility-->
+<div class="form-group">
+    <label for="nonce">Nonce:</label>
+    <input type="password" id="nonce" name="nonce" class="form-control" maxlength="64">
+</div>
+
+{{ Form::hidden('federal', $federal) }}
+{{ Form::hidden('state', (isset($state)) ? $state : null) }}
+{{ Form::hidden('voter', $voter) }}
+
+<button type="submit" class="btn btn-primary">Proceed</button>
+
+{!! Form::close() !!}
+
+<span id="status"></span>
+
+@endsection

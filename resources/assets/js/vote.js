@@ -30,7 +30,7 @@ window.App = {
 
         self.populateCandidates('federalcandidates', federal);
         if (state == null) {
-            $('#statecandidates').hide();
+            $('#statecandidatediv').hide();
         } else {
             self.populateCandidates('statecandidates', state);
         }
@@ -66,21 +66,25 @@ window.App = {
                             parties[x].then((party) => {
                                 $('<tr/>')
                                     .appendTo($('#' + id + ' tbody'))
-                                    .append($('<label/>')
-                                        .prop('for', id + x)
-                                        .append($('<td/>')
-                                            .text(value[1]))
-                                        .append($('<td/>')
-                                            .append($('<img>')
-                                                .prop('src', '/storage/parties/' + party[0] + party[1] + '.jpg')
-                                                .prop('width', '100')))
-                                        .append($('<td/>')
-                                            .append($('<input/>')
-                                                .prop('type', 'checkbox')
-                                                .prop('class', 'checkbox')
-                                                .prop('name', id + '[]')
-                                                .prop('id', id + x)
-                                                .val(candidates[x]))));
+                                    // .append($('<label/>')
+                                    //     .prop('for', id + x)
+                                    .append($('<td/>')
+                                        .addClass('text-center')
+                                        .text(value[1]))
+                                    .append($('<td/>')
+                                        .prop('align', 'center')
+                                        .append($('<img>')
+                                            .prop('title', party[0])
+                                            .prop('src', '/storage/parties/' + party[0] + party[1] + '.jpg')
+                                            .prop('height', '50')))
+                                    .append($('<td/>')
+                                        .append($('<input/>')
+                                            .prop('style', 'width:100%;height:100%')
+                                            .prop('type', 'checkbox')
+                                            .prop('class', 'checkbox')
+                                            .prop('name', id + '[]')
+                                            .prop('id', id + x)
+                                            .val(candidates[x])));
                             });
                         });
                     }
@@ -98,6 +102,8 @@ window.App = {
         let election;
         let federalcandidates = [];
         let statecandidates = [];
+        let federalelement = $('input[name="federalcandidates[]"]');
+        let stateelement = $('input[name="statecandidates[]"]');
 
         $('input[name="federalcandidates[]"]:checked').each(function () {
             federalcandidates.push($(this).val());
@@ -107,8 +113,8 @@ window.App = {
             statecandidates.push($(this).val());
         });
 
-        federalcandidates = self.processVotes(federalcandidates);
-        statecandidates = self.processVotes(statecandidates);
+        federalcandidates = self.processVotes(federalelement, federalcandidates);
+        statecandidates = self.processVotes(stateelement, statecandidates);
 
         Election.deployed().then((instance) => {
             election = instance;
@@ -123,8 +129,17 @@ window.App = {
         });
     },
 
-    processVotes: function (array) {
+    processVotes: function (element, array) {
+        let x = [];
+        element.each(function () {
+            x.push($(this).val());
+        });
+
         if (array.length !== 1) {
+            if (x.length !== 0) {
+                return x;
+            }
+            //Level does not exist
             return [0, 0, 0];
         }
 

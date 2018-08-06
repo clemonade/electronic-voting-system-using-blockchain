@@ -1,8 +1,4 @@
-<?php
-
-use App\Common;
-
-?>
+<?php use App\Common; ?>
 
 @extends('layouts.app')
 @section('script')
@@ -16,56 +12,46 @@ use App\Common;
 @stop
 @section('content')
 
-<div class="panel-body">
-    <table class="table table-striped task-table">
-        <thead>
-        <tr>
-            <th>Attribute</th>
-            <th>Value</th>
-        </tr>
-        </thead>
+<h1 id="code"></h1>
+<h2 id="name"></h2>
 
-        <tbody>
-        <tr>
-            <td>Code</td>
-            <td id="code"></td>
-        </tr>
-        <tr>
-            <td>Name</td>
-            <td id="name"></td>
-        </tr>
-        <tr>
-            <td>State</td>
-            <td id="state"></td>
-        </tr>
-        <tr>
-            <td>Type</td>
-            <td id="type"></td>
-        </tr>
-        <tr>
-            <td>Total Votes</td>
-            <td id="total"></td>
-        </tr>
-        <tr>
-            <td>Tally</td>
-            <td>
-                <table class="table-hover" id="candidates">
-                    <thead>
-                    <td>Party</td>
+<table class="table">
+    <tbody>
+    <tr>
+        <td>State</td>
+        <td id="state"></td>
+    </tr>
+    <tr>
+        <td>Level</td>
+        <td id="level"></td>
+    </tr>
+    <tr>
+        <td>Total Voters</td>
+        <td id="total"></td>
+    </tr>
+    <!--    TODO Additional contextual information (turnout, spoilt votes, race?)-->
+    <tr>
+        <td>Tally</td>
+        <td>
+            <table id="candidates" class="table-hover">
+                <thead>
+                <tr>
+                    <td class="text-center">Party</td>
                     <td>Name</td>
-                    <td>Votes</td>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td>Status</td>
-            <td id="init"></td>
-        </tr>
-        </tbody>
-    </table>
-    <span id="status"></span>
-</div>
+                    <td class="text-center">Votes</td>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>Status</td>
+        <td id="init"></td>
+    </tr>
+    </tbody>
+</table>
+
+<span id="status"></span>
 
 @endsection

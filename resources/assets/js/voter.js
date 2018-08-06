@@ -85,7 +85,7 @@ window.App = {
         let self = this;
         let election;
 
-        let name = $('#name').val();
+        let name = $('#name').val().toUpperCase();
         let nric = $('#nric').val();
         let nonce = $('#nonce').val();
         let hash = sha256(name + nric + sha256(nonce));
@@ -111,13 +111,11 @@ window.App = {
                     $('#state').val('INVALID');
                 }
             } else {
+                $('#hash').val('');
+                $('#federal').val('');
+                $('#state').val('');
                 self.setStatus('Invalid voter info.');
             }
-            console.log(value[0]);
-            console.log(value[1]);
-            console.log(value[2]);
-            console.log(value[3].toNumber());
-            console.log(value[4].toNumber());
         }).catch(function (e) {
             console.log(e);
             self.setStatus('Error retrieving voter info.');

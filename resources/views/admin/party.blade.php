@@ -6,20 +6,20 @@
 
 <h1>Parties</h1>
 
-<table id="parties">
+<table id="parties" class="table">
     <thead>
     <tr>
         <th>No.</th>
         <th>Name</th>
-        <th>Abbreviation</th>
-        <th>Logo</th>
+        <th class=" text-center">Abbreviation</th>
+        <th class="text-center">Logo</th>
     </tr>
     </thead>
     <tbody></tbody>
 </table>
 
 <a href="<?php echo route('party.create') ?>">
-    <button>Register</button>
+    <button class="btn btn-primary">Register</button>
 </a>
 
 @endsection

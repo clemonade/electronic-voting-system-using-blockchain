@@ -5,45 +5,32 @@
 @section('content')
 
 <h1>Register Party</h1>
-<div class="panel-body">
-    {!! Form::open([
-    'route' => ['party.store'],
-    'class' => 'form-horizontal',
-    'enctype' => 'multipart/form-data',
-    ]) !!}
 
-    <!-- Logo -->
-    <div class="form-group row">
-        {!! Form::label('logo', 'Logo:', [
-        'class' => 'control-label col-sm-3',
-        ]) !!}
-        <div class="col-sm-9">
-            {!! Form::file('image', [
-            'id' => 'logo-file',
-            'class' => 'form-control',
-            ]) !!}
-        </div>
-    </div>
+{!! Form::open([
+'route' => ['party.store'],
+'class' => 'form-horizontal',
+'enctype' => 'multipart/form-data',
+]) !!}
 
-    <label for="name">Party Name:</label>
-    <br><input type="text" id="name" name="name"/>
-    <br><label for="abbreviation">Party Abbreviation:</label>
-    <br><input type="text" id="abbreviation" name="abbreviation"/>
-
-    <!-- Submit Button -->
-    <div class="form-group row">
-        <div class="col-sm-offset-3 col-sm-6">
-            {!! Form::button('Upload', [
-            'type' => 'submit',
-            'class' => 'btn btn-primary',
-            'onclick' => 'App.registerParty()',
-            ]) !!}
-        </div>
-    </div>
-    {!! Form::close() !!}
+<div class="form-group">
+    <label for="logo">Logo:</label>
+    <input type="file" id="logo" name="image" class="form-control-file border">
 </div>
 
-<br>
+<div class="form-group">
+    <label for="name">Party Name:</label>
+    <input type="text" id="name" name="name" class="form-control">
+</div>
+
+<div class="form-group">
+    <label for="abbreviation">Party Abbreviation:</label>
+    <input type="text" id="abbreviation" name="abbreviation" class="form-control">
+</div>
+
+<button type="submit" class="btn btn-primary" onclick="App.registerParty()">Register</button>
+
+{!! Form::close() !!}
+
 <span id="status"></span>
 
 @endsection

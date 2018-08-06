@@ -10,15 +10,6 @@
 @section('content')
 
 <h1>Register Voter</h1>
-<!--    @if ($errors->any())-->
-<!--    <div class="alert alert-danger">-->
-<!--        <ul>-->
-<!--            @foreach ($errors->all() as $error)-->
-<!--            <li>{{ $error }}</li>-->
-<!--            @endforeach-->
-<!--        </ul>-->
-<!--    </div>-->
-<!--    @endif-->
 
 {!! Form::model($voter, [
 'route' => ['registervoter.store']
@@ -66,15 +57,13 @@
 
 <div class="stateconstituency form-group">
     <label for="stateconstituency">State Constituency:</label>
-    <select id="stateconstituency" name="stateconstituency" onchange="App.populateStateDropdown(this.value)"
-            class="form-control">
+    <select id="stateconstituency" name="stateconstituency" class="form-control">
         <option disabled selected hidden>- Select State Constituency -</option>
     </select>
 </div>
 
 <button type="submit" class="btn btn-primary">Register</button>
-{!! Form::close() !!}
 
-<span id="status"></span>
+{!! Form::close() !!}
 
 @endsection
