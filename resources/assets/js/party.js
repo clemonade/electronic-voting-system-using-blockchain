@@ -99,8 +99,8 @@ $(document).ready(() => {
         console.warn('Using web3 detected from external source.');
         window.web3 = new Web3(web3.currentProvider);
     } else {
-        console.warn('No web3 detected. Falling back to http://127.0.0.1:7545.');
-        window.web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:7545'));
+        console.warn('No web3 detected. Falling back to http://127.0.0.1:8545.');
+        window.web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'));
     }
 
     App.start();

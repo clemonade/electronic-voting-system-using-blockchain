@@ -1,4 +1,7 @@
 <?php use App\Common; ?>
+@section('title')
+<title>Candidate | Register</title>
+@stop
 @extends('layouts.app')
 @section('script')
 <script type="text/javascript">
@@ -7,6 +10,7 @@
 </script>
 <script src="{{asset('js/candidate.js')}}"></script>
 @stop
+@include('layouts.admin')
 @section('content')
 
 <!--TODO Candidate index page-->

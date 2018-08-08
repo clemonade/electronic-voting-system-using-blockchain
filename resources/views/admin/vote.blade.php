@@ -1,3 +1,6 @@
+@section('title')
+<title>Voter | Vote</title>
+@stop
 @extends('layouts.app')
 @section('script')
 <script type="text/javascript">
@@ -9,6 +12,7 @@
 @stop
 @section('content')
 
+<h1 class="display-1 text-center">ELECTION</h1>
 <h1>Vote Casting</h1>
 
 {!! Form::open([
@@ -62,6 +66,10 @@
 {{ Form::hidden('state', (isset($state)) ? $state : null) }}
 
 {!! Form::close() !!}
+
+<nav class="navbar navbar-expand bg-light fixed-bottom justify-content-center">
+    <span id="status"><?php echo Session::get('status'); ?></span>
+</nav>
 
 @endsection
 

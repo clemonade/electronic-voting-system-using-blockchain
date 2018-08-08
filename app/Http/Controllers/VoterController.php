@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\FederalConstituency;
+use App\Http\Requests\StoreVoter;
 use App\RegisteredVoter;
 use App\StateConstituency;
 use Illuminate\Http\Request;
@@ -29,14 +30,15 @@ class VoterController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreVoter $request)
     {
         $voter = new RegisteredVoter();
         $voter->fill($request->all());
         $voter['name'] = strtoupper($request->input('name'));
         $voter->save();
 
-        return redirect()->route('registervoter.create');
+        return Redirect::back()->with('status', 'text-success Voter registered successfully.');
+
     }
 
     public function verify($federal_code, $state_code = null)

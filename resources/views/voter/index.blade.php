@@ -1,5 +1,8 @@
 <?php use App\Common; ?>
 
+@section('title')
+<title>Voter | Dashboard</title>
+@stop
 @extends('layouts.app')
 @section('script')
 <script type="text/javascript">
@@ -8,16 +11,26 @@
 </script>
 <script src="{{asset('js/constituencies.js')}}"></script>
 @stop
+@include('layouts.voter')
 @section('content')
 
-<h1>Constituencies</h1>
+<h1>Voter Dashboard</h1>
+<div class="form-group">
+    <label for="admin">Administrator Address:</label>
+    <input type="text" id="admin" class="form-control" readonly>
+</div>
+<div class="form-group">
+    <label for="address">Contract Address:</label>
+    <input type="text" id="address" class="form-control" readonly>
+</div>
 
-<h2>Federal</h2>
+<h2>Constituencies</h2>
+<h3>Federal</h3>
 @if (count($federals) > 0)
 @foreach (Common::$states as $x => $state)
 <div class="card">
     <div class="card-header">
-        <h3 href="#f<?php echo $x ?>" data-toggle="collapse">{{ $state }}</h3>
+        <a href="#f<?php echo $x ?>" data-toggle="collapse">{{ $state }}</a>
     </div>
     <div id="f<?php echo $x ?>" class="collapse">
         <table class="table table-hover">
@@ -59,12 +72,12 @@
 </div>
 @endif
 
-<h2>State</h2>
+<h3>State</h3>
 @if (count($states) > 0)
 @foreach (Common::$states as $x => $state)
 <div class="card">
     <div class="card-header">
-        <h3 href="#s<?php echo $x ?>" data-toggle="collapse">{{ $state }}</h3>
+        <a href="#s<?php echo $x ?>" data-toggle="collapse">{{ $state }}</a>
     </div>
     <div id="s<?php echo $x ?>" class="collapse">
         <table class="table table-hover">

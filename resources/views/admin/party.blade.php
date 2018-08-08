@@ -1,7 +1,11 @@
+@section('title')
+<title>Party</title>
+@stop
 @extends('layouts.app')
 @section('script')
 <script src="{{asset('js/party.js')}}"></script>
 @stop
+@include('layouts.admin')
 @section('content')
 
 <h1>Parties</h1>
@@ -19,7 +23,7 @@
 </table>
 
 <a href="<?php echo route('party.create') ?>">
-    <button class="btn btn-primary">Register</button>
+    <button class="btn btn-primary">Register New Party</button>
 </a>
 
 @endsection

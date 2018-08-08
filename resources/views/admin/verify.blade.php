@@ -1,7 +1,10 @@
+@section('title')
+<title>Voter | Verify</title>
+@stop
 @extends('layouts.app')
 @section('script')
-<?php use Illuminate\Support\Facades\Session; ?>
 @stop
+@include('layouts.admin')
 @section('content')
 
 <h1>Verify Voter</h1>

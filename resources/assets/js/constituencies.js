@@ -9,7 +9,6 @@ let account;
 
 window.App = {
     start: function () {
-        //alert(window.location);
         let self = this;
 
         Election.setProvider(web3.currentProvider);
@@ -29,12 +28,36 @@ window.App = {
             account = accounts[0];
         });
 
+        self.populateInfo();
         self.setInitialisation(federals);
         self.setInitialisation(states);
     },
 
     setStatus: function (message) {
         $('#status').html(message);
+    },
+
+    populateInfo: function () {
+        let self = this;
+        let election;
+
+        Election.deployed().then((instance) => {
+            election = instance;
+
+            election.owner.call().then((address) => {
+                $('#admin').val(address);
+
+                web3.eth.getBalance(address, (err, balance) => {
+                    $('#balance').val(web3.fromWei(balance, "ether") + " ETH");
+                });
+            });
+
+            $('#address').val(election.address);
+
+        }).catch(function (e) {
+            console.log(e);
+            self.setStatus('Error retrieving contract info.');
+        });
     },
 
     setInitialisation: function (constituencies) {
@@ -92,7 +115,7 @@ window.App = {
             self.setStatus('Constituency ' + code + ' initialised.')
         }).catch((e) => {
             console.log(e);
-            self.setStatus('Error initialising constituency; see log.');
+            self.setStatus('Error initialising constituency.');
         });
     },
 };
@@ -102,8 +125,8 @@ $(document).ready(() => {
         console.warn('Using web3 detected from external source.');
         window.web3 = new Web3(web3.currentProvider);
     } else {
-        console.warn('No web3 detected. Falling back to http://127.0.0.1:7545.');
-        window.web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:7545'));
+        console.warn('No web3 detected. Falling back to http://127.0.0.1:8545.');
+        window.web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'));
     }
 
     App.start();
