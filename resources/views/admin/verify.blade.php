@@ -22,12 +22,30 @@
 
 <div class="form-group">
     <label for="name">Name:</label>
-    <input type="text" id="name" name="name" class="form-control" maxlength="100">
+    {!! Form::text('name', null, [
+    'id' => 'name',
+    'class' => 'form-control' . (($errors->has('name')) ? ' is-invalid' : ''),
+    'maxlength' => 100,
+    ]) !!}
+    @if($errors->has('name'))
+    <div class="invalid-feedback">
+        {{$errors->first('name')}}
+    </div>
+    @endif
 </div>
 
 <div class="form-group">
     <label for="nric">NRIC:</label>
-    <input type="text" id="nric" name="nric" class="form-control" maxlength="12">
+    {!! Form::text('nric', null, [
+    'id' => 'nric',
+    'class' => 'form-control' . (($errors->has('nric')) ? ' is-invalid' : ''),
+    'maxlength' => 12,
+    ]) !!}
+    @if($errors->has('nric'))
+    <div class="invalid-feedback">
+        {{$errors->first('nric')}}
+    </div>
+    @endif
 </div>
 
 {{ Form::hidden('federal', $federal) }}

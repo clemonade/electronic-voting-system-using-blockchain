@@ -1,6 +1,7 @@
 {
     "/js/voter.js": "/js/voter.js",
     "/js/vote.js": "/js/vote.js",
+    "/js/prevote.js": "/js/prevote.js",
     "/js/party.js": "/js/party.js",
     "/js/constituency.js": "/js/constituency.js",
     "/js/constituencies.js": "/js/constituencies.js",

@@ -91,14 +91,49 @@ window.App = {
         }
     },
 
-    //TODO Reassess error handling
-    verify: function () {
+    validate: function () {
+        let self = this;
+        let valid = true;
+
+        //j.
+        let jname = $('#name');
+        let jnric = $('#nric');
+        let jnonce = $('#nonce');
+
+        let name = jname.val().toUpperCase();
+        let nric = jnric.val();
+        let nonce = jnonce.val();
+
+        if (name === "") {
+            valid = false;
+            jname.addClass('is-invalid');
+        } else {
+            jname.removeClass('is-invalid');
+        }
+
+        if (nric === "") {
+            valid = false;
+            jnric.addClass('is-invalid');
+        } else {
+            jnric.removeClass('is-invalid');
+        }
+
+        if (nonce === "") {
+            valid = false;
+            jnonce.addClass('is-invalid');
+        } else {
+            jnonce.removeClass('is-invalid');
+        }
+
+        if (valid) {
+            self.verify(name, nric, nonce);
+        }
+    },
+
+    verify: function (name, nric, nonce) {
         let self = this;
         let election;
 
-        let name = $('#name').val().toUpperCase();
-        let nric = $('#nric').val();
-        let nonce = $('#nonce').val();
         let hash = sha256(name + nric + sha256(nonce));
 
         Election.deployed().then((instance) => {
@@ -106,8 +141,10 @@ window.App = {
             return election.getVoter.call(hash, {from: account});
         }).then((value) => {
             if (value[0]) {
-                self.setStatus(' ');
-
+                $('#bool')
+                    .val('VOTED')
+                    .removeClass('text-danger')
+                    .addClass('text-success');
                 $('#hash').val(hash);
 
                 if (value[1]) {
@@ -121,17 +158,24 @@ window.App = {
                 } else {
                     $('#state').val('INVALID');
                 }
+
+                self.setStatus('text-success Voter info found.');
             } else {
-                $('#hash').val('');
-                $('#federal').val('');
-                $('#state').val('');
-                self.setStatus('text-danger Invalid voter credentials.');
+                $('#bool')
+                    .val('DID NOT VOTE')
+                    .removeClass('text-success')
+                    .addClass('text-danger');
+                $('#hash').val('INAPPLICABLE');
+                $('#federal').val('INAPPLICABLE');
+                $('#state').val('INAPPLICABLE');
+
+                self.setStatus('text-warning Voter info not found.');
             }
         }).catch(function (e) {
             console.log(e);
             self.setStatus('text-danger Error retrieving voter info.');
         });
-    }
+    },
 };
 
 $(document).ready(() => {

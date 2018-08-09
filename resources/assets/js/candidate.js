@@ -89,7 +89,7 @@ window.App = {
             });
         }).catch((e) => {
             console.log(e);
-            self.setStatus('Error showing parties; see log.');
+            self.setStatus('text-danger Error retrieving parties.');
         });
     },
 

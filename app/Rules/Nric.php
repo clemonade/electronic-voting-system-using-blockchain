@@ -25,7 +25,8 @@ class Nric implements Rule
      */
     public function passes($attribute, $value)
     {
-        return preg_match('/^([0-9]{2})([0-1]{1})([0-9]{1})([0-3]{1})([0-9]{1})([0-9]{6})$/', $value);
+        return true;
+        //return preg_match('/^([0-9]{2})([0-1]{1})([0-9]{1})([0-3]{1})([0-9]{1})([0-9]{6})$/', $value);
     }
 
     /**

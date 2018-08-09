@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\FederalConstituency;
 use App\Http\Requests\StoreVoter;
+use App\Http\Requests\VerifyVoter;
 use App\RegisteredVoter;
 use App\StateConstituency;
 use Illuminate\Http\Request;
@@ -58,7 +59,7 @@ class VoterController extends Controller
         ]);
     }
 
-    public function prevote(Request $request)
+    public function prevote(VerifyVoter $request)
     {
         $name = strtoupper($request->input('name'));
         $nric = $request->input('nric');
@@ -80,7 +81,7 @@ class VoterController extends Controller
             }
 
             if ($registered_voter[0]['voted']) {
-                return Redirect::back()->with('status', 'Already voted.');
+                return Redirect::back()->with('status', 'text-danger Already voted.');
             }
 
             if ($voter_federal == $current_federal && $voter_state == $current_state) {
@@ -91,10 +92,10 @@ class VoterController extends Controller
                 ]);
             }
 
-            return Redirect::back()->with('status', 'Wrong constituency.');
+            return Redirect::back()->with('status', 'text-danger Wrong constituency.');
         }
 
-        return Redirect::back()->with('status', 'Invalid credentials.');
+        return Redirect::back()->with('status', 'text-danger Invalid voter credentials.');
     }
 
     public function vote(Request $request)
@@ -118,7 +119,6 @@ class VoterController extends Controller
         ]);
     }
 
-    //TODO Unclutter code concatenation
     public function postvote(Request $request)
     {
         $delimiter = '/';

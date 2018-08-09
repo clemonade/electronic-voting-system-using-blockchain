@@ -7,6 +7,8 @@ import electionArtifacts from '../../../build/contracts/Election.json';
 let Election = contract(electionArtifacts);
 let accounts;
 let account;
+
+let totalvotes = 0;
 let totalturnout = 0;
 
 window.App = {
@@ -30,6 +32,10 @@ window.App = {
             account = accounts[0];
         });
 
+        //This is cancer.
+        $('#turnout').text('0% (0)');
+        $('#spoilt').text('0% (0)');
+
         self.populateConstituency();
     },
 
@@ -44,11 +50,17 @@ window.App = {
             election = instance;
             return election.getConstituency.call(code, {from: account})
         }).then((value) => {
-            let valid = 0;
-            let turnout = Math.round(value[1].toNumber() / count * 100) + '%';
+            let turnout;
+
             totalturnout = value[1].toNumber();
 
-            $('#turnout').text(turnout + ' (' + value[1].toNumber() + ')');
+            if (parseInt(count) === 0) {
+                turnout = 0;
+            } else {
+                turnout = Math.round(totalturnout / parseInt(count) * 100);
+            }
+
+            $('#turnout').text(turnout + '% (' + value[1].toNumber() + ')');
             $('#name').text(value[3]);
             $('#level').html(types[value[4].toNumber()].toUpperCase());
 
@@ -69,6 +81,8 @@ window.App = {
         let self = this;
         let election;
         let promises = [];
+
+
         Election.deployed().then((instance) => {
             election = instance;
             for (let candidate of candidates) {
@@ -107,14 +121,16 @@ window.App = {
                                         .addClass('votes text-right')
                                         .text(value[0].toNumber()));
                             }).then(() => {
-                                let votes = 0;
+                                totalvotes = 0;
 
                                 $('.votes').each(function () {
-                                    votes += parseInt($(this).html());
+                                    totalvotes += parseInt($(this).html());
                                 });
 
-                                let spoilt = Math.round((totalturnout - votes) / totalturnout * 100) + '%';
-                                $('#spoilt').text(spoilt + ' (' + (totalturnout - votes) + ')');
+                                if (totalturnout !== 0) {
+                                    let spoilt = Math.round((totalturnout - totalvotes) / totalturnout * 100);
+                                    $('#spoilt').text(spoilt + '% (' + (totalturnout - totalvotes) + ')');
+                                }
                             });
                         });
                     }

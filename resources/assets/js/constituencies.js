@@ -31,13 +31,6 @@ window.App = {
         self.populateInfo();
         self.setInitialisation(federals);
         self.setInitialisation(states);
-
-        //self.setStatus('text-muted Hello there!')
-        //self.setStatus('text-primary Hello there!')
-        //self.setStatus('text-success Hello there!')
-        //self.setStatus('text-info Hello there!')
-        //self.setStatus('text-warning Hello there!')
-        //self.setStatus('text-danger Hello there!')
     },
 
     setStatus: function (message) {
