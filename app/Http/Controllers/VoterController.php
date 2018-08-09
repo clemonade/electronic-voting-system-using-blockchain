@@ -38,7 +38,6 @@ class VoterController extends Controller
         $voter->save();
 
         return Redirect::back()->with('status', 'text-success Voter registered successfully.');
-
     }
 
     public function verify($federal_code, $state_code = null)

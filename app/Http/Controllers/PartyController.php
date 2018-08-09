@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreParty;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class PartyController extends Controller
 {
@@ -16,7 +18,7 @@ class PartyController extends Controller
         return view('admin.registerparty');
     }
 
-    public function store(Request $request)
+    public function store(StoreParty $request)
     {
         $name = $request->input('name');
         $abbreviation = $request->input('abbreviation');
@@ -24,6 +26,6 @@ class PartyController extends Controller
 
         $file->storeAs('public/parties', $name . $abbreviation . '.jpg');
 
-        return redirect()->route('party.index');
+        return Redirect::back()->with('status', 'text-success Party registered successfully.');
     }
 }

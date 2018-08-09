@@ -29,10 +29,40 @@ window.App = {
         });
 
         self.populateParties();
+
+        $('#state').on('change', function () {
+            // noinspection JSJQueryEfficiency
+            let level = $('#level').val();
+
+            if (level === null) {
+                $('#level option[value="0"]').prop('selected', true);
+            }
+
+            if (this.value === '14') {
+                $('#level option[value="0"]').prop('selected', true);
+                $('#level option[value="1"]').prop('disabled', true);
+
+            } else {
+                $('#level option[value="1"]').prop('disabled', false);
+            }
+
+            // noinspection JSJQueryEfficiency
+            level = $('#level').val();
+            self.populateConstituencies(level);
+        });
     },
 
     setStatus: function (message) {
-        $('#status').html(message);
+        if (message[0] === ' ') {
+            $('#status').text(message);
+        } else {
+            let bs4class = message.substr(0, message.indexOf(' '));
+            let status = message.substr(message.indexOf(' ') + 1);
+
+            $('#status')
+                .addClass(bs4class)
+                .text(status);
+        }
     },
 
     populateParties: function () {
@@ -73,33 +103,92 @@ window.App = {
     },
 
     populateDropdown: function (constituencies) {
-        $('#constiteuncy').empty();
+        let dropdown = $('#constiteuncy');
+
+        dropdown.empty();
         for (let constituency of constituencies) {
-            $('<option/>')
-                .val(constituency.code)
-                .text(constituency.code + ' ' + constituency.name)
-                .appendTo($('#constiteuncy'));
+            if (constituency.state === $('#state').val()) {
+                $('<option/>')
+                    .val(constituency.code)
+                    .text(constituency.code + ' ' + constituency.name)
+                    .appendTo(dropdown);
+            }
         }
     },
 
-    registerCandidate: function () {
+    //Actually used for validation
+    //God save us all.
+    validate: function () {
+        let self = this;
+        let valid = true;
+
+        //Fite me.
+        let c = $('#constiteuncy');
+        let n = $('#name');
+        let p = $('#party');
+        let s = $('#state');
+        let l = $('#level');
+
+        let constituency = c.val();
+        let name = n.val().toUpperCase();
+        let party = p.val();
+        let state = s.val();
+        let level = l.val();
+
+        if (name === "") {
+            valid = false;
+            n.addClass('is-invalid');
+        } else {
+            n.removeClass('is-invalid');
+        }
+
+        if (party === null) {
+            valid = false;
+            p.addClass('is-invalid');
+        } else {
+            p.removeClass('is-invalid');
+        }
+
+        if (state === null) {
+            valid = false;
+            s.addClass('is-invalid');
+        } else {
+            s.removeClass('is-invalid');
+        }
+
+        if (level === null) {
+            valid = false;
+            l.addClass('is-invalid');
+        } else {
+            l.removeClass('is-invalid');
+        }
+
+        if (constituency === null) {
+            valid = false;
+            c.addClass('is-invalid');
+        } else {
+            c.removeClass('is-invalid');
+        }
+
+        if (valid) {
+            self.registerCandidate(constituency, name, party);
+        }
+    },
+
+    registerCandidate: function (constituency, name, party) {
         let self = this;
         let election;
         Election.deployed().then((instance) => {
             election = instance;
-            let constituencyCode = $('#constiteuncy').val();
-            let candidateName = $('#name').val().toUpperCase();
-            let partyId = $('#party').val();
-            return election.registerCandidate(constituencyCode, candidateName, partyId, {from: account});
+            return election.registerCandidate(constituency, name, party, {from: account});
         }).then(() => {
-            self.setStatus('Candidate registered.');
+            self.setStatus('text-success Candidate registered successfully.');
         }).catch((e) => {
             console.log(e);
-            self.setStatus('Error showing constituencies; see log.');
+            self.setStatus('text-danger Error registering candidate.');
         });
     }
 };
-
 
 $(document).ready(() => {
     if (typeof web3 !== 'undefined') {

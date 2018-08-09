@@ -29,26 +29,32 @@ window.App = {
         });
 
         self.populateParties('parties');
+
+        // let blockNumber = 'latest';
+        // Election.deployed().then(function (instance) {
+        //     let event = instance.NewParty({}, {fromBlock: blockNumber});
+        //     event.watch((error, result) => {
+        //         blockNumber = result.blockNumber + 1;
+        //         if (!error) {
+        //             console.log(result.args.partyId + ' ' + result.args.name + ' ' + result.args.abbreviation);
+        //         }
+        //     });
+        // });
+
+        // $('#status').html('<img src="/storage/util/loading.gif" height="10">');
     },
 
     setStatus: function (message) {
-        $('#status').html(message);
-    },
+        if (message[0] === ' ') {
+            $('#status').text(message);
+        } else {
+            let bs4class = message.substr(0, message.indexOf(' '));
+            let status = message.substr(message.indexOf(' ') + 1);
 
-    registerParty: function () {
-        let self = this;
-        let election;
-        Election.deployed().then((instance) => {
-            election = instance;
-            let name = $('#name').val();
-            let abbreviation = $('#abbreviation').val();
-            return election.registerParty(name, abbreviation, {from: account});
-        }).then(() => {
-            self.setStatus('Party registered.');
-        }).catch((e) => {
-            console.log(e);
-            self.setStatus('Error registering party; see log.');
-        });
+            $('#status')
+                .addClass(bs4class)
+                .text(status);
+        }
     },
 
     populateParties: function (id) {
@@ -60,7 +66,6 @@ window.App = {
         }).then((value) => {
             let promises = [];
             let partiesLength = value.toNumber();
-            console.log(partiesLength);
             for (let x = 0; x < partiesLength; x++) {
                 promises.push(election.getParty.call(x, {from: account}));
             }
@@ -88,11 +93,53 @@ window.App = {
             });
         }).catch((e) => {
             console.log(e);
-            self.setStatus('Error showing parties; see log.');
+            self.setStatus('text-danger Error retrieving parties.');
         });
-    }
-};
+    },
 
+    //TODO Integrate Laravel form request validation with MetaMask prompt trigger
+    //Purely used to trigger/stop MetaMask prompt
+    //This is dumb.
+    validate: function () {
+        let self = this;
+        let valid = true;
+
+        let name = $('#name').val();
+        let abbreviation = $('#abbreviation').val();
+        let image = $('#image').val();
+
+
+        if (name === "") {
+            valid = false;
+        }
+
+        if (abbreviation === "" || !/^[a-zA-Z]+$/.test(abbreviation)) {
+            valid = false;
+        }
+
+        //Does not test for file type. Upload to high hell
+        if (image === "") {
+            valid = false;
+        }
+
+        if (valid) {
+            self.registerParty(name, abbreviation);
+        }
+    },
+
+    registerParty: function (name, abbreviation) {
+        let self = this;
+        let election;
+
+        Election.deployed().then((instance) => {
+            election = instance;
+            return election.registerParty(name, abbreviation, {from: account});
+        }).catch((e) => {
+            console.log(e);
+            self.setStatus('text-danger Error registering party.');
+        });
+    },
+};
 
 $(document).ready(() => {
     if (typeof web3 !== 'undefined') {

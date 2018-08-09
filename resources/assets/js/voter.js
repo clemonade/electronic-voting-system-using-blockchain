@@ -31,7 +31,16 @@ window.App = {
     },
 
     setStatus: function (message) {
-        $('#status').html(message);
+        if (message[0] === ' ') {
+            $('#status').text(message);
+        } else {
+            let bs4class = message.substr(0, message.indexOf(' '));
+            let status = message.substr(message.indexOf(' ') + 1);
+
+            $('#status')
+                .addClass(bs4class)
+                .text(status);
+        }
     },
 
     populateFederalDropdown: function (state_id) {
@@ -72,7 +81,8 @@ window.App = {
         }
 
         for (let constituency of states) {
-            if (constituency.code.includes(federal.code)) {
+            let code = constituency.code;
+            if (code.includes(federal.code)) {
                 $('<option/>')
                     .val(constituency.id)
                     .text(constituency.code + ' ' + constituency.name)
@@ -96,7 +106,7 @@ window.App = {
             return election.getVoter.call(hash, {from: account});
         }).then((value) => {
             if (value[0]) {
-                self.setStatus('');
+                self.setStatus(' ');
 
                 $('#hash').val(hash);
 
@@ -115,11 +125,11 @@ window.App = {
                 $('#hash').val('');
                 $('#federal').val('');
                 $('#state').val('');
-                self.setStatus('Invalid voter info.');
+                self.setStatus('text-danger Invalid voter credentials.');
             }
         }).catch(function (e) {
             console.log(e);
-            self.setStatus('Error retrieving voter info.');
+            self.setStatus('text-danger Error retrieving voter info.');
         });
     }
 };

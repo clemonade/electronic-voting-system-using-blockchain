@@ -86,7 +86,6 @@
 </div>
 
 <!--Repopulation on validation error incomplete (just kill me already)-->
-
 <div class="form-group">
     <label for="federalconstituency">Federal Constituency:</label>
     {!! Form::select('federalconstituency', ['0' => '- Select Federal Constituency -'], null, [

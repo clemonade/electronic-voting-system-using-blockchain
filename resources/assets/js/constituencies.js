@@ -15,12 +15,12 @@ window.App = {
 
         web3.eth.getAccounts(function (err, accs) {
             if (err != null) {
-                alert('There was an error fetching your accounts.');
+                self.setStatus(' There was an error fetching accounts.');
                 return;
             }
 
             if (accs.length === 0) {
-                alert('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.');
+                self.setStatus('Couldn\'t get any accounts. Ensure Ethereum client is configured correctly.');
                 return;
             }
 
@@ -31,10 +31,26 @@ window.App = {
         self.populateInfo();
         self.setInitialisation(federals);
         self.setInitialisation(states);
+
+        //self.setStatus('text-muted Hello there!')
+        //self.setStatus('text-primary Hello there!')
+        //self.setStatus('text-success Hello there!')
+        //self.setStatus('text-info Hello there!')
+        //self.setStatus('text-warning Hello there!')
+        //self.setStatus('text-danger Hello there!')
     },
 
     setStatus: function (message) {
-        $('#status').html(message);
+        if (message[0] === ' ') {
+            $('#status').text(message);
+        } else {
+            let bs4class = message.substr(0, message.indexOf(' '));
+            let status = message.substr(message.indexOf(' ') + 1);
+
+            $('#status')
+                .addClass(bs4class)
+                .text(status);
+        }
     },
 
     populateInfo: function () {

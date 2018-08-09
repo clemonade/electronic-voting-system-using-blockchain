@@ -11,30 +11,55 @@
 <h1>Register Party</h1>
 
 {!! Form::open([
+'id' => 'form',
 'route' => ['party.store'],
-'class' => 'form-horizontal',
 'enctype' => 'multipart/form-data',
 ]) !!}
 
+<!--Literally does not return the file on request validation failure-->
 <div class="form-group">
-    <label for="logo">Logo:</label>
-    <input type="file" id="logo" name="image" class="form-control-file border">
+    <label for="image">Logo:</label><br>
+    {!! Form::file('image', [
+    'id' => 'image',
+    'class' => 'form-control-file border' . (($errors->has('image')) ? ' is-invalid' : ''),
+    ]) !!}
+    @if($errors->has('image'))
+    <div class="invalid-feedback">
+        {{$errors->first('image')}}
+    </div>
+    @endif
 </div>
 
 <div class="form-group">
     <label for="name">Party Name:</label>
-    <input type="text" id="name" name="name" class="form-control">
+    {!! Form::text('name', null, [
+    'id' => 'name',
+    'class' => 'form-control' . (($errors->has('name')) ? ' is-invalid' : ''),
+    'maxlength' => 100,
+    ]) !!}
+    @if($errors->has('name'))
+    <div class="invalid-feedback">
+        {{$errors->first('name')}}
+    </div>
+    @endif
 </div>
 
 <div class="form-group">
-    <label for="abbreviation">Party Abbreviation:</label>
-    <input type="text" id="abbreviation" name="abbreviation" class="form-control">
+    <label for="name">Party Abbreviation:</label>
+    {!! Form::text('abbreviation', null, [
+    'id' => 'abbreviation',
+    'class' => 'form-control' . (($errors->has('abbreviation')) ? ' is-invalid' : ''),
+    'maxlength' => 20,
+    ]) !!}
+    @if($errors->has('abbreviation'))
+    <div class="invalid-feedback">
+        {{$errors->first('abbreviation')}}
+    </div>
+    @endif
 </div>
 
-<button type="submit" class="btn btn-primary" onclick="App.registerParty()">Register</button>
+<button type="submit" class="btn btn-primary" onclick="App.validate()">Register</button>
 
 {!! Form::close() !!}
-
-<span id="status"></span>
 
 @endsection
