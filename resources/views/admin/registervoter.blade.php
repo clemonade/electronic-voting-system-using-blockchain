@@ -17,8 +17,9 @@
 <h1>Register Voter</h1>
 
 <!--Illuminate/HTML used for model binding-->
-{!! Form::model($voter, [
-'route' => ['registervoter.store']
+{!! Form::open([
+'route' => ['registervoter.store'],
+'onsubmit' => 'return App.validateRegister()',
 ]) !!}
 
 <div class="form-group">
@@ -28,11 +29,9 @@
     'class' => 'form-control' . (($errors->has('name')) ? ' is-invalid' : ''),
     'maxlength' => 100,
     ]) !!}
-    @if($errors->has('name'))
     <div class="invalid-feedback">
-        {{$errors->first('name')}}
+        {{($errors->has('name')) ? $errors->first('name') : 'Name is required.'}}
     </div>
-    @endif
 </div>
 
 <div class="form-group">
@@ -42,16 +41,15 @@
     'class' => 'form-control' . (($errors->has('nric')) ? ' is-invalid' : ''),
     'maxlength' => 12,
     ]) !!}
-    @if($errors->has('nric'))
     <div class="invalid-feedback">
-        {{$errors->first('nric')}}
+        {{($errors->has('nric')) ? $errors->first('nric') : ''}}
+        <span id="nricfeedback"></span>
     </div>
-    @endif
 </div>
 
 <div class="form-group">
     <label for="gender">Gender:</label><br>
-    <div class="form-control {{ ($errors->has('gender')) ? 'is-invalid': '' }}">
+    <div id="gender" class="form-control {{ ($errors->has('gender')) ? 'is-invalid': '' }}">
         @foreach(Common::$genders as $key => $val)
         <div class="form-check-inline">
             <label class="form-check-label">
@@ -62,11 +60,9 @@
         </div>
         @endforeach
     </div>
-    @if($errors->has('gender'))
     <div class="invalid-feedback">
-        {{$errors->first('gender')}}
+        {{($errors->has('gender')) ? $errors->first('gender') : 'Gender is required.'}}
     </div>
-    @endif
 </>
 
 <div class="form-group">
@@ -78,14 +74,12 @@
     ],[
     '00' => ['disabled selected hidden']
     ]) !!}
-    @if($errors->has('state'))
     <div class="invalid-feedback">
-        {{$errors->first('state')}}
+        {{($errors->has('state')) ? $errors->first('state') : 'State is required.'}}
     </div>
-    @endif
 </div>
 
-<!--Repopulation on validation error incomplete (just kill me already)-->
+<!--Repopulation on request validation error incomplete (just kill me already)-->
 <div class="form-group">
     <label for="federalconstituency">Federal Constituency:</label>
     {!! Form::select('federalconstituency', ['0' => '- Select Federal Constituency -'], null, [
@@ -95,11 +89,10 @@
     ],[
     '0' => ['disabled selected hidden']
     ]) !!}
-    @if($errors->has('federalconstituency'))
     <div class="invalid-feedback">
-        {{$errors->first('federalconstituency')}}
+        {{($errors->has('federalconstituency')) ? $errors->first('federalconstituency') : 'Federal Constituency is
+        required.'}}
     </div>
-    @endif
 </div>
 
 <div class="stateconstituency form-group">
@@ -110,11 +103,10 @@
     ],[
     '0' => ['disabled selected hidden']
     ]) !!}
-    @if($errors->has('stateconstituency'))
     <div class="invalid-feedback">
-        {{$errors->first('stateconstituency')}}
+        {{($errors->has('stateconstituency')) ? $errors->first('stateconstituency') : 'State Constituency is
+        required.'}}
     </div>
-    @endif
 </div>
 
 <button type="submit" class="btn btn-primary">Register</button>

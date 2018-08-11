@@ -5,8 +5,6 @@ import {default as contract} from 'truffle-contract';
 import electionArtifacts from '../../../build/contracts/Election.json';
 
 let Election = contract(electionArtifacts);
-let accounts;
-let account;
 
 let totalvotes = 0;
 let totalturnout = 0;
@@ -16,21 +14,6 @@ window.App = {
         let self = this;
 
         Election.setProvider(web3.currentProvider);
-
-        web3.eth.getAccounts(function (err, accs) {
-            if (err != null) {
-                alert('There was an error fetching your accounts.');
-                return;
-            }
-
-            if (accs.length === 0) {
-                alert('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.');
-                return;
-            }
-
-            accounts = accs;
-            account = accounts[0];
-        });
 
         //This is cancer.
         $('#turnout').text('0% (0)');
@@ -48,7 +31,7 @@ window.App = {
         let election;
         Election.deployed().then((instance) => {
             election = instance;
-            return election.getConstituency.call(code, {from: account})
+            return election.getConstituency.call(code)
         }).then((value) => {
             let turnout;
 
@@ -86,14 +69,14 @@ window.App = {
         Election.deployed().then((instance) => {
             election = instance;
             for (let candidate of candidates) {
-                promises.push(election.getCandidate.call(candidate, {from: account}))
+                promises.push(election.getCandidate.call(candidate))
             }
 
             Promise.all(promises).then(() => {
                 let parties = [];
                 for (let x = 0; x < promises.length; x++) {
                     promises[x].then((value) => {
-                        parties.push((election.getParty.call(value[3].toNumber(), {from: account})))
+                        parties.push((election.getParty.call(value[3].toNumber())))
                     })
                 }
 

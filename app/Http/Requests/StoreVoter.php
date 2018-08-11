@@ -33,6 +33,7 @@ class StoreVoter extends FormRequest
             'gender' => 'required',
             'state' => 'required',
             'federalconstituency' => 'required',
+            'stateconstituency' => 'sometimes|required', //Needs reexamination
         ];
     }
 
@@ -44,6 +45,7 @@ class StoreVoter extends FormRequest
             'gender.required' => 'Gender is required.',
             'state.required' => 'State is required.',
             'federalconstituency.required' => 'Federal Constituency is required.',
+            'stateconstituency.required' => 'State Constituency is required.',
         ];
     }
 }

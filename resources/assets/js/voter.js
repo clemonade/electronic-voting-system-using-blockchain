@@ -5,29 +5,12 @@ import electionArtifacts from '../../../build/contracts/Election.json';
 import {sha256} from "js-sha256";
 
 let Election = contract(electionArtifacts);
-let accounts;
-let account;
 
 window.App = {
     start: function () {
         let self = this;
 
         Election.setProvider(web3.currentProvider);
-
-        web3.eth.getAccounts((err, accs) => {
-            if (err != null) {
-                alert('There was an error fetching your accounts.');
-                return;
-            }
-
-            if (accs.length === 0) {
-                alert('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.');
-                return;
-            }
-
-            accounts = accs;
-            account = accounts[0];
-        });
     },
 
     setStatus: function (message) {
@@ -38,6 +21,7 @@ window.App = {
             let status = message.substr(message.indexOf(' ') + 1);
 
             $('#status')
+                .removeClass()
                 .addClass(bs4class)
                 .text(status);
         }
@@ -91,6 +75,86 @@ window.App = {
         }
     },
 
+    //Frontend validation god.
+    //idk what happens if frontend passes but backend fails.
+    validateRegister: function () {
+        let self = this;
+        let valid = true;
+
+        let n = $('#name');
+        let i = $('#nric');
+        let g = $('input[name="gender"]:checked');
+        let s = $('#state');
+        let fc = $('#federalconstituency');
+        let sc = $('#stateconstituency');
+
+        let name = n.val();
+        let nric = i.val();
+        let gender = g.length;
+        let state = s.val();
+        let federalconstituency = fc.val();
+        let stateconstituency = sc.val();
+
+        if (name === "") {
+            valid = false;
+            n.addClass('is-invalid');
+        } else {
+            n.removeClass('is-invalid');
+        }
+
+        //DEV
+        let regex = new RegExp();
+        //let regex = new RegExp(/^([0-9]{2})([0-1]{1})([0-9]{1})([0-3]{1})([0-9]{1})([0-9]{6})$/);
+
+        if (nric === "") {
+            valid = false;
+            i.addClass('is-invalid');
+            $('#nricfeedback').text('NRIC is required.')
+        } else {
+            if (regex.test(nric)) {
+                i.removeClass('is-invalid');
+            } else {
+                valid = false;
+                i.addClass('is-invalid');
+                $('#nricfeedback').text('NRIC is invalid.');
+            }
+        }
+
+        if (gender !== 1) {
+            valid = false;
+            $('#gender').addClass('is-invalid');
+        } else {
+            $('#gender').removeClass('is-invalid');
+        }
+
+        if (state === null) {
+            valid = false;
+            s.addClass('is-invalid');
+        } else {
+            s.removeClass('is-invalid');
+        }
+
+        if (federalconstituency === null) {
+            valid = false;
+            fc.addClass('is-invalid');
+        } else {
+            fc.removeClass('is-invalid');
+        }
+
+        //For state constituency hiding/emptying
+        if (!$('.stateconstituency:hidden').length) {
+            if (stateconstituency === null) {
+                valid = false;
+                sc.addClass('is-invalid');
+            }
+            else {
+                sc.removeClass('is-invalid');
+            }
+        }
+
+        return valid;
+    },
+
     validate: function () {
         let self = this;
         let valid = true;
@@ -138,7 +202,7 @@ window.App = {
 
         Election.deployed().then((instance) => {
             election = instance;
-            return election.getVoter.call(hash, {from: account});
+            return election.getVoter.call(hash);
         }).then((value) => {
             if (value[0]) {
                 $('#bool')
@@ -159,7 +223,7 @@ window.App = {
                     $('#state').val('INVALID');
                 }
 
-                self.setStatus('text-success Voter info found.');
+                self.setStatus('text-success Voter information found.');
             } else {
                 $('#bool')
                     .val('DID NOT VOTE')
@@ -169,11 +233,11 @@ window.App = {
                 $('#federal').val('INAPPLICABLE');
                 $('#state').val('INAPPLICABLE');
 
-                self.setStatus('text-warning Voter info not found.');
+                self.setStatus('text-warning Voter information not found.');
             }
         }).catch(function (e) {
             console.log(e);
-            self.setStatus('text-danger Error retrieving voter info.');
+            self.setStatus('text-danger Error retrieving voter information.');
         });
     },
 };

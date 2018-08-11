@@ -20,12 +20,10 @@ class VoterController extends Controller
 
     public function create()
     {
-        $voter = new RegisteredVoter();
         $federals = FederalConstituency::orderBy('code', 'asc')->get();
         $states = StateConstituency::orderBy('code', 'asc')->get();
 
         return view('admin.registervoter', [
-            'voter' => $voter,
             'federals' => $federals,
             'states' => $states,
         ]);

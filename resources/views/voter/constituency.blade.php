@@ -16,7 +16,9 @@
 @section('content')
 
 <h1 id="code">{{ $code }}</h1>
-<h2 id="name"></h2>
+<h1>
+    <small id="name"></small>
+</h1>
 
 <table class="table">
     <tbody>

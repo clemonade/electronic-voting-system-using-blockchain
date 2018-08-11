@@ -7,5 +7,6 @@
     "/js/constituencies.js": "/js/constituencies.js",
     "/js/candidate.js": "/js/candidate.js",
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/js/verify.js": "/js/verify.js"
 }

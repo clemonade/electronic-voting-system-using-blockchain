@@ -1,23 +1,28 @@
+<?php use App\Common; ?>
+
 @section('title')
 <title>Voter | Verify</title>
 @stop
 @extends('layouts.app')
 @section('script')
+<script src="{{asset('js/verify.js')}}"></script>
 @stop
 @include('layouts.admin')
 @section('content')
 
 <h1>Verify Voter</h1>
+<h2>{{ Common::$states[$federal['state']] }}</h2>
 <h2>{{ $federal['code'] }}
     <small>{{ $federal['name'] }}</small>
 </h2>
 <h2>{{ (isset($state)) ? $state['code'] : '' }}
     <small>{{ (isset($state)) ? $state['name'] : '' }}</small>
 </h2>
-<!--TODO Show state-->
+
 {!! Form::open([
 'route' => ['admin.prevote'],
-'class' => 'form-horizontal'
+'class' => 'form-horizontal',
+'onsubmit' => 'return App.validate()',
 ]) !!}
 
 <div class="form-group">
@@ -27,11 +32,9 @@
     'class' => 'form-control' . (($errors->has('name')) ? ' is-invalid' : ''),
     'maxlength' => 100,
     ]) !!}
-    @if($errors->has('name'))
     <div class="invalid-feedback">
-        {{$errors->first('name')}}
+        {{($errors->has('name')) ? $errors->first('name') : 'Name is required.'}}
     </div>
-    @endif
 </div>
 
 <div class="form-group">
@@ -41,11 +44,10 @@
     'class' => 'form-control' . (($errors->has('nric')) ? ' is-invalid' : ''),
     'maxlength' => 12,
     ]) !!}
-    @if($errors->has('nric'))
     <div class="invalid-feedback">
-        {{$errors->first('nric')}}
+        {{($errors->has('nric')) ? $errors->first('nric') : ''}}
+        <span id="nricfeedback"></span>
     </div>
-    @endif
 </div>
 
 {{ Form::hidden('federal', $federal) }}

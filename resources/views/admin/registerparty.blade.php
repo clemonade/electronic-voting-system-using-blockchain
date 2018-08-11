@@ -14,6 +14,7 @@
 'id' => 'form',
 'route' => ['party.store'],
 'enctype' => 'multipart/form-data',
+'onsubmit' => 'return App.validate()',
 ]) !!}
 
 <!--Literally does not return the file on request validation failure-->
@@ -23,11 +24,9 @@
     'id' => 'image',
     'class' => 'form-control-file border' . (($errors->has('image')) ? ' is-invalid' : ''),
     ]) !!}
-    @if($errors->has('image'))
     <div class="invalid-feedback">
-        {{$errors->first('image')}}
+        {{($errors->has('image')) ? $errors->first('image') : 'Logo is required.'}}
     </div>
-    @endif
 </div>
 
 <div class="form-group">
@@ -37,11 +36,9 @@
     'class' => 'form-control' . (($errors->has('name')) ? ' is-invalid' : ''),
     'maxlength' => 100,
     ]) !!}
-    @if($errors->has('name'))
     <div class="invalid-feedback">
-        {{$errors->first('name')}}
+        {{($errors->has('name')) ? $errors->first('name') : 'Name is required.'}}
     </div>
-    @endif
 </div>
 
 <div class="form-group">
@@ -51,14 +48,13 @@
     'class' => 'form-control' . (($errors->has('abbreviation')) ? ' is-invalid' : ''),
     'maxlength' => 20,
     ]) !!}
-    @if($errors->has('abbreviation'))
     <div class="invalid-feedback">
-        {{$errors->first('abbreviation')}}
+        {{($errors->has('abbreviation')) ? $errors->first('abbreviation') : ''}}
+        <span id="abbreviationfeedback"></span>
     </div>
-    @endif
 </div>
 
-<button type="submit" class="btn btn-primary" onclick="App.validate()">Register</button>
+<button type="submit" class="btn btn-primary">Register</button>
 
 {!! Form::close() !!}
 

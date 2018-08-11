@@ -13,6 +13,9 @@ window.App = {
 
         Election.setProvider(web3.currentProvider);
 
+        if (window.location.pathname.includes('admin')) {
+
+        }
         web3.eth.getAccounts(function (err, accs) {
             if (err != null) {
                 self.setStatus(' There was an error fetching accounts.');
@@ -20,7 +23,7 @@ window.App = {
             }
 
             if (accs.length === 0) {
-                self.setStatus('Couldn\'t get any accounts. Ensure Ethereum client is configured correctly.');
+                self.setStatus(' Couldn\'t get any accounts. Ensure Ethereum client is configured correctly.');
                 return;
             }
 
@@ -65,7 +68,7 @@ window.App = {
 
         }).catch(function (e) {
             console.log(e);
-            self.setStatus('Error retrieving contract info.');
+            self.setStatus('Error retrieving contract information.');
         });
     },
 

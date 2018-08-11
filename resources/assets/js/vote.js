@@ -162,7 +162,7 @@ window.App = {
             console.log(value[4].toNumber());
         }).catch(function (e) {
             console.log(e);
-            self.setStatus('Error retrieving voter info.');
+            self.setStatus('Error retrieving voter information.');
         });
     }
 };

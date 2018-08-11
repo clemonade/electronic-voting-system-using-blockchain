@@ -25,7 +25,9 @@ class Abbreviation implements Rule
      */
     public function passes($attribute, $value)
     {
-        return preg_match('/^[A-Za-z].{1,20}$/', $value);
+        //DEV
+        return true;
+        //return preg_match('/^[A-Za-z].{1,20}$/', $value);
     }
 
     /**

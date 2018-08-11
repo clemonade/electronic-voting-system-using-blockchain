@@ -100,31 +100,57 @@ window.App = {
     //TODO Integrate Laravel form request validation with MetaMask prompt trigger
     //Purely used to trigger/stop MetaMask prompt
     //This is dumb.
+    //Nope, now used for frontend validation as well
     validate: function () {
         let self = this;
         let valid = true;
 
-        let name = $('#name').val();
-        let abbreviation = $('#abbreviation').val();
-        let image = $('#image').val();
+        let n = $('#name');
+        let a = $('#abbreviation');
+        let i = $('#image');
 
+        let name = n.val();
+        let abbreviation = a.val();
+        let image = i.val();
 
         if (name === "") {
             valid = false;
+            n.addClass('is-invalid');
+        } else {
+            n.removeClass('is-invalid');
         }
 
-        if (abbreviation === "" || !/^[a-zA-Z]+$/.test(abbreviation)) {
+        //DEV
+        let regex = new RegExp();
+        //let regex = new RegExp(/^[a-zA-Z]+$/);
+
+        if (abbreviation === "") {
             valid = false;
+            a.addClass('is-invalid');
+            $('#abbreviationfeedback').text('Abbreviation is required.')
+        } else {
+            if (regex.test(abbreviation)) {
+                a.removeClass('is-invalid');
+            } else {
+                valid = false;
+                a.addClass('is-invalid');
+                $('#nricfeedback').text('Abbreviation is invalid.');
+            }
         }
 
-        //Does not test for file type. Upload to high hell
+        //Does not test for file type. Upload to high hell.
         if (image === "") {
             valid = false;
+            i.addClass('is-invalid');
+        } else {
+            i.removeClass('is-invalid');
         }
 
         if (valid) {
             self.registerParty(name, abbreviation);
         }
+
+        return valid;
     },
 
     registerParty: function (name, abbreviation) {
