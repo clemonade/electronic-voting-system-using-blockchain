@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 204);
+/******/ 	return __webpack_require__(__webpack_require__.s = 205);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -37440,30 +37440,27 @@ module.exports = {"contractName":"Election","abi":[{"constant":true,"inputs":[],
 /* 201 */,
 /* 202 */,
 /* 203 */,
-/* 204 */
+/* 204 */,
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(205);
+module.exports = __webpack_require__(206);
 
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_web3__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_web3___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_web3__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_truffle_contract__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_truffle_contract___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_truffle_contract__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__build_contracts_Election_json__ = __webpack_require__(169);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__build_contracts_Election_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__build_contracts_Election_json__);
-/* eslint-disable no-undef */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_truffle_contract__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_truffle_contract___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_truffle_contract__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__build_contracts_Election_json__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__build_contracts_Election_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__build_contracts_Election_json__);
 
 
 
-
-var Election = __WEBPACK_IMPORTED_MODULE_1_truffle_contract___default()(__WEBPACK_IMPORTED_MODULE_2__build_contracts_Election_json___default.a);
+var Election = __WEBPACK_IMPORTED_MODULE_0_truffle_contract___default()(__WEBPACK_IMPORTED_MODULE_1__build_contracts_Election_json___default.a);
 var accounts = void 0;
 var account = void 0;
 
@@ -37489,19 +37486,6 @@ window.App = {
         });
 
         self.populateParties('parties');
-
-        // let blockNumber = 'latest';
-        // Election.deployed().then(function (instance) {
-        //     let event = instance.NewParty({}, {fromBlock: blockNumber});
-        //     event.watch((error, result) => {
-        //         blockNumber = result.blockNumber + 1;
-        //         if (!error) {
-        //             console.log(result.args.partyId + ' ' + result.args.name + ' ' + result.args.abbreviation);
-        //         }
-        //     });
-        // });
-
-        // $('#status').html('<img src="/storage/util/loading.gif" height="10">');
     },
 
     setStatus: function setStatus(message) {
@@ -37602,6 +37586,7 @@ window.App = {
         return valid;
     },
 
+    //TODO Remove instances of status message passing through controllers
     registerParty: function registerParty(name, abbreviation) {
         var self = this;
         var election = void 0;
@@ -37615,18 +37600,6 @@ window.App = {
         });
     }
 };
-
-$(document).ready(function () {
-    if (typeof web3 !== 'undefined') {
-        console.warn('Using web3 detected from external source.');
-        window.web3 = new __WEBPACK_IMPORTED_MODULE_0_web3___default.a(web3.currentProvider);
-    } else {
-        console.warn('No web3 detected. Falling back to http://127.0.0.1:8545.');
-        window.web3 = new __WEBPACK_IMPORTED_MODULE_0_web3___default.a(new __WEBPACK_IMPORTED_MODULE_0_web3___default.a.providers.HttpProvider('http://127.0.0.1:8545'));
-    }
-
-    App.start();
-});
 
 /***/ })
 /******/ ]);

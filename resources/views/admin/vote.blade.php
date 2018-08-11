@@ -1,7 +1,7 @@
+@extends('layouts.app')
 @section('title')
 <title>Voter | Vote</title>
 @stop
-@extends('layouts.app')
 @section('script')
 <script type="text/javascript">
     let federal = <?php echo $federal ?>;
@@ -71,6 +71,6 @@
     <span id="status"><?php echo Session::get('status'); ?></span>
 </nav>
 
-@endsection
+@stop
 
 

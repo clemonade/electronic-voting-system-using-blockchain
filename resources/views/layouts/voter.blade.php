@@ -15,6 +15,9 @@
     </ul>
 </nav>
 
-<nav class="navbar navbar-expand bg-light fixed-bottom justify-content-center">
-    <span id="status"><?php echo Session::get('status'); ?></span>
+<nav
+    class="navbar navbar-expand bg-light fixed-bottom justify-content-center">
+    <span id="status" class="{{ (null !== (Session::get('status'))) ? explode(' ', Session::get('status'))[0]: ''}}">
+        {{ (null !== (Session::get('status'))) ? strstr(Session::get('status'), ' '): '' }}
+    </span>
 </nav>

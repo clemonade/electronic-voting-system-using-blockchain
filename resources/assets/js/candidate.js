@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-import {default as Web3} from 'web3';
 import {default as contract} from 'truffle-contract';
 import electionArtifacts from '../../../build/contracts/Election.json';
 
@@ -70,12 +68,12 @@ window.App = {
         let election;
         Election.deployed().then((instance) => {
             election = instance;
-            return election.getPartiesLength.call({from: account});
+            return election.getPartiesLength.call();
         }).then((value) => {
             let promises = [];
             let partiesLength = value.toNumber();
             for (let x = 0; x < partiesLength; x++) {
-                promises.push(election.getParty.call(x, {from: account}));
+                promises.push(election.getParty.call(x));
             }
             Promise.all(promises).then(() => {
                 for (let x = 0; x < partiesLength; x++) {
@@ -189,15 +187,3 @@ window.App = {
         });
     }
 };
-
-$(document).ready(() => {
-    if (typeof web3 !== 'undefined') {
-        console.warn('Using web3 detected from external source.');
-        window.web3 = new Web3(web3.currentProvider);
-    } else {
-        console.warn('No web3 detected. Falling back to http://127.0.0.1:8545.');
-        window.web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'));
-    }
-
-    App.start();
-});

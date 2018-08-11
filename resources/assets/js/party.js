@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-import {default as Web3} from 'web3';
 import {default as contract} from 'truffle-contract';
 import electionArtifacts from '../../../build/contracts/Election.json';
 
@@ -29,19 +27,6 @@ window.App = {
         });
 
         self.populateParties('parties');
-
-        // let blockNumber = 'latest';
-        // Election.deployed().then(function (instance) {
-        //     let event = instance.NewParty({}, {fromBlock: blockNumber});
-        //     event.watch((error, result) => {
-        //         blockNumber = result.blockNumber + 1;
-        //         if (!error) {
-        //             console.log(result.args.partyId + ' ' + result.args.name + ' ' + result.args.abbreviation);
-        //         }
-        //     });
-        // });
-
-        // $('#status').html('<img src="/storage/util/loading.gif" height="10">');
     },
 
     setStatus: function (message) {
@@ -153,6 +138,7 @@ window.App = {
         return valid;
     },
 
+    //TODO Remove instances of status message passing through controllers
     registerParty: function (name, abbreviation) {
         let self = this;
         let election;
@@ -166,15 +152,3 @@ window.App = {
         });
     },
 };
-
-$(document).ready(() => {
-    if (typeof web3 !== 'undefined') {
-        console.warn('Using web3 detected from external source.');
-        window.web3 = new Web3(web3.currentProvider);
-    } else {
-        console.warn('No web3 detected. Falling back to http://127.0.0.1:8545.');
-        window.web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'));
-    }
-
-    App.start();
-});

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 214);
+/******/ 	return __webpack_require__(__webpack_require__.s = 215);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -37450,33 +37450,30 @@ module.exports = {"contractName":"Election","abi":[{"constant":true,"inputs":[],
 /* 211 */,
 /* 212 */,
 /* 213 */,
-/* 214 */
+/* 214 */,
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(215);
+module.exports = __webpack_require__(216);
 
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_web3__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_web3___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_web3__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_truffle_contract__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_truffle_contract___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_truffle_contract__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__build_contracts_Election_json__ = __webpack_require__(169);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__build_contracts_Election_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__build_contracts_Election_json__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_js_sha256__ = __webpack_require__(216);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_js_sha256___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_js_sha256__);
-/* eslint-disable no-undef */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_truffle_contract__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_truffle_contract___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_truffle_contract__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__build_contracts_Election_json__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__build_contracts_Election_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__build_contracts_Election_json__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_js_sha256__ = __webpack_require__(217);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_js_sha256___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_js_sha256__);
 
 
 
 
-
-var Election = __WEBPACK_IMPORTED_MODULE_1_truffle_contract___default()(__WEBPACK_IMPORTED_MODULE_2__build_contracts_Election_json___default.a);
+var Election = __WEBPACK_IMPORTED_MODULE_0_truffle_contract___default()(__WEBPACK_IMPORTED_MODULE_1__build_contracts_Election_json___default.a);
 
 window.App = {
     start: function start() {
@@ -37723,7 +37720,7 @@ window.App = {
         var self = this;
         var election = void 0;
 
-        var hash = Object(__WEBPACK_IMPORTED_MODULE_3_js_sha256__["sha256"])(name + nric + Object(__WEBPACK_IMPORTED_MODULE_3_js_sha256__["sha256"])(nonce));
+        var hash = Object(__WEBPACK_IMPORTED_MODULE_2_js_sha256__["sha256"])(name + nric + Object(__WEBPACK_IMPORTED_MODULE_2_js_sha256__["sha256"])(nonce));
 
         Election.deployed().then(function (instance) {
             election = instance;
@@ -37761,20 +37758,8 @@ window.App = {
     }
 };
 
-$(document).ready(function () {
-    if (typeof web3 !== 'undefined') {
-        console.warn('Using web3 detected from external source.');
-        window.web3 = new __WEBPACK_IMPORTED_MODULE_0_web3___default.a(web3.currentProvider);
-    } else {
-        console.warn('No web3 detected. Falling back to http://127.0.0.1:8545.');
-        window.web3 = new __WEBPACK_IMPORTED_MODULE_0_web3___default.a(new __WEBPACK_IMPORTED_MODULE_0_web3___default.a.providers.HttpProvider('http://127.0.0.1:8545'));
-    }
-
-    App.start();
-});
-
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, global) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -37803,7 +37788,7 @@ $(document).ready(function () {
     root = self;
   }
   var COMMON_JS = !root.JS_SHA256_NO_COMMON_JS && typeof module === 'object' && module.exports;
-  var AMD = "function" === 'function' && __webpack_require__(217);
+  var AMD = "function" === 'function' && __webpack_require__(218);
   var ARRAY_BUFFER = !root.JS_SHA256_NO_ARRAY_BUFFER && typeof ArrayBuffer !== 'undefined';
   var HEX_CHARS = '0123456789abcdef'.split('');
   var EXTRA = [-2147483648, 8388608, 32768, 128];
@@ -38300,7 +38285,7 @@ $(document).ready(function () {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30), __webpack_require__(7)))
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, exports) {
 
 /* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */

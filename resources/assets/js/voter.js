@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-import {default as Web3} from 'web3';
 import {default as contract} from 'truffle-contract';
 import electionArtifacts from '../../../build/contracts/Election.json';
 import {sha256} from "js-sha256";
@@ -241,15 +239,3 @@ window.App = {
         });
     },
 };
-
-$(document).ready(() => {
-    if (typeof web3 !== 'undefined') {
-        console.warn('Using web3 detected from external source.');
-        window.web3 = new Web3(web3.currentProvider);
-    } else {
-        console.warn('No web3 detected. Falling back to http://127.0.0.1:8545.');
-        window.web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'));
-    }
-
-    App.start();
-});

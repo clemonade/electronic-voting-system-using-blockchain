@@ -1,9 +1,9 @@
 <?php use App\Common; ?>
 
+@extends('layouts.app')
 @section('title')
 <title>Voter | Verify</title>
 @stop
-@extends('layouts.app')
 @section('script')
 <script src="{{asset('js/prevote.js')}}"></script>
 @stop
@@ -83,4 +83,4 @@
     <span id="status">{{ Session::get('status') }}</span>
 </nav>
 
-@endsection
+@stop

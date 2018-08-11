@@ -1,13 +1,14 @@
 <?php use App\Common; ?>
-
+@extends('layouts.app')
 @section('title')
 <title>Voter | Verify</title>
 @stop
-@extends('layouts.app')
+@section('nav')
+@include('layouts.admin')
+@stop
 @section('script')
 <script src="{{asset('js/verify.js')}}"></script>
 @stop
-@include('layouts.admin')
 @section('content')
 
 <h1>Verify Voter</h1>
@@ -57,4 +58,4 @@
 
 {!! Form::close() !!}
 
-@endsection
+@stop

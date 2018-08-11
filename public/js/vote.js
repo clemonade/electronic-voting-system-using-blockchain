@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 212);
+/******/ 	return __webpack_require__(__webpack_require__.s = 213);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -37448,30 +37448,27 @@ module.exports = {"contractName":"Election","abi":[{"constant":true,"inputs":[],
 /* 209 */,
 /* 210 */,
 /* 211 */,
-/* 212 */
+/* 212 */,
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(213);
+module.exports = __webpack_require__(214);
 
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_web3__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_web3___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_web3__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_truffle_contract__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_truffle_contract___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_truffle_contract__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__build_contracts_Election_json__ = __webpack_require__(169);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__build_contracts_Election_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__build_contracts_Election_json__);
-/* eslint-disable no-undef */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_truffle_contract__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_truffle_contract___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_truffle_contract__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__build_contracts_Election_json__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__build_contracts_Election_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__build_contracts_Election_json__);
 
 
 
-
-var Election = __WEBPACK_IMPORTED_MODULE_1_truffle_contract___default()(__WEBPACK_IMPORTED_MODULE_2__build_contracts_Election_json___default.a);
+var Election = __WEBPACK_IMPORTED_MODULE_0_truffle_contract___default()(__WEBPACK_IMPORTED_MODULE_1__build_contracts_Election_json___default.a);
 var accounts = void 0;
 var account = void 0;
 
@@ -37556,10 +37553,7 @@ window.App = {
                     var _loop = function _loop(_x) {
                         promises[_x].then(function (value) {
                             parties[_x].then(function (party) {
-                                $('<tr/>').appendTo($('#' + id + ' tbody'))
-                                // .append($('<label/>')
-                                //     .prop('for', id + x)
-                                .append($('<td/>').addClass('text-center').text(value[1])).append($('<td/>').prop('align', 'center').append($('<img>').prop('title', party[0]).prop('src', '/storage/parties/' + party[0] + party[1] + '.jpg').prop('height', '50'))).append($('<td/>').append($('<input/>').prop('style', 'width:100%;height:100%').prop('type', 'checkbox').prop('class', 'checkbox').prop('name', id + '[]').prop('id', id + _x).val(candidates[_x])));
+                                $('<tr/>').appendTo($('#' + id + ' tbody')).append($('<td/>').addClass('text-center').text(value[1])).append($('<td/>').prop('align', 'center').append($('<img>').prop('title', party[0]).prop('src', '/storage/parties/' + party[0] + party[1] + '.jpg').prop('height', '50'))).append($('<td/>').append($('<input/>').prop('style', 'width:100%;height:100%').prop('type', 'checkbox').prop('class', 'checkbox').prop('name', id + '[]').prop('id', id + _x).val(candidates[_x])));
                             });
                         });
                     };
@@ -37644,18 +37638,6 @@ window.App = {
         });
     }
 };
-
-$(document).ready(function () {
-    if (typeof web3 !== 'undefined') {
-        console.warn('Using web3 detected from external source.');
-        window.web3 = new __WEBPACK_IMPORTED_MODULE_0_web3___default.a(web3.currentProvider);
-    } else {
-        console.warn('No web3 detected. Falling back to http://127.0.0.1:8545.');
-        window.web3 = new __WEBPACK_IMPORTED_MODULE_0_web3___default.a(new __WEBPACK_IMPORTED_MODULE_0_web3___default.a.providers.HttpProvider('http://127.0.0.1:7545'));
-    }
-
-    App.start();
-});
 
 /***/ })
 /******/ ]);

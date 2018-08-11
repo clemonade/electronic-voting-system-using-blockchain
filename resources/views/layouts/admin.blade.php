@@ -1,10 +1,10 @@
 <?php use Illuminate\Support\Facades\Session; ?>
 
 <h1 class="display-1 text-center">ELECTION</h1>
-<nav id="navbar" class="navbar navbar-expand bg-light sticky-top justify-content-center">
+<nav class="navbar navbar-expand bg-light sticky-top justify-content-center">
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a class="nav-link" href="/admin/dashboard">Home</a>
+            <a class="nav-link" href="/admin">Dashboard</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/admin/registervoter">Voter</a>
@@ -18,9 +18,11 @@
                 <a class="dropdown-item" href="/admin/party/register">Register</a>
             </div>
         </li>
-
         <li class="nav-item">
             <a class="nav-link" href="/admin/registercandidate">Candidate</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
         </li>
     </ul>
 </nav>

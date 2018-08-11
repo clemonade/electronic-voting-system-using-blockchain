@@ -1,9 +1,11 @@
 <?php use App\Common; ?>
-
+@extends('layouts.app')
 @section('title')
 <title>Voter | Dashboard</title>
 @stop
-@extends('layouts.app')
+@section('nav')
+@include('layouts.voter')
+@stop
 @section('script')
 <script type="text/javascript">
     let federals = <?php echo $federals ?>;
@@ -11,7 +13,6 @@
 </script>
 <script src="{{asset('js/constituencies.js')}}"></script>
 @stop
-@include('layouts.voter')
 @section('content')
 
 <h1>Voter Dashboard</h1>
@@ -122,4 +123,4 @@
 
 <span id="status"></span>
 
-@endsection
+@stop

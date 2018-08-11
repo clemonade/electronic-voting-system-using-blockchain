@@ -1,11 +1,13 @@
+@extends('layouts.app')
 @section('title')
 <title>Voter | Verify</title>
 @stop
-@extends('layouts.app')
+@section('nav')
+@include('layouts.voter')
+@stop
 @section('script')
 <script src="{{asset('js/voter.js')}}"></script>
 @stop
-@include('layouts.voter')
 @section('content')
 
 <h1>Voter Verification</h1>
@@ -67,4 +69,4 @@
     </div>
 </div>
 
-@endsection
+@stop

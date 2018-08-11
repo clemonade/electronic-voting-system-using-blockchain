@@ -1,8 +1,11 @@
 <?php use App\Common; ?>
+@extends('layouts.app')
 @section('title')
 <title>Candidate | Register</title>
 @stop
-@extends('layouts.app')
+@section('nav')
+@include('layouts.admin')
+@stop
 @section('script')
 <script type="text/javascript">
     let federals = <?php echo $federals ?>;
@@ -10,7 +13,6 @@
 </script>
 <script src="{{asset('js/candidate.js')}}"></script>
 @stop
-@include('layouts.admin')
 @section('content')
 
 <h1>Register Candidate</h1>

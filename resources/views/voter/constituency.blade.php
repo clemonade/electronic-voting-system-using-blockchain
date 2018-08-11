@@ -1,8 +1,11 @@
 <?php use App\Common; ?>
+@extends('layouts.app')
 @section('title')
 <title>Constituency | {{ $code }}</title>
 @stop
-@extends('layouts.app')
+@section('nav')
+@include('layouts.voter')
+@stop
 @section('script')
 <script type="text/javascript">
     let code = "<?php echo $code ?>";
@@ -12,7 +15,6 @@
 </script>
 <script src="{{ asset('js/constituency.js') }}"></script>
 @stop
-@include('layouts.voter')
 @section('content')
 
 <h1 id="code">{{ $code }}</h1>
@@ -96,4 +98,4 @@
     </tbody>
 </table>
 
-@endsection
+@stop

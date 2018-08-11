@@ -1,11 +1,13 @@
+@extends('layouts.app')
 @section('title')
 <title>Party | Register</title>
 @stop
-@extends('layouts.app')
+@section('nav')
+@include('layouts.admin')
+@stop
 @section('script')
 <script src="{{asset('js/party.js')}}"></script>
 @stop
-@include('layouts.admin')
 @section('content')
 
 <h1>Register Party</h1>
@@ -58,4 +60,4 @@
 
 {!! Form::close() !!}
 
-@endsection
+@stop

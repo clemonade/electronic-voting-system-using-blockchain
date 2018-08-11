@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-import {default as Web3} from 'web3';
 import {default as contract} from 'truffle-contract';
 import electionArtifacts from '../../../build/contracts/Election.json';
 
@@ -14,26 +12,23 @@ window.App = {
         Election.setProvider(web3.currentProvider);
 
         if (window.location.pathname.includes('admin')) {
+            web3.eth.getAccounts(function (err, accs) {
+                if (err != null) {
+                    self.setStatus('text-danger Error fetching accounts.');
+                    return;
+                }
 
+                if (accs.length === 0) {
+                    self.setStatus('text-warning Couldn\'t get any accounts. Ensure Ethereum client is configured correctly.');
+                    return;
+                }
+
+                accounts = accs;
+                account = accounts[0];
+            });
         }
-        web3.eth.getAccounts(function (err, accs) {
-            if (err != null) {
-                self.setStatus(' There was an error fetching accounts.');
-                return;
-            }
-
-            if (accs.length === 0) {
-                self.setStatus(' Couldn\'t get any accounts. Ensure Ethereum client is configured correctly.');
-                return;
-            }
-
-            accounts = accs;
-            account = accounts[0];
-        });
 
         self.populateInfo();
-        self.setInitialisation(federals);
-        self.setInitialisation(states);
     },
 
     setStatus: function (message) {
@@ -66,9 +61,11 @@ window.App = {
 
             $('#address').val(election.address);
 
+            self.setInitialisation(federals);
+            self.setInitialisation(states);
         }).catch(function (e) {
             console.log(e);
-            self.setStatus('Error retrieving contract information.');
+            self.setStatus('text-danger Error retrieving contract information.');
         });
     },
 
@@ -80,7 +77,7 @@ window.App = {
             let promises = [];
             for (let constituency of constituencies) {
                 let code = constituency.code;
-                promises.push(election.getConstituency.call(code, {from: account}));
+                promises.push(election.getConstituency.call(code));
             }
             Promise.all(promises).then(() => {
                 for (let x = 0; x < promises.length; x++) {
@@ -105,7 +102,7 @@ window.App = {
             });
         }).catch(function (e) {
             console.log(e);
-            self.setStatus('Error retrieving initialisation status.');
+            self.setStatus('text-danger Error retrieving initialisation status.');
         });
     },
 
@@ -124,22 +121,10 @@ window.App = {
             election = instance;
             return election.initialiseConstituency(type, code, name, {from: account});
         }).then(() => {
-            self.setStatus('Constituency ' + code + ' initialised.')
+            self.setStatus('text-success Constituency ' + code + ' initialised.')
         }).catch((e) => {
             console.log(e);
-            self.setStatus('Error initialising constituency.');
+            self.setStatus('text-danger Error initialising constituency.');
         });
     },
 };
-
-$(document).ready(() => {
-    if (typeof web3 !== 'undefined') {
-        console.warn('Using web3 detected from external source.');
-        window.web3 = new Web3(web3.currentProvider);
-    } else {
-        console.warn('No web3 detected. Falling back to http://127.0.0.1:8545.');
-        window.web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'));
-    }
-
-    App.start();
-});
