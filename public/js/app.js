@@ -868,8 +868,8 @@
  */
 
 
-var BigNumber = __webpack_require__(15);
-var sha3 = __webpack_require__(16);
+var BigNumber = __webpack_require__(14);
+var sha3 = __webpack_require__(15);
 var utf8 = __webpack_require__(72);
 
 var unitMap = {
@@ -2381,10 +2381,10 @@ module.exports = {
  * @date 2015
  */
 
-var BigNumber = __webpack_require__(15);
+var BigNumber = __webpack_require__(14);
 var utils = __webpack_require__(1);
 var c = __webpack_require__(19);
-var SolidityParam = __webpack_require__(35);
+var SolidityParam = __webpack_require__(34);
 
 
 /**
@@ -2618,7 +2618,7 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 var f = __webpack_require__(3);
-var SolidityParam = __webpack_require__(35);
+var SolidityParam = __webpack_require__(34);
 
 /**
  * SolidityType prototype is used to encode/decode solidity params of certain type
@@ -3217,7 +3217,7 @@ module.exports = {
  */
 
 var utils = __webpack_require__(1);
-var errors = __webpack_require__(11);
+var errors = __webpack_require__(10);
 
 var Method = function (options) {
     this.name = options.name;
@@ -3362,33 +3362,6 @@ module.exports = Method;
 
 /***/ }),
 /* 7 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -3528,7 +3501,7 @@ module.exports = g;
 }));
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -3801,13 +3774,13 @@ module.exports = g;
 }));
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(24), __webpack_require__(25));
+		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(23), __webpack_require__(24));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -3938,7 +3911,7 @@ module.exports = g;
 }));
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports) {
 
 /*
@@ -3987,7 +3960,7 @@ module.exports = {
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -4137,36 +4110,35 @@ module.exports = Property;
 
 
 /***/ }),
-/* 13 */,
-/* 14 */
+/* 12 */
 /***/ (function(module, exports) {
 
-module.exports = function(module) {
-	if(!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if(!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
 
 
 /***/ }),
-/* 15 */
+/* 13 */,
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*! bignumber.js v2.0.7 https://github.com/MikeMcl/bignumber.js/LICENCE */
@@ -6856,7 +6828,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*! bignumber.js v2.0.7 https://github.com/Mik
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -6882,7 +6854,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*! bignumber.js v2.0.7 https://github.com/Mik
  */
 
 var CryptoJS = __webpack_require__(49);
-var sha3 = __webpack_require__(34);
+var sha3 = __webpack_require__(33);
 
 module.exports = function (value, options) {
     if (options && options.encoding === 'hex') {
@@ -6897,6 +6869,34 @@ module.exports = function (value, options) {
     }).toString();
 };
 
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
 
 
 /***/ }),
@@ -8694,7 +8694,7 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
 
 /***/ }),
 /* 18 */
@@ -9046,7 +9046,7 @@ function isnan (val) {
 
 
 /// required to define ETH_BIGNUMBER_ROUNDING_MODE
-var BigNumber = __webpack_require__(15);
+var BigNumber = __webpack_require__(14);
 
 var ETH_UNITS = [
     'wei',
@@ -9116,7 +9116,7 @@ module.exports = {
  * @date 2015
  */
 
-var BigNumber = __webpack_require__(15);
+var BigNumber = __webpack_require__(14);
 
 var padLeft = function (string, bytes) {
     var result = string;
@@ -9691,20 +9691,6 @@ module.exports = {
 /* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Web3 = __webpack_require__(47);
-
-// dont override global variable
-if (typeof window !== 'undefined' && typeof window.Web3 === 'undefined') {
-    window.Web3 = Web3;
-}
-
-module.exports = Web3;
-
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
 ;(function (root, factory) {
 	if (true) {
 		// CommonJS
@@ -9857,7 +9843,7 @@ module.exports = Web3;
 }));
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -10005,7 +9991,7 @@ module.exports = Web3;
 }));
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -10258,10 +10244,10 @@ module.exports = coder;
 
 
 /***/ }),
+/* 26 */,
 /* 27 */,
 /* 28 */,
-/* 29 */,
-/* 30 */
+/* 29 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -10451,7 +10437,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports) {
 
 /*
@@ -10542,7 +10528,7 @@ module.exports = Jsonrpc;
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -10746,7 +10732,7 @@ module.exports = Jsonrpc;
 }));
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11074,7 +11060,7 @@ module.exports = Jsonrpc;
 }));
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -11402,7 +11388,7 @@ module.exports = Jsonrpc;
 }));
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -11560,7 +11546,7 @@ module.exports = SolidityParam;
 
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -11586,9 +11572,9 @@ module.exports = SolidityParam;
  */
 
 var utils = __webpack_require__(1);
-var coder = __webpack_require__(26);
+var coder = __webpack_require__(25);
 var formatters = __webpack_require__(5);
-var sha3 = __webpack_require__(16);
+var sha3 = __webpack_require__(15);
 var Filter = __webpack_require__(21);
 var watches = __webpack_require__(22);
 
@@ -11775,6 +11761,20 @@ module.exports = SolidityEvent;
 
 
 /***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Web3 = __webpack_require__(47);
+
+// dont override global variable
+if (typeof window !== 'undefined' && typeof window.Web3 === 'undefined') {
+    window.Web3 = Web3;
+}
+
+module.exports = Web3;
+
+
+/***/ }),
 /* 37 */,
 /* 38 */,
 /* 39 */,
@@ -11826,13 +11826,13 @@ var Swarm = __webpack_require__(96);
 var Settings = __webpack_require__(97);
 var version = __webpack_require__(98);
 var utils = __webpack_require__(1);
-var sha3 = __webpack_require__(16);
+var sha3 = __webpack_require__(15);
 var extend = __webpack_require__(99);
 var Batch = __webpack_require__(100);
-var Property = __webpack_require__(12);
+var Property = __webpack_require__(11);
 var HttpProvider = __webpack_require__(101);
 var IpcProvider = __webpack_require__(107);
-var BigNumber = __webpack_require__(15);
+var BigNumber = __webpack_require__(14);
 
 
 
@@ -11972,10 +11972,10 @@ module.exports = Web3;
  * @date 2014
  */
 
-var Jsonrpc = __webpack_require__(31);
+var Jsonrpc = __webpack_require__(30);
 var utils = __webpack_require__(1);
 var c = __webpack_require__(19);
-var errors = __webpack_require__(11);
+var errors = __webpack_require__(10);
 
 /**
  * It's responsible for passing messages to providers
@@ -12220,7 +12220,7 @@ module.exports = RequestManager;
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(18), __webpack_require__(50), __webpack_require__(51), __webpack_require__(8), __webpack_require__(9), __webpack_require__(24), __webpack_require__(32), __webpack_require__(52), __webpack_require__(33), __webpack_require__(53), __webpack_require__(34), __webpack_require__(54), __webpack_require__(25), __webpack_require__(55), __webpack_require__(10), __webpack_require__(2), __webpack_require__(56), __webpack_require__(57), __webpack_require__(58), __webpack_require__(59), __webpack_require__(60), __webpack_require__(61), __webpack_require__(62), __webpack_require__(63), __webpack_require__(64), __webpack_require__(65), __webpack_require__(66), __webpack_require__(67), __webpack_require__(68), __webpack_require__(69), __webpack_require__(70), __webpack_require__(71));
+		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(18), __webpack_require__(50), __webpack_require__(51), __webpack_require__(7), __webpack_require__(8), __webpack_require__(23), __webpack_require__(31), __webpack_require__(52), __webpack_require__(32), __webpack_require__(53), __webpack_require__(33), __webpack_require__(54), __webpack_require__(24), __webpack_require__(55), __webpack_require__(9), __webpack_require__(2), __webpack_require__(56), __webpack_require__(57), __webpack_require__(58), __webpack_require__(59), __webpack_require__(60), __webpack_require__(61), __webpack_require__(62), __webpack_require__(63), __webpack_require__(64), __webpack_require__(65), __webpack_require__(66), __webpack_require__(67), __webpack_require__(68), __webpack_require__(69), __webpack_require__(70), __webpack_require__(71));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -12478,7 +12478,7 @@ module.exports = RequestManager;
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(32));
+		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(31));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -12563,7 +12563,7 @@ module.exports = RequestManager;
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(18), __webpack_require__(33));
+		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(18), __webpack_require__(32));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -12923,7 +12923,7 @@ module.exports = RequestManager;
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(24), __webpack_require__(25));
+		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(23), __webpack_require__(24));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -13748,7 +13748,7 @@ module.exports = RequestManager;
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(8), __webpack_require__(9), __webpack_require__(10), __webpack_require__(2));
+		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(7), __webpack_require__(8), __webpack_require__(9), __webpack_require__(2));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -13985,7 +13985,7 @@ module.exports = RequestManager;
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(8), __webpack_require__(9), __webpack_require__(10), __webpack_require__(2));
+		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(7), __webpack_require__(8), __webpack_require__(9), __webpack_require__(2));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -14760,7 +14760,7 @@ module.exports = RequestManager;
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(8), __webpack_require__(9), __webpack_require__(10), __webpack_require__(2));
+		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(7), __webpack_require__(8), __webpack_require__(9), __webpack_require__(2));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -14904,7 +14904,7 @@ module.exports = RequestManager;
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(8), __webpack_require__(9), __webpack_require__(10), __webpack_require__(2));
+		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(7), __webpack_require__(8), __webpack_require__(9), __webpack_require__(2));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -15101,7 +15101,7 @@ module.exports = RequestManager;
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(8), __webpack_require__(9), __webpack_require__(10), __webpack_require__(2));
+		module.exports = exports = factory(__webpack_require__(0), __webpack_require__(7), __webpack_require__(8), __webpack_require__(9), __webpack_require__(2));
 	}
 	else if (typeof define === "function" && define.amd) {
 		// AMD
@@ -15537,7 +15537,7 @@ module.exports = RequestManager;
 
 }(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)(module), __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16)(module), __webpack_require__(12)))
 
 /***/ }),
 /* 73 */
@@ -15572,7 +15572,7 @@ module.exports = RequestManager;
 var formatters = __webpack_require__(5);
 var utils = __webpack_require__(1);
 var Method = __webpack_require__(6);
-var Property = __webpack_require__(12);
+var Property = __webpack_require__(11);
 var c = __webpack_require__(19);
 var Contract = __webpack_require__(74);
 var watches = __webpack_require__(22);
@@ -15927,8 +15927,8 @@ module.exports = Eth;
  */
 
 var utils = __webpack_require__(1);
-var coder = __webpack_require__(26);
-var SolidityEvent = __webpack_require__(36);
+var coder = __webpack_require__(25);
+var SolidityEvent = __webpack_require__(35);
 var SolidityFunction = __webpack_require__(84);
 var AllEvents = __webpack_require__(85);
 
@@ -16545,11 +16545,11 @@ module.exports = SolidityTypeBytes;
  * @date 2015
  */
 
-var coder = __webpack_require__(26);
+var coder = __webpack_require__(25);
 var utils = __webpack_require__(1);
-var errors = __webpack_require__(11);
+var errors = __webpack_require__(10);
 var formatters = __webpack_require__(5);
-var sha3 = __webpack_require__(16);
+var sha3 = __webpack_require__(15);
 
 /**
  * This prototype should be used to call/sendTransaction to solidity functions
@@ -16834,8 +16834,8 @@ module.exports = SolidityFunction;
  * @date 2014
  */
 
-var sha3 = __webpack_require__(16);
-var SolidityEvent = __webpack_require__(36);
+var sha3 = __webpack_require__(15);
+var SolidityEvent = __webpack_require__(35);
 var formatters = __webpack_require__(5);
 var utils = __webpack_require__(1);
 var Filter = __webpack_require__(21);
@@ -17410,7 +17410,7 @@ module.exports = Shh;
  */
 
 var utils = __webpack_require__(1);
-var Property = __webpack_require__(12);
+var Property = __webpack_require__(11);
 
 var Net = function (web3) {
     this._requestManager = web3._requestManager;
@@ -17472,7 +17472,7 @@ module.exports = Net;
 
 
 var Method = __webpack_require__(6);
-var Property = __webpack_require__(12);
+var Property = __webpack_require__(11);
 var formatters = __webpack_require__(5);
 
 function Personal(web3) {
@@ -17595,7 +17595,7 @@ module.exports = Personal;
 
 
 var Method = __webpack_require__(6);
-var Property = __webpack_require__(12);
+var Property = __webpack_require__(11);
 
 function Swarm(web3) {
     this._requestManager = web3._requestManager;
@@ -17743,7 +17743,7 @@ module.exports = {"version":"0.20.6"}
 var formatters = __webpack_require__(5);
 var utils = __webpack_require__(1);
 var Method = __webpack_require__(6);
-var Property = __webpack_require__(12);
+var Property = __webpack_require__(11);
 
 // TODO: refactor, so the input params are not altered.
 // it's necessary to make same 'extension' work with multiple providers
@@ -17816,8 +17816,8 @@ module.exports = extend;
  * @date 2015
  */
 
-var Jsonrpc = __webpack_require__(31);
-var errors = __webpack_require__(11);
+var Jsonrpc = __webpack_require__(30);
+var errors = __webpack_require__(10);
 
 var Batch = function (web3) {
     this.requestManager = web3._requestManager;
@@ -17890,7 +17890,7 @@ module.exports = Batch;
  * @date 2015
  */
 
-var errors = __webpack_require__(11);
+var errors = __webpack_require__(10);
 
 // workaround to use httpprovider in different envs
 
@@ -18344,7 +18344,7 @@ module.exports = XMLHttpRequest;
 
 
 var utils = __webpack_require__(1);
-var errors = __webpack_require__(11);
+var errors = __webpack_require__(10);
 
 
 var IpcProvider = function (path, net) {
@@ -19002,7 +19002,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ }),
 /* 172 */
@@ -21543,7 +21543,7 @@ Popper.Defaults = Defaults;
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(12)))
 
 /***/ }),
 /* 173 */
@@ -49377,7 +49377,7 @@ if (token) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(14)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12), __webpack_require__(16)(module)))
 
 /***/ }),
 /* 183 */
@@ -54223,7 +54223,7 @@ module.exports = function spread(callback) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_web3__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_web3__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_web3___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_web3__);
 
 

@@ -2,7 +2,6 @@ import {default as contract} from 'truffle-contract';
 import electionArtifacts from '../../../build/contracts/Election.json';
 
 let Election = contract(electionArtifacts);
-let accounts;
 let account;
 
 window.App = {
@@ -23,14 +22,23 @@ window.App = {
                     return;
                 }
 
-                accounts = accs;
-                account = accounts[0];
+                //web3.eth.getAccounts() only returns the one selected account
+                //https://github.com/MetaMask/metamask-extension/issues/3207
+                account = accs[0];
             });
         }
+
+        setInterval(function () {
+            if (web3.eth.accounts[0] !== account) {
+                account = web3.eth.accounts[0];
+                //someFunction()
+            }
+        }, 100);
 
         self.populateInfo();
     },
 
+    //Only displays the last message.
     setStatus: function (message) {
         if (message[0] === ' ') {
             $('#status').text(message);

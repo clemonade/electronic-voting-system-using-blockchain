@@ -36,6 +36,16 @@ contract Election is Ownable {
     }
 
     /**
+    @notice Checks if the constituency does not exist
+    @dev -
+    @param _constituencyCode Code of constituency
+    */
+    modifier isNotExistingConstituency(string _constituencyCode){
+        require(constituencies[_constituencyCode].initialised != true);
+        _;
+    }
+
+    /**
     @notice Checks if the constituency already exists
     @dev -
     @param _constituencyCode Code of constituency
@@ -128,7 +138,7 @@ contract Election is Ownable {
     function initialiseConstituency(
         uint _constituencyType,
         string _constituencyCode,
-        string _constituencyName) public isValidConstituencyType(_constituencyType) {
+        string _constituencyName) public onlyOwner() isValidConstituencyType(_constituencyType) isNotExistingConstituency(_constituencyCode) {
 
         constituencies[_constituencyCode].initialised = true;
         constituencies[_constituencyCode].numVotes = 0;
@@ -144,7 +154,9 @@ contract Election is Ownable {
     @param _partyName Name of party
     @param _partyAbbreviation Abbreviation of name of party
     */
-    function registerParty(string _partyName, string _partyAbbreviation) public onlyOwner() isNotExistingParty(_partyName) {
+    function registerParty(
+        string _partyName,
+        string _partyAbbreviation) public onlyOwner() isNotExistingParty(_partyName) {
         uint partyId = parties.length;
         Party memory party = Party(partyId, _partyName, _partyAbbreviation);
         parties.push(party);
@@ -162,7 +174,7 @@ contract Election is Ownable {
     function registerCandidate(
         string _constituencyCode,
         string _candidateName,
-        uint _partyId) onlyOwner() public isExistingConstituency(_constituencyCode) isValidParty(_partyId) {
+        uint _partyId) public onlyOwner() isExistingConstituency(_constituencyCode) isValidParty(_partyId) {
 
         uint candidateId = candidates.length;
         candidateToParty[candidateId] = _partyId;
@@ -218,7 +230,7 @@ contract Election is Ownable {
 
     /**
     @notice Checks if the vote is valid
-    @dev -
+    @dev Valid if array length is exactly one(1)
     @param _vote Array of voted constituency candidates
     @return Validity of the vote
     */
