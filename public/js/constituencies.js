@@ -37466,6 +37466,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 var Election = __WEBPACK_IMPORTED_MODULE_0_truffle_contract___default()(__WEBPACK_IMPORTED_MODULE_1__build_contracts_Election_json___default.a);
 var account = void 0;
+var owner = void 0;
 
 window.App = {
     start: function start() {
@@ -37488,15 +37489,15 @@ window.App = {
                 //web3.eth.getAccounts() only returns the one selected account
                 //https://github.com/MetaMask/metamask-extension/issues/3207
                 account = accs[0];
+
+                setInterval(function () {
+                    if (web3.eth.accounts[0] !== account) {
+                        account = web3.eth.accounts[0];
+                        self.populateCurrent(account);
+                    }
+                }, 100);
             });
         }
-
-        setInterval(function () {
-            if (web3.eth.accounts[0] !== account) {
-                account = web3.eth.accounts[0];
-                //someFunction()
-            }
-        }, 100);
 
         self.populateInfo();
     },
@@ -37513,6 +37514,17 @@ window.App = {
         }
     },
 
+    populateCurrent: function populateCurrent(acc) {
+        var current = $('#current');
+        current.val(acc);
+
+        if (acc === owner) {
+            current.removeClass('text-danger').addClass('text-success');
+        } else {
+            current.removeClass('text-success').addClass('text-danger');
+        }
+    },
+
     populateInfo: function populateInfo() {
         var self = this;
         var election = void 0;
@@ -37521,11 +37533,14 @@ window.App = {
             election = instance;
 
             election.owner.call().then(function (address) {
+                owner = address;
                 $('#admin').val(address);
 
                 web3.eth.getBalance(address, function (err, balance) {
                     $('#balance').val(web3.fromWei(balance, "ether") + " ETH");
                 });
+
+                self.populateCurrent(account);
             });
 
             $('#address').val(election.address);

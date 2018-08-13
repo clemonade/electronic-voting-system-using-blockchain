@@ -3,6 +3,7 @@ import electionArtifacts from '../../../build/contracts/Election.json';
 
 let Election = contract(electionArtifacts);
 let account;
+let owner;
 
 window.App = {
     start: function () {
@@ -25,15 +26,15 @@ window.App = {
                 //web3.eth.getAccounts() only returns the one selected account
                 //https://github.com/MetaMask/metamask-extension/issues/3207
                 account = accs[0];
+
+                setInterval(function () {
+                    if (web3.eth.accounts[0] !== account) {
+                        account = web3.eth.accounts[0];
+                        self.populateCurrent(account);
+                    }
+                }, 100);
             });
         }
-
-        setInterval(function () {
-            if (web3.eth.accounts[0] !== account) {
-                account = web3.eth.accounts[0];
-                //someFunction()
-            }
-        }, 100);
 
         self.populateInfo();
     },
@@ -52,6 +53,21 @@ window.App = {
         }
     },
 
+    populateCurrent: function (acc) {
+        let current = $('#current');
+        current.val(acc);
+
+        if (acc === owner) {
+            current
+                .removeClass('text-danger')
+                .addClass('text-success');
+        } else {
+            current
+                .removeClass('text-success')
+                .addClass('text-danger');
+        }
+    },
+
     populateInfo: function () {
         let self = this;
         let election;
@@ -60,11 +76,14 @@ window.App = {
             election = instance;
 
             election.owner.call().then((address) => {
+                owner = address;
                 $('#admin').val(address);
 
                 web3.eth.getBalance(address, (err, balance) => {
                     $('#balance').val(web3.fromWei(balance, "ether") + " ETH");
                 });
+
+                self.populateCurrent(account);
             });
 
             $('#address').val(election.address);

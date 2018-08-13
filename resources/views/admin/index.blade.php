@@ -17,6 +17,10 @@
 
 <h1>Dashboard</h1>
 <div class="form-group">
+    <label for="current">Current Address:</label>
+    <input type="text" id="current" class="form-control" readonly>
+</div>
+<div class="form-group">
     <label for="admin">Administrator Address:</label>
     <input type="text" id="admin" class="form-control" readonly>
 </div>
