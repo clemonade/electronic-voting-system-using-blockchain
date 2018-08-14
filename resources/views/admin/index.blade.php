@@ -15,7 +15,7 @@
 @stop
 @section('content')
 
-<h1>Dashboard</h1>
+<h1>Admin Dashboard</h1>
 <div class="form-group">
     <label for="current">Current Address:</label>
     <input type="text" id="current" class="form-control" readonly>
@@ -33,6 +33,7 @@
     <input type="text" id="address" class="form-control" readonly>
 </div>
 
+<!--TODO Number of constituencies won for each party per state-->
 <h2>Constituencies</h2>
 <h3>Federal</h3>
 @if (count($federals) > 0)

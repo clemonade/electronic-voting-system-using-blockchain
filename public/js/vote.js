@@ -37601,20 +37601,31 @@ window.App = {
         });
     },
 
+    //Crucial role to the functionality of voting.
     processVotes: function processVotes(element, array) {
         var x = [];
         element.each(function () {
             x.push($(this).val());
         });
 
+        //If choice is not exactly one candidate
         if (array.length !== 1) {
+            //If there are candidates contesting
             if (x.length !== 0) {
+                //If there is only one contesting candidate
+                if (x.length === 1) {
+                    //Only one contesting candidate, unselected
+                    return [x[0], x[0], x[0]];
+                }
+
+                //More than one contesting candidate, unselected/more than one selected
                 return x;
             }
             //Level does not exist
             return [0, 0, 0];
         }
 
+        //Only one candidate selected
         return array;
     },
 

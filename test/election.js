@@ -9,7 +9,7 @@ let assert = chai.assert;
 //TODO Fix assert handling messages
 //TODO Convert promise syntax to async/await
 //TODO Add more proofing for assertions
-//TODO Asserts for events emitted
+//TODO Asserts for events emitted?
 contract('Election', function (accounts) {
     let election;
     let owner = accounts[0];
@@ -21,11 +21,11 @@ contract('Election', function (accounts) {
         });
     });
 
-    it('sets Election contract owner', function () {
+    it('sets contract owner', function () {
         let expected = owner;
 
         return election.owner.call().then((actual) => {
-            assert.equal(actual, expected, 'Election contract owner was not contract deployer');
+            assert.equal(actual, expected, ' Contract owner was not contract deployer');
         });
     });
 
@@ -144,6 +144,7 @@ contract('Election', function (accounts) {
         await catchRevert(election.registerCandidate(expected_code, expected_name, expected_party, {from: owner}));
     });
 
+    //TODO Check constituency/candidate vote counter
     it('votes for candidate', function () {
         //Setup
         let type = 1;
@@ -215,5 +216,35 @@ contract('Election', function (accounts) {
         let svote = [1];
 
         await catchRevert(election.vote(hash, fvote, svote, {from: nonOwner}));
+    });
+
+    it('transfers contract ownership', function () {
+        // noinspection UnnecessaryLocalVariableJS
+        let expected_owner = nonOwner;
+
+        return election.transferOwnership(expected_owner, {from: owner})
+            .then(() => {
+                return election.owner.call();
+            }).then((actual) => {
+                // noinspection UnnecessaryLocalVariableJS
+                let actual_owner = actual;
+                assert.equal(actual_owner, expected_owner, '');
+            });
+    });
+
+    //TODO Check onlyOwner modifier
+    it('renounces contract ownership', function () {
+        //Setup
+        let owner = nonOwner;
+        let expected_address = 0;
+
+        return election.renounceOwnership({from: owner})
+            .then(() => {
+                return election.owner.call();
+            }).then((actual) => {
+                // noinspection UnnecessaryLocalVariableJS
+                let actual_address = actual;
+                assert.equal(actual_address, expected_address, '');
+            });
     });
 });

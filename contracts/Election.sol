@@ -189,7 +189,7 @@ contract Election is Ownable {
     /**
     @notice Votes for federal constituency and state constituency candidates
     @dev _voterHash is calculated as: SHA-256(voterName + voterNRIC + SHA-256(voterNonce))
-    @dev Array must contain candidateId(s) belonging to their originating constituency
+    @dev Array should contain candidateId(s) belonging to their originating constituency
     @dev Pass in dummy array if no candidate(s) is/are selected, [0,0,0] if the constituency is not applicable
     @param _voterHash Hash of voter
     @param _federalCandidateVote Array of voted federal constituency candidates
