@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 207);
+/******/ 	return __webpack_require__(__webpack_require__.s = 223);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -37443,14 +37443,30 @@ module.exports = {"contractName":"Election","abi":[{"constant":true,"inputs":[],
 /* 204 */,
 /* 205 */,
 /* 206 */,
-/* 207 */
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(208);
+module.exports = __webpack_require__(224);
 
 
 /***/ }),
-/* 208 */
+/* 224 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37463,9 +37479,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 var Election = __WEBPACK_IMPORTED_MODULE_0_truffle_contract___default()(__WEBPACK_IMPORTED_MODULE_1__build_contracts_Election_json___default.a);
-
-var totalvotes = 0;
-var totalturnout = 0;
+var account = void 0;
+var owner = void 0;
 
 window.App = {
     start: function start() {
@@ -37473,119 +37488,72 @@ window.App = {
 
         Election.setProvider(web3.currentProvider);
 
-        //This is cancer.
-        $('#turnout').text('0% (0)');
-        $('#spoilt').text('0% (0)');
+        web3.eth.getAccounts(function (err, accs) {
+            if (err != null) {
+                self.setStatus('text-danger Error fetching accounts.');
+                return;
+            }
 
-        self.populateConstituency();
+            if (accs.length === 0) {
+                self.setStatus('text-warning Couldn\'t get any accounts. Ensure Ethereum client is configured correctly.');
+                return;
+            }
+
+            account = accs[0];
+        });
+
+        self.populateAdmin();
+
+        setInterval(function () {
+            if (web3.eth.accounts[0] !== account) {
+                account = web3.eth.accounts[0];
+                self.populateCurrent(account);
+            }
+        }, 100);
     },
 
+    //Only displays the last message.
     setStatus: function setStatus(message) {
-        $('#status').html(message);
+        if (message[0] === ' ') {
+            $('#status').text(message);
+        } else {
+            var bs4class = message.substr(0, message.indexOf(' '));
+            var status = message.substr(message.indexOf(' ') + 1);
+
+            $('#status').addClass(bs4class).text(status);
+        }
     },
 
-    populateConstituency: function populateConstituency() {
+    populateAdmin: function populateAdmin() {
         var self = this;
         var election = void 0;
+
         Election.deployed().then(function (instance) {
             election = instance;
-            return election.getConstituency.call(code);
-        }).then(function (value) {
-            var turnout = void 0;
 
-            totalturnout = value[1].toNumber();
+            election.owner.call().then(function (address) {
+                owner = address;
+                $('#admin').val(address);
 
-            if (parseInt(count) === 0) {
-                turnout = 0;
-            } else {
-                turnout = Math.round(totalturnout / parseInt(count) * 100);
-            }
-
-            $('#turnout').text(turnout + '% (' + value[1].toNumber() + ')');
-            $('#name').text(value[3]);
-            $('#level').html(types[value[4].toNumber()].toUpperCase());
-
-            if (value[0]) {
-                $('#init').html('INITIALISED');
-            } else {
-                $('#init').html('UNINITIALISED');
-            }
-
-            self.populateCandidates(value[2].map(function (x) {
-                return x.toNumber();
-            }));
+                self.populateCurrent(account);
+            });
         }).catch(function (e) {
             console.log(e);
-            self.setStatus('Error retrieving initialisation status.');
+            self.setStatus('text-danger Error retrieving contract owner.');
         });
     },
 
-    populateCandidates: function populateCandidates(candidates) {
-        var self = this;
-        var election = void 0;
-        var promises = [];
+    populateCurrent: function populateCurrent(acc) {
+        var current = $('#current');
+        current.val(acc);
 
-        Election.deployed().then(function (instance) {
-            election = instance;
-            var _iteratorNormalCompletion = true;
-            var _didIteratorError = false;
-            var _iteratorError = undefined;
+        if (acc === owner) {
+            current.removeClass('text-danger').addClass('text-success');
 
-            try {
-                for (var _iterator = candidates[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                    var candidate = _step.value;
-
-                    promises.push(election.getCandidate.call(candidate));
-                }
-            } catch (err) {
-                _didIteratorError = true;
-                _iteratorError = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion && _iterator.return) {
-                        _iterator.return();
-                    }
-                } finally {
-                    if (_didIteratorError) {
-                        throw _iteratorError;
-                    }
-                }
-            }
-
-            Promise.all(promises).then(function () {
-                var parties = [];
-                for (var x = 0; x < promises.length; x++) {
-                    promises[x].then(function (value) {
-                        parties.push(election.getParty.call(value[3].toNumber()));
-                    });
-                }
-
-                Promise.all(parties).then(function () {
-                    var _loop = function _loop(_x) {
-                        promises[_x].then(function (value) {
-                            parties[_x].then(function (party) {
-                                $('<tr/>').appendTo($('#candidates tbody')).append($('<td>').prop('align', 'center').append($('<figure>').addClass('figure').append($('<img>').addClass('figure-img').prop('title', party[0]).prop('src', '/storage/parties/' + party[0] + party[1] + '.jpg').prop('height', '50')).append($('<figcaption>').addClass('figure-caption').text(party[1])))).append($('<td>').text(value[1])).append($('<td>').addClass('votes text-right').text(value[0].toNumber()));
-                            }).then(function () {
-                                totalvotes = 0;
-
-                                $('.votes').each(function () {
-                                    totalvotes += parseInt($(this).html());
-                                });
-
-                                if (totalturnout !== 0) {
-                                    var spoilt = Math.round((totalturnout - totalvotes) / totalturnout * 100);
-                                    $('#spoilt').text(spoilt + '% (' + (totalturnout - totalvotes) + ')');
-                                }
-                            });
-                        });
-                    };
-
-                    for (var _x = 0; _x < promises.length; _x++) {
-                        _loop(_x);
-                    }
-                });
-            });
-        });
+            window.location.href = '/admin/dashboard';
+        } else {
+            current.removeClass('text-success').addClass('text-danger');
+        }
     }
 };
 

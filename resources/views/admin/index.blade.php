@@ -33,7 +33,7 @@
     <input type="text" id="address" class="form-control" readonly>
 </div>
 
-<!--TODO Number of constituencies won for each party per state-->
+<!--TODO Number of constituencies won for each party by state and level-->
 <h2>Constituencies</h2>
 <h3>Federal</h3>
 @if (count($federals) > 0)

@@ -7,6 +7,7 @@ use App\Http\Requests\StoreVoter;
 use App\Http\Requests\VerifyVoter;
 use App\RegisteredVoter;
 use App\StateConstituency;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -31,12 +32,18 @@ class VoterController extends Controller
 
     public function store(StoreVoter $request)
     {
-        $voter = new RegisteredVoter();
-        $voter->fill($request->all());
-        $voter['name'] = strtoupper($request->input('name'));
-        $voter->save();
+        try {
+            $voter = new RegisteredVoter();
+            $voter->fill($request->all());
+            $voter['name'] = strtoupper($request->input('name'));
+            $voter->save();
 
-        return Redirect::back()->with('status', 'text-success Voter registered successfully.');
+            return Redirect::back()->with('status', 'text-success Voter registered successfully.');
+
+        } catch (QueryException $e) {
+            //dd($e->getMessage());
+            return Redirect::back()->with('status', 'text-danger Voter already registered.');
+        }
     }
 
     public function verify($federal_code, $state_code = null)
@@ -79,7 +86,7 @@ class VoterController extends Controller
             }
 
             if ($registered_voter[0]['voted']) {
-                return Redirect::back()->with('status', 'text-danger Already voted.');
+                return Redirect::back()->with('status', 'text-danger Voter already voted.');
             }
 
             if ($voter_federal == $current_federal && $voter_state == $current_state) {
@@ -90,7 +97,7 @@ class VoterController extends Controller
                 ]);
             }
 
-            return Redirect::back()->with('status', 'text-danger Wrong constituency.');
+            return Redirect::back()->with('status', 'text-danger Voter in wrong constituency.');
         }
 
         return Redirect::back()->with('status', 'text-danger Invalid voter credentials.');

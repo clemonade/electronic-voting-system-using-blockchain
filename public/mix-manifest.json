@@ -4,6 +4,7 @@
     "/js/verify.js": "/js/verify.js",
     "/js/prevote.js": "/js/prevote.js",
     "/js/party.js": "/js/party.js",
+    "/js/login.js": "/js/login.js",
     "/js/constituency.js": "/js/constituency.js",
     "/js/constituencies.js": "/js/constituencies.js",
     "/js/candidate.js": "/js/candidate.js",

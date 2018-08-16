@@ -23,7 +23,7 @@
 <div class="form-group">
     <label for="nric">NRIC:</label>
     <input type="text" id="nric" name="nric" class="form-control" maxlength="12" aria-describedby="nrichelp">
-    <small id="noncehelp" class="form-text text-muted">
+    <small id="nrichelp" class="form-text text-muted">
         Without dashes.
     </small>
     <div class="invalid-feedback">

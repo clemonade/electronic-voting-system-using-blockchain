@@ -4,7 +4,7 @@
 <nav class="navbar navbar-expand bg-light sticky-top justify-content-center">
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a class="nav-link" href="/admin">Dashboard</a>
+            <a class="nav-link" href="/admin/dashboard">Dashboard</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/admin/registervoter">Voter</a>

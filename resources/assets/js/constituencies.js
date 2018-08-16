@@ -11,32 +11,33 @@ window.App = {
 
         Election.setProvider(web3.currentProvider);
 
-        if (window.location.pathname.includes('admin')) {
-            web3.eth.getAccounts(function (err, accs) {
-                if (err != null) {
-                    self.setStatus('text-danger Error fetching accounts.');
-                    return;
+        web3.eth.getAccounts(function (err, accs) {
+            if (err != null) {
+                self.setStatus('text-danger Error fetching accounts.');
+                return;
+            }
+
+            if (accs.length === 0) {
+                self.setStatus('text-warning Couldn\'t get any accounts. Ensure Ethereum client is configured correctly.');
+                return;
+            }
+
+            //web3.eth.getAccounts() only returns the one selected account
+            //https://github.com/MetaMask/metamask-extension/issues/3207
+            account = accs[0];
+        });
+
+        self.populateDashboard();
+
+        //TODO Formulate a better alternative
+        if (window.location.href.indexOf("admin") > -1) {
+            setInterval(function () {
+                if (web3.eth.accounts[0] !== account) {
+                    account = web3.eth.accounts[0];
+                    self.populateCurrent(account);
                 }
-
-                if (accs.length === 0) {
-                    self.setStatus('text-warning Couldn\'t get any accounts. Ensure Ethereum client is configured correctly.');
-                    return;
-                }
-
-                //web3.eth.getAccounts() only returns the one selected account
-                //https://github.com/MetaMask/metamask-extension/issues/3207
-                account = accs[0];
-
-                setInterval(function () {
-                    if (web3.eth.accounts[0] !== account) {
-                        account = web3.eth.accounts[0];
-                        self.populateCurrent(account);
-                    }
-                }, 100);
-            });
+            }, 100);
         }
-
-        self.populateInfo();
     },
 
     //Only displays the last message.
@@ -53,22 +54,7 @@ window.App = {
         }
     },
 
-    populateCurrent: function (acc) {
-        let current = $('#current');
-        current.val(acc);
-
-        if (acc === owner) {
-            current
-                .removeClass('text-danger')
-                .addClass('text-success');
-        } else {
-            current
-                .removeClass('text-success')
-                .addClass('text-danger');
-        }
-    },
-
-    populateInfo: function () {
+    populateDashboard: function () {
         let self = this;
         let election;
 
@@ -94,6 +80,27 @@ window.App = {
             console.log(e);
             self.setStatus('text-danger Error retrieving contract information.');
         });
+    },
+
+    //TODO Clean up code
+    //Redundant as shit, but I'm too sleepy.
+    populateCurrent: function (acc) {
+        let current = $('#current');
+        current.val(acc);
+
+        if (acc === owner) {
+            current
+                .removeClass('text-danger')
+                .addClass('text-success');
+        } else {
+            current
+                .removeClass('text-success')
+                .addClass('text-danger');
+
+            if (window.location.href.indexOf("admin") > -1) {
+                window.location.href = '/admin';
+            }
+        }
     },
 
     setInitialisation: function (constituencies) {

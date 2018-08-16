@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 
 class ConstituencyController extends Controller
 {
+    public function login()
+    {
+        return view('admin.login');
+        //return redirect()->route('admin.index');
+    }
+
     public function index()
     {
         $federals = FederalConstituency::orderBy('code', 'asc')->get();
@@ -68,10 +74,5 @@ class ConstituencyController extends Controller
             'relation' => $relation,
             'count' => $count,
         ]);
-    }
-
-    public function login()
-    {
-        return redirect()->route('admin.index');
     }
 }

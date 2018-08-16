@@ -2,40 +2,61 @@ import {default as contract} from 'truffle-contract';
 import electionArtifacts from '../../../build/contracts/Election.json';
 
 let Election = contract(electionArtifacts);
-let accounts;
 let account;
+let owner;
 
 window.App = {
     start: function () {
         let self = this;
+        let election;
 
         Election.setProvider(web3.currentProvider);
 
-        web3.eth.getAccounts((err, accs) => {
+        Election.deployed().then((instance) => {
+            election = instance;
+            election.owner.call().then((address) => {
+                owner = address;
+            })
+        });
+
+        web3.eth.getAccounts(function (err, accs) {
             if (err != null) {
-                alert('There was an error fetching your accounts.');
+                self.setStatus('text-danger Error fetching accounts.');
                 return;
             }
 
             if (accs.length === 0) {
-                alert('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.');
+                self.setStatus('text-warning Couldn\'t get any accounts. Ensure Ethereum client is configured correctly.');
                 return;
             }
 
-            accounts = accs;
-            account = accounts[0];
+            account = accs[0];
         });
 
         self.populateCandidates('federalcandidates', federal);
+
         if (state == null) {
             $('#statecandidatediv').hide();
         } else {
             self.populateCandidates('statecandidates', state);
         }
+
+        setInterval(function () {
+            if (web3.eth.accounts[0] !== account) {
+                account = web3.eth.accounts[0];
+                self.checkRedirect(account);
+            }
+        }, 100);
     },
 
     setStatus: function (message) {
         $('#status').html(message);
+    },
+
+    checkRedirect: function (acc) {
+        if (acc !== owner) {
+            window.location.href = '/admin';
+        }
     },
 
     populateCandidates: function (id, constituency) {
@@ -112,6 +133,10 @@ window.App = {
         federalcandidates = self.processVotes(federalelement, federalcandidates);
         statecandidates = self.processVotes(stateelement, statecandidates);
 
+        //For testing purposes
+        // console.log(federalcandidates);
+        // console.log(statecandidates);
+
         Election.deployed().then((instance) => {
             election = instance;
             return election.vote(hash, federalcandidates, statecandidates, {from: account});
@@ -125,6 +150,7 @@ window.App = {
         });
     },
 
+    //TODO Requires thorough testing
     //Crucial role to the functionality of voting.
     processVotes: function (element, array) {
         let x = [];
@@ -139,7 +165,7 @@ window.App = {
                 //If there is only one contesting candidate
                 if (x.length === 1) {
                     //Only one contesting candidate, unselected
-                    return [x[0], x[0], x[0]];
+                    return [x[0], x[0] + x[0]];
                 }
 
                 //More than one contesting candidate, unselected/more than one selected

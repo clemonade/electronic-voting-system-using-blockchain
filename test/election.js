@@ -7,8 +7,8 @@ let catchRevert = require("./exceptions.js").catchRevert;
 let assert = chai.assert;
 
 //TODO Fix assert handling messages
-//TODO Convert promise syntax to async/await
 //TODO Add more proofing for assertions
+// TODO Convert promise syntax to async/await
 //TODO Asserts for events emitted?
 contract('Election', function (accounts) {
     let election;

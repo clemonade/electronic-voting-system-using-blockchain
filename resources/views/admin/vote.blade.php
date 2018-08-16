@@ -67,6 +67,9 @@
 
 {!! Form::close() !!}
 
+<!--For testing purposes-->
+<!--<button class="btn btn-primary btn-lg btn-block" onclick="App.vote()">Cast Vote</button>-->
+
 <nav class="navbar navbar-expand bg-light fixed-bottom justify-content-center">
     <span id="status"><?php echo Session::get('status'); ?></span>
 </nav>

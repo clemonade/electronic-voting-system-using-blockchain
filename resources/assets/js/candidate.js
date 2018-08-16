@@ -2,35 +2,42 @@ import {default as contract} from 'truffle-contract';
 import electionArtifacts from '../../../build/contracts/Election.json';
 
 let Election = contract(electionArtifacts);
-let accounts;
 let account;
+let owner;
 
 window.App = {
     start: function () {
         let self = this;
+        let election;
 
         Election.setProvider(web3.currentProvider);
 
-        web3.eth.getAccounts((err, accs) => {
+        Election.deployed().then((instance) => {
+            election = instance;
+            election.owner.call().then((address) => {
+                owner = address;
+            })
+        });
+
+        web3.eth.getAccounts(function (err, accs) {
             if (err != null) {
-                alert('There was an error fetching your accounts.');
+                self.setStatus('text-danger Error fetching accounts.');
                 return;
             }
 
             if (accs.length === 0) {
-                alert('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.');
+                self.setStatus('text-warning Couldn\'t get any accounts. Ensure Ethereum client is configured correctly.');
                 return;
             }
 
-            accounts = accs;
-            account = accounts[0];
+            account = accs[0];
         });
 
         self.populateParties();
 
         $('#state').on('change', function () {
-            // noinspection JSJQueryEfficiency
-            let level = $('#level').val();
+            let element = $('#level');
+            let level = element.val();
 
             if (level === null) {
                 $('#level option[value="0"]').prop('selected', true);
@@ -44,10 +51,16 @@ window.App = {
                 $('#level option[value="1"]').prop('disabled', false);
             }
 
-            // noinspection JSJQueryEfficiency
-            level = $('#level').val();
+            level = element.val();
             self.populateConstituencies(level);
         });
+
+        setInterval(function () {
+            if (web3.eth.accounts[0] !== account) {
+                account = web3.eth.accounts[0];
+                self.checkRedirect(account);
+            }
+        }, 100);
     },
 
     setStatus: function (message) {
@@ -60,6 +73,12 @@ window.App = {
             $('#status')
                 .addClass(bs4class)
                 .text(status);
+        }
+    },
+
+    checkRedirect: function (acc) {
+        if (acc !== owner) {
+            window.location.href = '/admin';
         }
     },
 

@@ -8,16 +8,8 @@ let owner;
 window.App = {
     start: function () {
         let self = this;
-        let election;
 
         Election.setProvider(web3.currentProvider);
-
-        Election.deployed().then((instance) => {
-            election = instance;
-            election.owner.call().then((address) => {
-                owner = address;
-            })
-        });
 
         web3.eth.getAccounts(function (err, accs) {
             if (err != null) {
@@ -33,14 +25,17 @@ window.App = {
             account = accs[0];
         });
 
+        self.populateAdmin();
+
         setInterval(function () {
             if (web3.eth.accounts[0] !== account) {
                 account = web3.eth.accounts[0];
-                self.checkRedirect(account);
+                self.populateCurrent(account);
             }
         }, 100);
     },
 
+    //Only displays the last message.
     setStatus: function (message) {
         if (message[0] === ' ') {
             $('#status').text(message);
@@ -54,47 +49,39 @@ window.App = {
         }
     },
 
-    checkRedirect: function (acc) {
-        if (acc !== owner) {
-            window.location.href = '/admin';
-        }
+    populateAdmin: function () {
+        let self = this;
+        let election;
+
+        Election.deployed().then((instance) => {
+            election = instance;
+
+            election.owner.call().then((address) => {
+                owner = address;
+                $('#admin').val(address);
+
+                self.populateCurrent(account);
+            });
+        }).catch(function (e) {
+            console.log(e);
+            self.setStatus('text-danger Error retrieving contract owner.');
+        });
     },
 
-    validate: function () {
-        let self = this;
-        let valid = true;
+    populateCurrent: function (acc) {
+        let current = $('#current');
+        current.val(acc);
 
-        let n = $('#name');
-        let i = $('#nric');
+        if (acc === owner) {
+            current
+                .removeClass('text-danger')
+                .addClass('text-success');
 
-        let name = n.val();
-        let nric = i.val();
-
-        if (name === "") {
-            valid = false;
-            n.addClass('is-invalid');
+            window.location.href = '/admin/dashboard';
         } else {
-            n.removeClass('is-invalid');
+            current
+                .removeClass('text-success')
+                .addClass('text-danger');
         }
-
-        //DEV
-        let regex = new RegExp();
-        //let regex = new RegExp(/^([0-9]{2})([0-1]{1})([0-9]{1})([0-3]{1})([0-9]{1})([0-9]{6})$/);
-
-        if (nric === "") {
-            valid = false;
-            i.addClass('is-invalid');
-            $('#nricfeedback').text('NRIC is required.')
-        } else {
-            if (regex.test(nric)) {
-                i.removeClass('is-invalid');
-            } else {
-                valid = false;
-                i.addClass('is-invalid');
-                $('#nricfeedback').text('NRIC is invalid.');
-            }
-        }
-
-        return valid;
     },
 };
