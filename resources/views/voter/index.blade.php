@@ -31,15 +31,20 @@
 @foreach (Common::$states as $x => $state)
 <div class="card">
     <div class="card-header">
-        <a href="#f<?php echo $x ?>" data-toggle="collapse">{{ $state }}</a>
+        <a href="#F{{ $x }}" data-toggle="collapse">{{ $state }}</a>
+        <table class="table-sm">
+            <tr id="F{{ $x }}T">
+            </tr>
+        </table>
     </div>
-    <div id="f<?php echo $x ?>" class="collapse">
+    <div id="F{{ $x }}" class="collapse">
         <table class="table table-hover">
             <thead>
             <tr>
                 <th>No.</th>
                 <th class="text-center">Code</th>
                 <th>Name</th>
+                <th class="text-center">Party</th>
             </tr>
             </thead>
             <tbody>
@@ -59,6 +64,7 @@
                 <td>
                     {{ $federal->name }}
                 </td>
+                <td id="{{ $federal->code }}P" class="text-center"></td>
             </tr>
             @endif
             @endforeach
@@ -78,15 +84,20 @@
 @foreach (Common::$states as $x => $state)
 <div class="card">
     <div class="card-header">
-        <a href="#s<?php echo $x ?>" data-toggle="collapse">{{ $state }}</a>
+        <a href="#S{{ $x }}" data-toggle="collapse">{{ $state }}</a>
+        <table class="table-sm">
+            <tr id="S{{ $x }}T">
+            </tr>
+        </table>
     </div>
-    <div id="s<?php echo $x ?>" class="collapse">
+    <div id="S{{ $x }}" class="collapse">
         <table class="table table-hover">
             <thead>
             <tr>
                 <th>No.</th>
                 <th class="text-center">Code</th>
                 <th>Name</th>
+                <th class="text-center">Party</th>
             </tr>
             </thead>
 
@@ -107,6 +118,7 @@
                 <td>
                     {{ $stateconstituency->name }}
                 </td>
+                <td id="{{ $stateconstituency->code }}P" class="text-center"></td>
             </tr>
             @endif
             @endforeach
@@ -120,7 +132,5 @@
     No records found.
 </div>
 @endif
-
-<span id="status"></span>
 
 @stop

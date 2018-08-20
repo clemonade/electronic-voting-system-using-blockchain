@@ -5,6 +5,7 @@ let Election = contract(electionArtifacts);
 let account;
 let owner;
 
+//TODO Gotta fix function names dude.
 window.App = {
     start: function () {
         let self = this;
@@ -74,8 +75,8 @@ window.App = {
 
             $('#address').val(election.address);
 
-            self.setInitialisation(federals);
-            self.setInitialisation(states);
+            self.populateInitialisation(federals);
+            self.populateInitialisation(states);
         }).catch(function (e) {
             console.log(e);
             self.setStatus('text-danger Error retrieving contract information.');
@@ -97,13 +98,15 @@ window.App = {
                 .removeClass('text-success')
                 .addClass('text-danger');
 
-            if (window.location.href.indexOf("admin") > -1) {
-                window.location.href = '/admin';
-            }
+            //TODO Fix this rerouting/looping black hole
+            //It's a MetaMask bug
+            // if (window.location.href.indexOf("admin") > -1) {
+            //     window.location.href = '/admin';
+            // }
         }
     },
 
-    setInitialisation: function (constituencies) {
+    populateInitialisation: function (constituencies) {
         let self = this;
         let election;
         Election.deployed().then((instance) => {
@@ -115,6 +118,7 @@ window.App = {
             }
             Promise.all(promises).then(() => {
                 for (let x = 0; x < promises.length; x++) {
+                    let state = constituencies[x].state;
                     let code = constituencies[x].code;
                     let name = constituencies[x].name;
                     let jcode = constituencies[x].code.replace(/\./g, '\\.').replace(/\//g, '\\/');
@@ -130,6 +134,9 @@ window.App = {
                                 .attr('disabled', 'disabled');
                             $('#' + jcode + 'V')
                                 .removeAttr('disabled');
+
+                            //Only display seat winner for initialised constituency
+                            self.populateSeatWinner(state, jcode, value[2].map(x => x.toNumber()));
                         }
                     });
                 }
@@ -137,6 +144,101 @@ window.App = {
         }).catch(function (e) {
             console.log(e);
             self.setStatus('text-danger Error retrieving initialisation status.');
+        });
+    },
+
+    //No duplicate abbreviations pls.
+    populateSeatWinner: function (state, jcode, candidates) {
+        //If no contesting candidates
+        //Hot dang this conditional filtering.
+        if (!Array.isArray(candidates) || !candidates.length) {
+            return;
+        }
+
+        let self = this;
+        let election;
+        let level = 'F';
+        let promises = [];
+
+        if (jcode.includes('/')) {
+            level = 'S';
+        }
+
+        Election.deployed().then((instance) => {
+            election = instance;
+            for (let candidate of candidates) {
+                promises.push(election.getCandidate.call(candidate))
+            }
+
+            Promise.all(promises).then(() => {
+                let winParty;
+                let winVotes = 0;
+                let votes = [];
+
+                //Assign first contesting party as default
+                promises[0].then((value) => {
+                    winParty = value[3].toNumber();
+                });
+
+                for (let x = 0; x < promises.length; x++) {
+                    votes.push(
+                        promises[x].then((value) => {
+                            let numVotes = value[0].toNumber();
+                            let party = value[3].toNumber();
+
+                            if (numVotes > winVotes) {
+                                winVotes = numVotes;
+                                winParty = party;
+                            }
+
+                            return election.getParty.call(party);
+                        }).then((party) => {
+                            let parties = [];
+
+                            $('.' + level + state + 'N').each(function () {
+                                parties.push($(this).text());
+                            });
+
+                            //The extra parentheses matters lol.
+                            if (!(parties.indexOf(party[1]) > -1)) {
+                                $('#' + level + state + 'T')
+                                    .append($('<td>')
+                                        .addClass(level + state)
+                                        .append($('<small>')
+                                            .append($('<span>')
+                                                .addClass(level + state + 'N')
+                                                .text(party[1]))
+                                            .append(' (')
+                                            .append($('<span>')
+                                                .addClass(level + state + 'W')
+                                                .text('0'))
+                                            .append(')')
+                                        ));
+                            }
+                        })
+                    );
+                }
+
+                Promise.all(votes).then(() => {
+                    return election.getParty.call(winParty);
+                }).then((value) => {
+                    $('#' + jcode + 'P')
+                        .append($('<img>')
+                            .prop('title', value[1])
+                            .prop('src', '/storage/parties/' + value[0] + value[1] + '.jpg')
+                            .prop('height', '50'));
+
+                    $('.' + level + state).each(function () {
+                        let party = $(this).find('.' + level + state + 'N').text();
+                        if (value[1] === party) {
+                            let seat = $(this).find('.' + level + state + 'W');
+                            let count = seat.text();
+                            count++;
+                            seat.text(count);
+                        }
+                    });
+                });
+            });
         });
     },
 

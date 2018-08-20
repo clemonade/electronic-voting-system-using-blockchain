@@ -62,7 +62,6 @@ window.App = {
         let election;
         let promises = [];
 
-
         Election.deployed().then((instance) => {
             election = instance;
             for (let candidate of candidates) {
