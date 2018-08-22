@@ -329,4 +329,16 @@ contract Election is Ownable {
     function getPartiesLength() public view returns (uint){
         return parties.length;
     }
+
+    /**
+    @notice Increments desired number of valid votes of a candidate
+    @dev For testing/demonstration purposes only
+    @param _candidateId ID of a candidate
+    @param _numVotes Number of valid votes to increment
+    */
+    function addVotes(uint _candidateId, uint _numVotes) public onlyOwner() isValidCandidate(_candidateId) {
+        totalVotes = totalVotes + _numVotes;
+        constituencies[candidateToConstituency[_candidateId]].numVotes = constituencies[candidateToConstituency[_candidateId]].numVotes + _numVotes;
+        candidates[_candidateId].numVotes = candidates[_candidateId].numVotes + _numVotes;
+    }
 }

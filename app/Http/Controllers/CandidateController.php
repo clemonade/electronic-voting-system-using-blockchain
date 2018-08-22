@@ -18,4 +18,15 @@ class CandidateController extends Controller
             'states' => $states,
         ]);
     }
+
+    public function add()
+    {
+        $federals = FederalConstituency::orderBy('code', 'asc')->get();
+        $states = StateConstituency::orderBy('code', 'asc')->get();
+
+        return view('admin.add', [
+            'federals' => $federals,
+            'states' => $states,
+        ]);
+    }
 }

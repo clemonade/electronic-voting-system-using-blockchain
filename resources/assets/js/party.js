@@ -58,7 +58,7 @@ window.App = {
 
     checkRedirect: function (acc) {
         if (acc !== owner) {
-            window.location.href = '/admin';
+            //window.location.href = '/admin';
         }
     },
 
@@ -105,7 +105,7 @@ window.App = {
     //TODO Integrate Laravel form request validation with MetaMask prompt trigger
     //Purely used to trigger/stop MetaMask prompt
     //This is dumb.
-    //Nope, now used for frontend validation as well
+    //Nope, now used for frontend validation as well.
     validate: function () {
         let self = this;
         let valid = true;

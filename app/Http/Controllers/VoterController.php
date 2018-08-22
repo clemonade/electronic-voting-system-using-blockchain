@@ -38,11 +38,11 @@ class VoterController extends Controller
             $voter['name'] = strtoupper($request->input('name'));
             $voter->save();
 
-            return Redirect::back()->with('status', 'text-success Voter registered successfully.');
+            return Redirect::back()->with('status', 'text-success Voter ' . $request->input('nric') . ' registered successfully.');
 
         } catch (QueryException $e) {
             //dd($e->getMessage());
-            return Redirect::back()->with('status', 'text-danger Voter already registered.');
+            return Redirect::back()->with('status', 'text-danger Error registering voter.');
         }
     }
 

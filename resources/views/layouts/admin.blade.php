@@ -18,9 +18,19 @@
                 <a class="dropdown-item" href="/admin/party/register">Register</a>
             </div>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/admin/registercandidate">Candidate</a>
+        <!--DEV-->
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="/admin/registercandidate" id="navbardrop" data-toggle="dropdown">
+                Candidate
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="/admin/registercandidate">Register</a>
+                <a class="dropdown-item bg-warning" href="/admin/add">Increment (DEV/DEMO)</a>
+            </div>
         </li>
+        <!--        <li class="nav-item">-->
+        <!--            <a class="nav-link" href="/admin/registercandidate">Candidate</a>-->
+        <!--        </li>-->
         <li class="nav-item">
             <a class="nav-link" href="/">Home</a>
         </li>

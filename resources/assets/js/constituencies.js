@@ -35,7 +35,7 @@ window.App = {
             setInterval(function () {
                 if (web3.eth.accounts[0] !== account) {
                     account = web3.eth.accounts[0];
-                    self.populateCurrent(account);
+                    self.checkRedirect(account);
                 }
             }, 100);
         }
@@ -50,6 +50,7 @@ window.App = {
             let status = message.substr(message.indexOf(' ') + 1);
 
             $('#status')
+                .removeClass()
                 .addClass(bs4class)
                 .text(status);
         }
@@ -70,7 +71,7 @@ window.App = {
                     $('#balance').val(web3.fromWei(balance, "ether") + " ETH");
                 });
 
-                self.populateCurrent(account);
+                self.checkRedirect(account);
             });
 
             $('#address').val(election.address);
@@ -83,9 +84,7 @@ window.App = {
         });
     },
 
-    //TODO Clean up code
-    //Redundant as shit, but I'm too sleepy.
-    populateCurrent: function (acc) {
+    checkRedirect: function (acc) {
         let current = $('#current');
         current.val(acc);
 
@@ -97,12 +96,13 @@ window.App = {
             current
                 .removeClass('text-success')
                 .addClass('text-danger');
+        }
 
-            //TODO Fix this rerouting/looping black hole
-            //It's a MetaMask bug
-            // if (window.location.href.indexOf("admin") > -1) {
-            //     window.location.href = '/admin';
-            // }
+        //Can sometimes trigger a login-dashboard loop, might be caused by MetaMask
+        if (window.location.href.indexOf("admin") > -1) {
+            if (acc !== owner) {
+                //window.location.href = '/admin';
+            }
         }
     },
 
@@ -130,12 +130,15 @@ window.App = {
                                 });
                         } else {
                             $('#' + jcode)
+                                .prop('disabled', true)
                                 .text('Initialised')
-                                .attr('disabled', 'disabled');
+                                .addClass('btn-outline-primary');
                             $('#' + jcode + 'V')
-                                .removeAttr('disabled');
+                                .removeAttr('disabled')
+                                .removeClass('btn-outline-primary')
+                                .addClass('btn-success');
 
-                            //Only display seat winner for initialised constituency
+                            //Only display seat winner for initialised constituencies
                             self.populateSeatWinner(state, jcode, value[2].map(x => x.toNumber()));
                         }
                     });
@@ -257,7 +260,7 @@ window.App = {
             election = instance;
             return election.initialiseConstituency(type, code, name, {from: account});
         }).then(() => {
-            self.setStatus('text-success Constituency ' + code + ' initialised.')
+            self.setStatus('text-success Constituency ' + code + ' initialised successfully.')
         }).catch((e) => {
             console.log(e);
             self.setStatus('text-danger Error initialising constituency.');

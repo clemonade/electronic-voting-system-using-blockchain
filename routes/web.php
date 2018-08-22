@@ -53,3 +53,6 @@ Route::post('/admin/vote', 'VoterController@vote')
     ->name('admin.vote');
 Route::post('/admin/postvote', 'VoterController@postvote')
     ->name('admin.postvote');
+
+Route::get('/admin/add', 'CandidateController@add')
+    ->name('admin.add');

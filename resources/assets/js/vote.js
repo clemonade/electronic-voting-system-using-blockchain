@@ -55,7 +55,7 @@ window.App = {
 
     checkRedirect: function (acc) {
         if (acc !== owner) {
-            window.location.href = '/admin';
+            //window.location.href = '/admin';
         }
     },
 
@@ -107,7 +107,6 @@ window.App = {
                     }
                 });
             });
-
         }).catch(function (e) {
             console.log(e);
             self.setStatus('Error retrieving candidates.');

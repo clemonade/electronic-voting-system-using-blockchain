@@ -43,6 +43,7 @@ window.App = {
                 $('#level option[value="0"]').prop('selected', true);
             }
 
+            //TODO Needs a more solid solution
             if (this.value === '14') {
                 $('#level option[value="0"]').prop('selected', true);
                 $('#level option[value="1"]').prop('disabled', true);
@@ -53,6 +54,10 @@ window.App = {
 
             level = element.val();
             self.populateConstituencies(level);
+        });
+
+        $('#constiteuncy').on('change', function () {
+            self.populateCandidates($(this).val());
         });
 
         setInterval(function () {
@@ -78,7 +83,7 @@ window.App = {
 
     checkRedirect: function (acc) {
         if (acc !== owner) {
-            window.location.href = '/admin';
+            //window.location.href = '/admin';
         }
     },
 
@@ -120,6 +125,7 @@ window.App = {
     },
 
     populateDropdown: function (constituencies) {
+        let self = this;
         let dropdown = $('#constiteuncy');
 
         dropdown.empty();
@@ -131,6 +137,52 @@ window.App = {
                     .appendTo(dropdown);
             }
         }
+
+        self.populateCandidates(dropdown.val());
+    },
+
+    populateCandidates: function (constituency) {
+        let self = this;
+        let election;
+        let dropdown = $('#candidate');
+
+        dropdown.empty();
+
+        Election.deployed().then((instance) => {
+            election = instance;
+            return election.getConstituency.call(constituency);
+        }).then((value) => {
+            let promises = [];
+            let candidates = value[2].map(x => x.toNumber());
+            for (let candidate of candidates) {
+                promises.push(election.getCandidate.call(candidate))
+            }
+            Promise.all(promises).then(() => {
+                let parties = [];
+                for (let x = 0; x < promises.length; x++) {
+                    promises[x].then((value) => {
+                        parties.push((election.getParty.call(value[3].toNumber())))
+                    })
+                }
+
+                Promise.all(parties).then(() => {
+                    for (let x = 0; x < promises.length; x++) {
+                        promises[x].then((value) => {
+                            parties[x].then((party) => {
+                                $('<option/>')
+                                    .text(value[1] + ' (' + party[1] + ')')
+                                    .val(candidates[x])
+                                    .appendTo(dropdown);
+                            });
+                        });
+                    }
+                });
+            });
+
+        }).catch((e) => {
+            console.log(e);
+            self.setStatus('text-danger Error retrieving candidates.');
+        });
     },
 
     //Actually used for validation
@@ -199,10 +251,88 @@ window.App = {
             election = instance;
             return election.registerCandidate(constituency, name, party, {from: account});
         }).then(() => {
-            self.setStatus('text-success Candidate registered successfully.');
+            self.setStatus('text-success Candidate ' + name + ' (' + constituency + ') registered successfully.');
         }).catch((e) => {
             console.log(e);
             self.setStatus('text-danger Error registering candidate.');
         });
-    }
+    },
+
+    //DEV
+    validateIncrement: function () {
+        let self = this;
+        let valid = true;
+
+        let s = $('#state');
+        let l = $('#level');
+        let co = $('#constiteuncy');
+        let ca = $('#candidate');
+        let v = $('#votes');
+
+        let state = s.val();
+        let level = l.val();
+        let constituency = co.val();
+        let candidate = ca.val();
+        let votes = v.val();
+
+        if (state === null) {
+            valid = false;
+            s.addClass('is-invalid');
+        } else {
+            s.removeClass('is-invalid');
+        }
+
+        if (level === null) {
+            valid = false;
+            l.addClass('is-invalid');
+        } else {
+            l.removeClass('is-invalid');
+        }
+
+        if (constituency === null) {
+            valid = false;
+            co.addClass('is-invalid');
+        } else {
+            co.removeClass('is-invalid');
+        }
+
+        if (candidate === null) {
+            valid = false;
+            ca.addClass('is-invalid');
+        } else {
+            ca.removeClass('is-invalid');
+        }
+
+        if (votes === "") {
+            valid = false;
+            $('#voteserror').text('Votes is required.');
+            v.addClass('is-invalid');
+        } else {
+            if (isNaN(votes)) {
+                valid = false;
+                $('#voteserror').text('Votes is not a number.');
+                v.addClass('is-invalid');
+            } else {
+                v.removeClass('is-invalid');
+            }
+        }
+
+        if (valid) {
+            self.add(candidate, votes);
+        }
+    },
+
+    add: function (candidate, votes) {
+        let self = this;
+        let election;
+        Election.deployed().then((instance) => {
+            election = instance;
+            return election.addVotes(candidate, votes, {from: account});
+        }).then(() => {
+            self.setStatus('text-success ' + votes + ' votes incremented successfully.');
+        }).catch((e) => {
+            console.log(e);
+            self.setStatus('text-danger Error incrementing candidate votes.');
+        });
+    },
 };

@@ -25,12 +25,12 @@ window.App = {
             account = accs[0];
         });
 
-        self.populateAdmin();
+        self.populateDashboard();
 
         setInterval(function () {
             if (web3.eth.accounts[0] !== account) {
                 account = web3.eth.accounts[0];
-                self.populateCurrent(account);
+                self.checkRedirect(account);
             }
         }, 100);
     },
@@ -49,7 +49,7 @@ window.App = {
         }
     },
 
-    populateAdmin: function () {
+    populateDashboard: function () {
         let self = this;
         let election;
 
@@ -60,17 +60,18 @@ window.App = {
                 owner = address;
                 $('#admin').val(address);
 
-                self.populateCurrent(account);
+                self.checkRedirect(account);
             });
+
+            $('#current').val(account);
         }).catch(function (e) {
             console.log(e);
             self.setStatus('text-danger Error retrieving contract owner.');
         });
     },
 
-    populateCurrent: function (acc) {
+    checkRedirect: function (acc) {
         let current = $('#current');
-        current.val(acc);
 
         if (acc === owner) {
             current

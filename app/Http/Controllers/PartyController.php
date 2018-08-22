@@ -26,6 +26,6 @@ class PartyController extends Controller
 
         $file->storeAs('public/parties', $name . $abbreviation . '.jpg');
 
-        return Redirect::back()->with('status', 'text-success Party registered successfully.');
+        return Redirect::back()->with('status', 'text-success Party ' . $abbreviation . ' registered successfully.');
     }
 }
