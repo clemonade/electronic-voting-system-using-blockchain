@@ -73,7 +73,8 @@
                     <button id="{{ $federal->code }}" class="btn btn-primary btn-block">Initialise</button>
                     @if ($federal->nostate)
                     <a href="{{ route('admin.verify', [$federal->code]) }}">
-                        <button id="{{ $federal->code }}V" class="btn btn-outline-primary btn-block" disabled>Verify</button>
+                        <button id="{{ $federal->code }}V" class="btn btn-outline-primary btn-block" disabled>Verify
+                        </button>
                     </a>
                     @endif
                 </td>
@@ -129,7 +130,7 @@
                 <td align="center">
                     <button id="{{ $stateconstituency->code }}" class="btn btn-primary btn-block">Initialise</button>
                     <a href="{{ route('admin.verify', [$stateconstituency->code]) }}">
-                        <button id="{{ $stateconstituency->code }}V" class="btn btn-primary btn-block" disabled>
+                        <button id="{{ $stateconstituency->code }}V" class="btn btn-outline-primary btn-block" disabled>
                             Verify
                         </button>
                     </a>
