@@ -15,7 +15,7 @@
 @stop
 @section('content')
 
-<h1>Admin Dashboard</h1>
+<h1>Administrator Dashboard</h1>
 <div class="form-group">
     <label for="current">Current Address:</label>
     <input type="text" id="current" class="form-control" readonly>

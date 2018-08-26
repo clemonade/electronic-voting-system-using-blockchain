@@ -10,7 +10,7 @@
             <a class="nav-link" href="/voter">Voter</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/admin">Admin</a>
+            <a class="nav-link" href="/admin">Administrator</a>
         </li>
     </ul>
 </nav>
